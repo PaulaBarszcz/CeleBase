@@ -89,5 +89,36 @@ document.addEventListener('DOMContentLoaded', function(){
     })
     slider.bindButtons();
 
+    let coverRed = document.querySelector(".coverRed");
+    console.log(coverRed);
+    coverRed.addEventListener("click", function(){
+        console.log("red");
+        if (coverRed.style.opacity!=="1") {
+            coverRed.style.opacity = 1; 
+        }else {
+            coverRed.style.opacity = 0; 
+        }
+    })
+
+    let coverGreen = document.querySelector(".coverGreen");
+    console.log(coverGreen);
+    coverRed.addEventListener("mouseover", function(){
+        console.log("green");
+        if (coverGreen.style.opacity!=="1") {
+            coverGreen.style.opacity = 1; 
+        }else {
+            coverGreen.style.opacity = 0; 
+        }
+    })
+
+
+
+    let quizOptions = document.querySelector(".quiz-text");
+    console.log(quizOptions);
+
+    quizOptions.addEventListener("click", function(){
+        console.log("click option");
+    })
+
 
 });
