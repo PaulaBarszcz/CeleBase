@@ -70,6 +70,14 @@ document.addEventListener('DOMContentLoaded', function(){
         "nationality": "Welsh",
         "photo": "https://www.alux.com/wp-content/uploads/2017/04/Christian-Bale-Net-Worth.jpg",
         "imdb": "http://www.imdb.com/name/nm0000288/"
+        },
+        {"id": 3,
+        "name": "Anne",
+        "surname": "Hathaway",
+        "gender": "female",
+        "nationality": "American",
+        "photo": "https://www.hdwallpapers.in/walls/anne_hathaway_3-normal.jpg",
+        "imdb": "http://www.imdb.com/name/nm0004266/"
         }
     ]
 
