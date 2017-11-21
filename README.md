@@ -1,7 +1,7 @@
 # CeleBase
 Webpage containing quiz, slider and infotable - all with super-cool pictures of actors&amp;actresses. 
 
-To import data from Google StyleSheets to Firebase, this script was used:
+To import data from Google Sheets to Firebase, this script was used:
 
 
 ```javascript
