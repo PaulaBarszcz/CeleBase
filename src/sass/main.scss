@@ -34,7 +34,7 @@ body{
 
 .homeLogo {
     color: #ffcc14;
-    font-size: 70px;
+    font-size: 60px;
     text-align: center;
     h1{
         line-height: 350px;
@@ -43,6 +43,9 @@ body{
 }
 
 // navigation
+.divNav {
+    text-align: center
+}
 
 .main-nav {
     display: flex;
