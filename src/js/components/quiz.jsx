@@ -2,6 +2,9 @@ import React from 'react';
 
 class Quiz extends React.Component{
     render(){
+
+        console.log('this.props.zi',this.props.zi);
+
         return <div className="container">
             <div className="quiz" id="quiz">
                 <div className="main-slider-slides-cnt">

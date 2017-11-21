@@ -202,7 +202,8 @@ body{
     justify-content:space-between;
     align-items:center;
     height: 600px;
-    border: 1px solid white
+    border: 1px solid white;
+    margin-top: 30px;
 }
 
 @media only screen and (max-width:970px) {
@@ -346,7 +347,7 @@ body{
 // quiz
 
 #quiz {
-    margin-top: 60px;
+    margin-top: 30px;
     display: flex;
     justify-content: center;
     align-content: center;

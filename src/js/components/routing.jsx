@@ -7,12 +7,14 @@ import {InfoTable} from './infotable.jsx';
 import {NotFound} from './notFound.jsx';
 import {Navigation} from './navigation.jsx';
 import { Router,
+    PropsRoute,
     Route,
     Link,
     IndexLink,
     IndexRoute,
     hashHistory
 } from 'react-router';
+
 
 class Routing extends React.Component {
     constructor(props){
@@ -23,6 +25,13 @@ class Routing extends React.Component {
     }
 
     render() {
+         const state = { zi: 2 };
+        // <PropsRoute path="/quiz" component={Quiz} state={state} />
+
+        //  <Route path='/quiz' component={Quiz}/>
+
+
+
         return  <Router history={hashHistory}>
             <Route path='/' component={Navigation}>
                 <IndexRoute component={Home} />
@@ -39,14 +48,21 @@ class BookInfo extends React.Component{
     constructor(props) {
         super(props);
         this.state = {  
-            title: '',  
+            objList: '',  
         }
     }
 
-    componentDidMount() {            fetch(`https://www.googleapis.com/books/v1/volumes?q=isbn:${this.props.isbn}`).then( r =>   r.json() ).then( response => {
+    componentDidMount() {
+        this.objList = [];            
+        fetch(`https://celebase-project.firebaseio.com/Actors.json`).then( r =>   r.json() ).then( response => {
+
+            this.objList.push(response);
+            console.log(this.objList);
+
             this.setState({
-                title: response.items[0].volumeInfo.title
+                objList: this.objList
             })
+            console.log(this.state.objList[0][0].surname);
         });
     }
 
