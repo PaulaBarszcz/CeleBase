@@ -26,7 +26,6 @@ body{
     background-attachment: fixed;
     background-position: center top;
     background-size: cover;
-
 }
 
 
@@ -203,7 +202,6 @@ body{
 
 @media only screen and (max-width:970px) {
     .main-slider {
-        margin-top: 100px;
         flex-direction: row;
         flex-wrap: wrap;
         align-items: center;
@@ -440,6 +438,7 @@ body{
     button {
         padding: 30px;
         margin-bottom: 30px;
+        margin-right: 20px;
         font-size: 30px;
         background-color: rgb(255, 204, 20);
         color: black;
@@ -455,16 +454,31 @@ body{
 }
 
 .dataTable{
-    font-size: 25px;
+    font-size: 21px;
+    margin: 0 auto;
     border-collapse: collapse;
     text-align: center;
     border: 5px solid #fff;
     color: #ffcc14;
     font-family: Spectral;
-
+    th{
+        color: #fff;
+    }
     th, td{
-        border: 2px solid #ffcc14;
+        border: 2px solid #fff;
         padding: 6px;  
     } 
+    td{
+        a{
+            text-decoration: none;
+            color: #ffcc14;
+        }
+    }
 }
+
+.containsTable {
+    word-break: break-word;
+
+}
+
 

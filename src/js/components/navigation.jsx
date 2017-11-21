@@ -11,14 +11,10 @@ class Navigation extends React.Component {
     }
 
     handleNavClick = (e) => {
-        console.log("kliknieto: e.target :",e.target);
-        console.log("kliknieto: e :",e);
-        let body = document.querySelector("body");
-        console.log('body',body);
+        let body = document.querySelector("body")
         body.classList.toggle("nav-show");
-
-
     }
+
     render() {
 
         return <div className="divNav">
