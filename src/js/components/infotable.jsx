@@ -36,7 +36,7 @@ class InfoTable extends React.Component{
                                 </tr>                       
                                 <tr>
                                     <td>Anne</td>
-                                    <td>Hathawat</td>
+                                    <td>Hathaway</td>
                                     <td>female</td>
                                     <td>American</td>
                                     <td><a href="http://www.imdb.com/name/nm0004266/" target="_blank">http://www.imdb.com/name/nm0004266/</a></td>

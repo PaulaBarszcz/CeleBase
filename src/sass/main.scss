@@ -179,6 +179,11 @@ body{
         border-bottom:1px solid rgba(#fff, 0.05);
         padding: 10px 5px;
     }
+    .homeLogo {
+        h1{
+            line-height: 560px;
+        }
+    }
 }
 
 .main-header.small {
@@ -206,6 +211,8 @@ body{
         flex-wrap: wrap;
         align-items: center;
         justify-content: center;
+        height: auto;
+        margin-top: 80px;
 
         .main-slider-slides-cnt{
             max-width:700px;
@@ -219,6 +226,9 @@ body{
                 max-width: 80%;
                 border: 1px solid purple;
             }   
+        }
+        .main-slider-prev, .main-slider-next {
+            top: 120px;
         }
         .main-slider-next {
             order: 2
@@ -349,6 +359,13 @@ body{
     }
     .main-slider-slides-cnt {
         width: 100%
+    } 
+}
+
+@media only screen and (max-width:880px) {
+    #quiz img {
+        max-width: 100%;
+        height: auto;
     }
 }
 
@@ -419,6 +436,7 @@ body{
 .infotable{
     margin: 0 auto;
     margin-bottom: 40px;
+    margin-top: 70px;
     text-align: center;
 }
 
@@ -477,8 +495,7 @@ body{
 }
 
 .containsTable {
-    word-break: break-word;
-
+    overflow: auto;
 }
 
 

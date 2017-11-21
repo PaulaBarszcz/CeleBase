@@ -22,7 +22,6 @@ class Routing extends React.Component {
         return  <Router history={hashHistory}>
             <Route path='/' component={Navigation}>
                 <IndexRoute component={Home} />
-                <Route path='/home' component={Home}/>
                 <Route path='/slider' component={Slider}/>
                 <Route path='/quiz' component={Quiz}/>
                 <Route path='/infotable' component={InfoTable}/>

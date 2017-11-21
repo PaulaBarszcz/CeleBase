@@ -3,8 +3,6 @@ import {
     Link
 } from 'react-router';
 
-
-
 class Navigation extends React.Component {
     constructor(props){
         super(props)
@@ -26,7 +24,7 @@ class Navigation extends React.Component {
             </button>
             <nav className="main-nav">
                 <ul>
-                    <li><Link to="/home">HOME</Link></li>
+                    <li><Link to="/">HOME</Link></li>
                     <li><Link to="/slider">SLIDER</Link></li>
                     <li><Link to="/quiz">QUIZ</Link></li>
                     <li><Link to="/infotable">INFOTABLE</Link></li>
