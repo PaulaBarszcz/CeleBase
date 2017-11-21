@@ -1,4 +1,5 @@
 import React from 'react';
+import ReactDOM from 'react-dom';
 import {Home} from './home.jsx';
 import {Slider} from './slider.jsx';
 import {Quiz} from './quiz.jsx';
@@ -15,7 +16,10 @@ import { Router,
 
 class Routing extends React.Component {
     constructor(props){
-        super(props)
+        super(props);
+        this.state = {  
+            time: 10,  
+        }
     }
 
     render() {
@@ -31,4 +35,33 @@ class Routing extends React.Component {
     }
 }
 
-export {Routing}
+class BookInfo extends React.Component{
+    constructor(props) {
+        super(props);
+        this.state = {  
+            title: '',  
+        }
+    }
+
+    componentDidMount() {            fetch(`https://www.googleapis.com/books/v1/volumes?q=isbn:${this.props.isbn}`).then( r =>   r.json() ).then( response => {
+            this.setState({
+                title: response.items[0].volumeInfo.title
+            })
+        });
+    }
+
+    render(){
+
+        if(this.state.title===null){
+            return null
+        } else {
+           return (
+            <div>
+                <h1>{this.state.title}</h1>
+            </div> 
+            )
+        }  
+    }
+}
+
+export {Routing, BookInfo}
