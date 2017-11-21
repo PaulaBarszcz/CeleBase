@@ -22,19 +22,30 @@ html, body {
 body{
     
     background-image: url("/src/sass/stage-curtains.jpg");
-    //background-color: #000000;
     background-repeat: no-repeat;
     background-attachment: fixed;
     background-position: center top;
-
     background-size: cover;
 
 }
 
+
+//home
+
+.homeLogo {
+    color: #ffcc14;
+    font-size: 70px;
+    text-align: center;
+    h1{
+        line-height: 350px;
+        text-overflow: ellipsis;
+    }
+}
+
+// navigation
+
 .main-nav {
-    //height:100%;
     display: flex;
-    //position: fixed;
     justify-content: center;
     background-color: rgba(0, 0, 0, 0.2);
 
@@ -44,9 +55,8 @@ body{
     height:100%;
     display: flex;
     margin:0;
-    
-
 }
+
 .main-nav li {
     height:100%;
 }
@@ -167,7 +177,6 @@ body{
         border-bottom:1px solid rgba(#fff, 0.05);
         padding: 10px 5px;
     }
-
 }
 
 .main-header.small {
@@ -187,7 +196,6 @@ body{
     align-items:center;
     height: 600px;
     border: 1px solid white
-    
 }
 
 @media only screen and (max-width:970px) {
@@ -206,8 +214,6 @@ body{
             flex-wrap: wrap;
             align-items: center;
             justify-content: flex-start;
-            //height: 500px;
-            //flex-grow: 1;
             img{
                 max-width: 80%;
                 border: 1px solid purple;
@@ -232,13 +238,10 @@ body{
     border: 1px solid red;
 
     img{
-        //max-width: 85%;
         max-height: 80%;
         display: flex;
         justify-content: center;
         align-items: center;
-        //padding-top: 30px;
-        //padding-bottom: 30px;
     }
 }
 
@@ -258,7 +261,6 @@ body{
     bottom: 0;
     left: 0;
     margin-top: 30px;
-    //margin-bottom:65px;
 }
 .main-slide-buttons-bar {
     text-align: center;
@@ -320,7 +322,6 @@ body{
     opacity: 1;
     position: relative;
     border: 1px solid orange;
-    //max-height: 400px;
 }
 .main-slide.active .main-slide-image {
     //left:50px;
@@ -340,7 +341,6 @@ body{
     align-content: center;
     img {
         padding: 20px;
-        //max-width: 100%;
         display: relative;
         width: auto;
         height: 80vh;
@@ -355,8 +355,6 @@ body{
     height: auto;
 }
 
-
-
 .quiz .quiz-text {
     position: relative;
     p{
@@ -364,7 +362,6 @@ body{
         transition: 0.5s all;
         margin-top: 5px;
         margin-bottom: 15px;
-        //position: relative;
         font-size: 33px;
         font-weight: 700;
         text-align: center;
@@ -375,16 +372,13 @@ body{
     }
 }
 
-.cover {
-    //width: auto;
-    //height: auto; 
+.cover { 
     display: block;
     margin: 0 auto;
     opacity:1;
     transition:0.5s all;
 
     .coverGreen, .coverRed {
-        
         z-index: 10;
         position: absolute;
         left:0;
@@ -400,8 +394,7 @@ body{
             font-size: 60px;
             font-weight: 900;
             color: #ffcc14;
-            margin: 100px;
-            
+            margin: 100px; 
         }
     }
 
@@ -416,7 +409,6 @@ body{
     font-size: 30px;
     color: #ffcc14;
     font-weight: 900;
-    //font-family: Spectral;
     text-align: right
 }
 

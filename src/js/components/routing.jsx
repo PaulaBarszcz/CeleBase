@@ -1,5 +1,4 @@
 import React from 'react';
-import {App} from './app.jsx';
 import {Home} from './home.jsx';
 import {Slider} from './slider.jsx';
 import {Quiz} from './quiz.jsx';
@@ -22,7 +21,7 @@ class Routing extends React.Component {
     render() {
         return  <Router history={hashHistory}>
             <Route path='/' component={Navigation}>
-                <IndexRoute component={App} />
+                <IndexRoute component={Home} />
                 <Route path='/home' component={Home}/>
                 <Route path='/slider' component={Slider}/>
                 <Route path='/quiz' component={Quiz}/>
