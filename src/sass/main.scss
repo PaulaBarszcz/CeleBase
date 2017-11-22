@@ -397,7 +397,7 @@ body{
     opacity:1;
     transition:0.5s all;
 
-    .coverGreen, .coverRed {
+    .coverRed {
         z-index: 10;
         position: absolute;
         left:0;
@@ -422,13 +422,15 @@ body{
     }
 }
 
-.quizPoints{
+.quizPoints, .quizTime, .quizInfo{
     padding: 30px;
+    padding-bottom: 10px;
     margin: 0;
     font-size: 30px;
     color: #ffcc14;
     font-weight: 900;
-    text-align: right
+    text-align: center;
+    display: inline-block;
 }
 
 

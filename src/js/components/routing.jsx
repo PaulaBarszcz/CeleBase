@@ -25,17 +25,11 @@ class Routing extends React.Component {
     }
 
     render() {
-         const state = { zi: 2 };
-        // <PropsRoute path="/quiz" component={Quiz} state={state} />
-
-        //  <Route path='/quiz' component={Quiz}/>
-
-
 
         return  <Router history={hashHistory}>
             <Route path='/' component={Navigation}>
                 <IndexRoute component={Home} />
-                <Route path='/slider' component={Slider}/>
+                <Route path='/slider' component={Slider} time="klkl"/>
                 <Route path='/quiz' component={Quiz}/>
                 <Route path='/infotable' component={InfoTable}/>
                 <Route path='*' component={NotFound} />

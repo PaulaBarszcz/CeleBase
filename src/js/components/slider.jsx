@@ -26,7 +26,11 @@ class Slider extends React.Component{
 
 
     render(){
+
+        console.log(this.props.route.time);
+
         return <div className="container">
+        {this.props.time}
             <div className="main-slider" id="mainSlider">
                 <button className="main-slider-prev" onClick={this.handleClickPrev}>
                     <span>Poprzedni slajd</span>
