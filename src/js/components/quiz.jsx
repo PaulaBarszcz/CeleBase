@@ -19,7 +19,6 @@ class QuizAnswersGame extends React.Component{
     }
 
     handleResize = () => {
- 
         // window.addEventListener("resize", () => {
         //     console.log("zmieniona wielkosc");
         //     this.image = document.querySelector(".main-slide-image");
@@ -60,7 +59,6 @@ class QuizAnswersGame extends React.Component{
 
     handleStart = () => {
 
-
         if (this.state.numberControl=== false) {
             this.startTimer();
 
@@ -74,30 +72,22 @@ class QuizAnswersGame extends React.Component{
             }
             clearInterval(this.answerTimeId);
             this.startTimer();
-        
     }
-
-    
 
     componentWillUnmount(){
         clearInterval(this.answerTimeId);
     }
 
     handleClickOption = (e, index) => {
-        //console.log('e.target.innerText',e.target.innerText);
+
         this.chosenOpt= e.target.innerText;
 
         if (e.target.innerText.indexOf(this.state.corrAns)!==-1){
-            //console.log("dobra odp");
-
             let points=this.state.points+1;
-
             let randomId = Math.floor(Math.random() * (3 ));
-
             let whichImg = randomId;
             let possibleCopy = this.state.possAns.slice();
             let newCorr = possibleCopy[whichImg];
-
 
             this.setState({
                 points: points,
@@ -110,16 +100,6 @@ class QuizAnswersGame extends React.Component{
             this.startTimer();
 
         } else {
-            //console.log("zla odp");
-            // this.image = document.querySelector(".main-slide-image");
-            // console.log('image.clientHeight',this.image.clientHeight);
-            // console.log('image.clientWidth',this.image.clientWidth);
-
-
-
-            //this.redWidth = this.image.clientWidth;
-            //this.redHeight = this.image.clientHeight;
-
             this.setState({
                 numberControl: true,
                 style: {
@@ -129,8 +109,6 @@ class QuizAnswersGame extends React.Component{
                 }
             });
             clearInterval(this.answerTimeId);
-
-            //console.log("redWidth",this.redWidth);
         }
     }
 
@@ -138,17 +116,11 @@ class QuizAnswersGame extends React.Component{
         if (document.readyState === "complete" 
         || document.readyState === "loaded" 
         || document.readyState === "interactive"){
-            //console.log("document ready");
-            
-            
+                  
             this.image = document.querySelector(".main-slide-image");
-
             this.redWidth= this.image.clientWidth;
-            this.redHeight= this.image.clientHeight;
-            
-        }       
-   
-        console.log("2222z render this.state.numberControl", this.state.numberControl );
+            this.redHeight= this.image.clientHeight;  
+        }
 
         let arrayOptions= ["Antonio Banderas","Morgan Freeman","Christian Bale","Eddie Redmayne"];                              
         let options = arrayOptions.map((item,index) => {
@@ -162,20 +134,15 @@ class QuizAnswersGame extends React.Component{
                 height: this.redHeight,
             }
             clearInterval(this.answerTimeId);
-            clearInterval(this.intervalId);
 
         } else {
-
             this.style={
             opacity: 0,
             }
         }
 
         this.quizImageSrc = this.state.imgSrc[this.state.whichImg];
-
-        //console.log("corr ans",this.state.corrAns);
-        //console.log("this.style",this.style);
-
+        
         return (
             <div>
                 <div className="quiz" id="quiz">
