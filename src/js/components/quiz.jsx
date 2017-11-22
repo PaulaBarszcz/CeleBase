@@ -67,53 +67,35 @@ class QuizAnswersGame extends React.Component{
         clearInterval(this.answerTimeId);
     }
 
-
     handleClick = (e, index) => {
 
         if (e.target.innerText.indexOf(this.state.corrAns)!==-1){
             console.log("dobra odp");
 
-            let points=this.state.points++;
+            let points=this.state.points+1;
             let whichImg = this.state.whichImg===0 ? 1 : 0;
-            //console.log('whichImage',whichImg);
             let possibleCopy = this.state.possAns.slice();
             let newCorr = possibleCopy[whichImg];
             this.setState({
                 points: points,
-               
                 whichImg: whichImg,
                 corrAns: newCorr
-                
             })
-
-
-            //console.log("z klika : which Img", this.state.whichImg);
-            //console.log("z klika : corrAns", this.state.corrAns);
-            //console.log("z klika : possAns", this.state.possAns);
 
         } else {
             console.log("zla odp");
             this.setState({
                 numberControl: true
             });
-        } 
-
+        }
     }
 
     render(){
-
-            // console.log("z rendera : which Img", this.state.whichImg);
-            // console.log("z rendera : corrAns", this.state.corrAns);
-            // console.log("z rendera : possAns", this.state.possAns);
-
-
 
         let arrayOptions= ["Antonio Banderas","Leonardo diCaprio","Christian Bale","Eddie Redmayne"];                              
         let options = arrayOptions.map((item,index) => {
             return <p key={index+1} onClick={ e => this.handleClick(e, index) } >{index+1}. {item}</p>
         })
-
-        
 
         if (this.state.numberControl ===true) {
             this.style= {
@@ -150,13 +132,10 @@ class QuizAnswersGame extends React.Component{
                         </div>
                     </div>
                 </div>
-
-
             </div>
         );
     }
 }
-
 
 class Quiz extends React.Component{
     constructor(props) {
@@ -167,9 +146,7 @@ class Quiz extends React.Component{
     }
 
     render(){
-
         return <div className="container">
-            
             <QuizAnswersGame />
         </div>
     }
