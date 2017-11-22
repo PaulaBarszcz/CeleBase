@@ -19,14 +19,14 @@ class QuizAnswersGame extends React.Component{
     }
 
     componentWillMount(){
-        this.style2={display: "none"}
+        
         this.setState({
             corrAns: this.state.possAns[this.state.whichImg],
         })
     }
 
     componentDidMount(){
-        this.style2={display: "block"}
+        
         //Start Game
         this.intervalId = setInterval(()=>{
             if (this.state.timeForAnswer<=0) {
@@ -58,25 +58,7 @@ class QuizAnswersGame extends React.Component{
             },1000);
 
             
-            // this.timeoutId = setTimeout(()=>{
-               
-            //         //clearInterval(this.answerTimeId);
-            //         this.setState({
-            //             points: this.state.points + 1,
-            //         });
-
-            //         if (this.state.timeForAnswer<=0) {
-            //             this.setState({
-            //             points: this.state.points
-            //             });
-
-            //             clearTimeout(this.timeoutId);
-            //             clearInterval(this.intervalId);
-            //             clearInterval(this.answerTimeId);
-            //         }
-                    
-                
-            // },9000);
+    
         },10000);
     }
 
@@ -141,7 +123,7 @@ class QuizAnswersGame extends React.Component{
 
         let arrayOptions= ["Antonio Banderas","Morgan Freeman","Christian Bale","Eddie Redmayne"];                              
         let options = arrayOptions.map((item,index) => {
-            return <p key={index+1} style={this.style2} onClick={ e => this.handleClick(e, index) } >{index+1}. {item}</p>
+            return <p key={index+1} onClick={ e => this.handleClick(e, index) } >{index+1}. {item}</p>
         })
 
         if (this.state.numberControl ===true) {
@@ -182,6 +164,7 @@ class QuizAnswersGame extends React.Component{
                             <div className="quizInfo">You have 9 seconds to choose the correct answer. Who is in the picture?<br/><strong>Ready...And give the next picture time to load :)</strong></div>
                             <div className="quizPoints">Points: {this.state.points}</div>
                             <div className="quizTime">Time left: 00:0{this.state.timeForAnswer}</div>
+                            <button className="startButton">START</button>
                             <div className="quiz-text">
                                 {options}
 

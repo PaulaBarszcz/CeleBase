@@ -129,7 +129,7 @@ class Slider extends React.Component{
     }
 
     render(){
-        
+
         if (this.state.objLength !==0){
             let incrementedId = this.state.currentId+1;
             let copyOfObj = this.state.objList.slice(); 
@@ -154,7 +154,7 @@ class Slider extends React.Component{
                         <div className="main-slide-text">
                             {this.state.name} {this.state.surname},
                              {this.state.nationality}<br/>
-                            IMDB: {this.state.imdb}
+                            <a href={this.state.imdb} target="_blank">IMDB</a>
                         </div>
                     </div>
                 </div>
