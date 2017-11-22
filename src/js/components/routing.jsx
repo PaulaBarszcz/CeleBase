@@ -39,9 +39,7 @@ class FetchInfo extends React.Component{
 
     render(){
         let infoToPass = this.state.objList;
-
         return <p></p>
-          
     }
 }
 

@@ -12,10 +12,23 @@ class QuizAnswersGame extends React.Component{
             number: 0,
             numberControl: false,
             style: {},
-            redWidth: 0,
-            redHeight:0,
+            redWidth: "50vw",
+            redHeight: "50vh",
             imgSrc: ["http://www.dailygossip.org/wp-content/uploads/2017/03/antonio-banderas.jpg", "https://www.alux.com/wp-content/uploads/2017/04/Christian-Bale-Net-Worth.jpg","http://www.trbimg.com/img-59301dcd/turbine/la-et-entertainment-news-updates-june-a-star-is-born-morgan-freeman-turns-80-1496268967"]
         };
+    }
+
+    handleResize = () => {
+ 
+        // window.addEventListener("resize", () => {
+        //     console.log("zmieniona wielkosc");
+        //     this.image = document.querySelector(".main-slide-image");
+
+        //     this.setState({
+        //         redWidth: this.image.clientWidth,
+        //         redHeight: this.image.clientHeight
+        //     })
+        // })
     }
 
     componentWillMount(){
@@ -23,57 +36,59 @@ class QuizAnswersGame extends React.Component{
         this.setState({
             corrAns: this.state.possAns[this.state.whichImg],
         })
+
+        this.handleResize();
     }
 
-    componentDidMount(){
-        
-        //Start Game
-        this.intervalId = setInterval(()=>{
-            if (this.state.timeForAnswer<=0) {
-                this.setState({
-                points: this.state.points
-                });
-            clearInterval(this.intervalId);
-            clearInterval(this.answerTimeId);
-            }
-            //Set timer
+    startTimer = () => {
+        this.answerTimeId = setInterval(()=>{
             this.setState({
-                timeForAnswer: 9
+                timeForAnswer: this.state.timeForAnswer - 1
             });
 
-
-            //Starts timer - timeForAnswer
-            this.answerTimeId = setInterval(()=>{
+            if (this.state.timeForAnswer===0){
+                clearInterval(this.answerTimeId);
                 this.setState({
-                    timeForAnswer: this.state.timeForAnswer - 1
-                });
-
-                if (this.state.timeForAnswer===0){
-                    this.setState({
-                        style: {
-                            opacity: 1
-                        }
-                    })
-                }
-            },1000);
-
-            
-    
-        },10000);
+                    numberControl: true,
+                    style: {
+                        opacity: 1 
+                    }
+                })
+            }
+        },1000);
     }
 
+    handleStart = () => {
+
+
+        if (this.state.numberControl=== false) {
+            this.startTimer();
+
+        } else {
+            console.log("z handle start this.state.numberControl", this.state.numberControl );
+            this.setState({
+                numberControl: false,
+                timeForAnswer:9,
+                points: 0
+                })
+            }
+            clearInterval(this.answerTimeId);
+            this.startTimer();
+        
+    }
+
+    
+
     componentWillUnmount(){
-        clearTimeout(this.timeoutId);
-        clearInterval(this.intervalId);
         clearInterval(this.answerTimeId);
     }
 
-    handleClick = (e, index) => {
-        console.log('e.target.innerText',e.target.innerText);
+    handleClickOption = (e, index) => {
+        //console.log('e.target.innerText',e.target.innerText);
         this.chosenOpt= e.target.innerText;
 
         if (e.target.innerText.indexOf(this.state.corrAns)!==-1){
-            console.log("dobra odp");
+            //console.log("dobra odp");
 
             let points=this.state.points+1;
 
@@ -91,12 +106,16 @@ class QuizAnswersGame extends React.Component{
                 timeForAnswer: 9,
                 numberControl: false
             })
+            clearInterval(this.answerTimeId);
+            this.startTimer();
 
         } else {
-            console.log("zla odp");
-            this.image = document.querySelector(".main-slide-image");
-            console.log('image.clientHeight',this.image.clientHeight);
-            console.log('image.clientWidth',this.image.clientWidth);
+            //console.log("zla odp");
+            // this.image = document.querySelector(".main-slide-image");
+            // console.log('image.clientHeight',this.image.clientHeight);
+            // console.log('image.clientWidth',this.image.clientWidth);
+
+
 
             //this.redWidth = this.image.clientWidth;
             //this.redHeight = this.image.clientHeight;
@@ -105,32 +124,42 @@ class QuizAnswersGame extends React.Component{
                 numberControl: true,
                 style: {
                     opacity: 1,
-                    redWidth: this.image.clientWidth,
-                    redHeight: this.image.clientHeight
+                    redWidth: this.state.redWidth,
+                    redHeight: this.state.redHeight
                 }
             });
             clearInterval(this.answerTimeId);
-            clearInterval(this.intervalId);
 
             //console.log("redWidth",this.redWidth);
         }
-
-
-
     }
 
     render(){
+        if (document.readyState === "complete" 
+        || document.readyState === "loaded" 
+        || document.readyState === "interactive"){
+            //console.log("document ready");
+            
+            
+            this.image = document.querySelector(".main-slide-image");
+
+            this.redWidth= this.image.clientWidth;
+            this.redHeight= this.image.clientHeight;
+            
+        }       
+   
+        console.log("2222z render this.state.numberControl", this.state.numberControl );
 
         let arrayOptions= ["Antonio Banderas","Morgan Freeman","Christian Bale","Eddie Redmayne"];                              
         let options = arrayOptions.map((item,index) => {
-            return <p key={index+1} onClick={ e => this.handleClick(e, index) } >{index+1}. {item}</p>
+            return <p key={index+1} onClick={ e => this.handleClickOption(e, index) } >{index+1}. {item}</p>
         })
 
         if (this.state.numberControl ===true) {
             this.style= {
                 opacity: 1,
-                redWidth: this.state.redWidth,
-                redHeight: this.state.redHeight,
+                width: this.redWidth,
+                height: this.redHeight,
             }
             clearInterval(this.answerTimeId);
             clearInterval(this.intervalId);
@@ -144,8 +173,8 @@ class QuizAnswersGame extends React.Component{
 
         this.quizImageSrc = this.state.imgSrc[this.state.whichImg];
 
-        console.log("corr ans",this.state.corrAns);
-        console.log("this.style",this.style);
+        //console.log("corr ans",this.state.corrAns);
+        //console.log("this.style",this.style);
 
         return (
             <div>
@@ -161,10 +190,11 @@ class QuizAnswersGame extends React.Component{
                             </div>
                             <img className="main-slide-image" src={this.quizImageSrc} />
                             
-                            <div className="quizInfo">You have 9 seconds to choose the correct answer. Who is in the picture?<br/><strong>Ready...And give the next picture time to load :)</strong></div>
+                            <div className="quizInfo">Who is in the picture? You have 9 seconds to decide.<br/></div>
+                             <button className="startButton" onClick={this.handleStart}>START</button>
                             <div className="quizPoints">Points: {this.state.points}</div>
                             <div className="quizTime">Time left: 00:0{this.state.timeForAnswer}</div>
-                            <button className="startButton">START</button>
+                           
                             <div className="quiz-text">
                                 {options}
 
