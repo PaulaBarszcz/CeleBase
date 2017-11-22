@@ -1,12 +1,33 @@
 import React from 'react';
+//import infoToPass from '../components/routing.jsx';
 
 class Slider extends React.Component{
     constructor(props) {
         super(props);
         this.state = {  
-            indexSlider: 0,  
+            indexSlider: 0,
+            objList: [],
+            objLength: 0  
         }
     }
+
+    componentDidMount() {
+        this.objList = [];            
+        fetch(`https://celebase-project.firebaseio.com/Actors.json`).then( r =>   r.json() ).then( response => {
+
+            this.objList.push(response);
+            this.objLength = response.length;
+            console.log('ooo',this.objLength);
+
+            this.setState({
+                objList: this.objList,
+                objLength: this.objLength
+            })
+            console.log(this.state.objList[0][4].imdb);
+        });
+    }
+
+
 
     handleClickPrev = () => {
         this.setState({
@@ -26,6 +47,26 @@ class Slider extends React.Component{
 
 
     render(){
+        let copyOfObj = this.state.objList.slice();
+        //let objects = copyOfObj[0];
+        //console.log('objects',objects);
+        console.log(this.state.objList);
+        console.log('copyOfObj',copyOfObj.length);
+        console.log('oioi',this.state.objLength);
+
+        let namesSurnames = [];
+
+        for (let i=1; i<this.state.objLength; i++){
+            //console.log('copyOfObj[i]',copyOfObj[0][i].surname);
+            let name = copyOfObj[0][i].name;
+            let surname = copyOfObj[0][i].surname;
+            let both = name+' '+surname;
+            //console.log(both);
+            namesSurnames.push(both);
+        }
+        console.log(namesSurnames);
+  
+
 
         console.log(this.props.route.time);
 

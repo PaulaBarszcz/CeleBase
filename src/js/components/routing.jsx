@@ -15,6 +15,35 @@ import { Router,
     hashHistory
 } from 'react-router';
 
+class FetchInfo extends React.Component{
+    constructor(props) {
+        super(props);
+        this.state = {  
+            objList: '',  
+        }
+    }
+
+    componentDidMount() {
+        this.objList = [];            
+        fetch(`https://celebase-project.firebaseio.com/Actors.json`).then( r =>   r.json() ).then( response => {
+
+            this.objList.push(response);
+            //console.log(this.objList);
+
+            this.setState({
+                objList: this.objList
+            })
+            //console.log(this.state.objList[0][0].surname);
+        });
+    }
+
+    render(){
+        let infoToPass = this.state.objList;
+
+        return <p></p>
+          
+    }
+}
 
 class Routing extends React.Component {
     constructor(props){
@@ -38,40 +67,5 @@ class Routing extends React.Component {
     }
 }
 
-class BookInfo extends React.Component{
-    constructor(props) {
-        super(props);
-        this.state = {  
-            objList: '',  
-        }
-    }
 
-    componentDidMount() {
-        this.objList = [];            
-        fetch(`https://celebase-project.firebaseio.com/Actors.json`).then( r =>   r.json() ).then( response => {
-
-            this.objList.push(response);
-            console.log(this.objList);
-
-            this.setState({
-                objList: this.objList
-            })
-            console.log(this.state.objList[0][0].surname);
-        });
-    }
-
-    render(){
-
-        if(this.state.title===null){
-            return null
-        } else {
-           return (
-            <div>
-                <h1>{this.state.title}</h1>
-            </div> 
-            )
-        }  
-    }
-}
-
-export {Routing, BookInfo}
+export {Routing, FetchInfo}
