@@ -37,7 +37,7 @@ class Slider extends React.Component{
 
             //console.log('xx this.state.objLength',this.state.objLength);
 
-            console.log("response.length",response.length);
+            //console.log("response.length",response.length);
             let currentId = Math.ceil(Math.random()*response.length);
             this.name = response[currentId].name;
             this.surname = response[currentId].surname;
@@ -75,28 +75,68 @@ class Slider extends React.Component{
 
 
     handleClickNext = () => {
-        this.setState({
-            currentId: this.state.currentId +1
-        })
 
-        
-        //console.log("next, this.state.indexSlider",this.state.indexSlider);
-        //console.log('this.state.name z klik next',this.state.name);
-        //console.log('this.state.objList z klik next',this.state.objList);
+        if (this.state.currentId == this.state.objLength-1) {
+            console.log("rowna sie");
+            this.name = this.state.objList[0][0].name;
+            this.surname = this.state.objList[0][0].surname;
+            this.nationality = this.state.objList[0][0].nationality;
+            this.imdb = this.state.objList[0][0].imdb;
+            this.photo = this.state.objList[0][0].photo;
+
+            this.setState({
+                name: this.name,
+                surname: this.surname,
+                nationality: this.nationality,
+                imdb: this.imdb,
+                photo: this.photo,
+                currentId: 0
+            })
+
+            console.log("`````this.state.name",this.state.name);
+
+
+
+        } else {
+        console.log('Z HANDLE CLICKA this.state.objList',this.state.objList[0][this.state.currentId+1].surname);
+            this.name = this.state.objList[0][this.state.currentId+1].name;
+            this.surname = this.state.objList[0][this.state.currentId+1].surname;
+            this.nationality = this.state.objList[0][this.state.currentId+1].nationality;
+            this.imdb = this.state.objList[0][this.state.currentId+1].imdb;
+            this.photo = this.state.objList[0][this.state.currentId+1].photo;
+
+            this.setState({
+            name: this.name,
+            surname: this.surname,
+            nationality: this.nationality,
+            imdb: this.imdb,
+            photo: this.photo,
+            currentId: this.state.currentId +1
+            })
+
+        console.log('#$%^&*(',this.state.currentId);
+
+    }
+
+
 
     }
 
     render(){
         if (this.state.objLength !==0){
             console.log("!@! z render this.state.currentId",this.state.currentId);
+
           
             //console.log("niepusty!");
             //console.log('z rendera! this.state....',this.state.name, this.state.surname, this.state.nationality, this.state.imdb);
             let incrementedId = this.state.currentId+1;
-            console.log('incrementedId',incrementedId);
+            //console.log('incrementedId',incrementedId);
             let copyOfObj = this.state.objList.slice();
-            console.log('copyOfObj Z RENDERA1',copyOfObj[0][this.state.currentId].photo);
-            console.log('copyOfObj Z RENDERA2',copyOfObj[0][this.state.currentId+1].photo); 
+            //console.log('copyOfObj Z RENDERA1',copyOfObj[0][this.state.currentId].photo);
+            //console.log('copyOfObj Z RENDERA2',copyOfObj[0][this.state.currentId+1].photo); 
+
+            //console.log('copyasdfbgdfsfsd',this.state.name);
+
             //console.log('copyOfObj Z RENDERA2',copyOfObj[0][incrementedId].surname); 
         }
 
