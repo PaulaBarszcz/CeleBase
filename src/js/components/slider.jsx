@@ -1,11 +1,9 @@
 import React from 'react';
-//import infoToPass from '../components/routing.jsx';
 
 class Slider extends React.Component{
     constructor(props) {
         super(props);
-        this.state = {  
-            indexSlider: 0,
+        this.state = {
             objList: [],
             objLength: 0,
             name: '',
@@ -33,11 +31,6 @@ class Slider extends React.Component{
                 namesSurnames.push(both); 
             }
 
-            //console.log('namesSurnames',namesSurnames);
-
-            //console.log('xx this.state.objLength',this.state.objLength);
-
-            //console.log("response.length",response.length);
             let currentId = Math.ceil(Math.random()*response.length);
             this.name = response[currentId].name;
             this.surname = response[currentId].surname;
@@ -59,25 +52,48 @@ class Slider extends React.Component{
         });
     }
 
-
-
     handleClickPrev = () => {
-        this.setState({
-            indexSlider: this.state.indexSlider -1
-        })
-        console.log("prev, this.state.indexSlider",this.state.indexSlider);
+        
+        if (this.state.currentId == 0) {
+            
+            this.name = this.state.objList[0][this.state.objLength-1].name;
+            this.surname = this.state.objList[0][this.state.objLength-1].surname;
+            this.nationality = this.state.objList[0][this.state.objLength-1].nationality;
+            this.imdb = this.state.objList[0][this.state.objLength-1].imdb;
+            this.photo = this.state.objList[0][this.state.objLength-1].photo;
 
-        console.log('this.state.name z klik prev',this.state.name);
-        console.log('this.state.objList z klik prev',this.state.objList);
+            this.setState({
+                name: this.name,
+                surname: this.surname,
+                nationality: this.nationality,
+                imdb: this.imdb,
+                photo: this.photo,
+                currentId: this.state.objLength-1
+            })
 
+        } else {
+        
+            this.name = this.state.objList[0][this.state.currentId-1].name;
+            this.surname = this.state.objList[0][this.state.currentId-1].surname;
+            this.nationality = this.state.objList[0][this.state.currentId-1].nationality;
+            this.imdb = this.state.objList[0][this.state.currentId-1].imdb;
+            this.photo = this.state.objList[0][this.state.currentId-1].photo;
+
+            this.setState({
+            name: this.name,
+            surname: this.surname,
+            nationality: this.nationality,
+            imdb: this.imdb,
+            photo: this.photo,
+            currentId: this.state.currentId -1
+            })
+        }
     }
-
-
 
     handleClickNext = () => {
 
         if (this.state.currentId == this.state.objLength-1) {
-            console.log("rowna sie");
+
             this.name = this.state.objList[0][0].name;
             this.surname = this.state.objList[0][0].surname;
             this.nationality = this.state.objList[0][0].nationality;
@@ -93,12 +109,8 @@ class Slider extends React.Component{
                 currentId: 0
             })
 
-            console.log("`````this.state.name",this.state.name);
-
-
-
         } else {
-        console.log('Z HANDLE CLICKA this.state.objList',this.state.objList[0][this.state.currentId+1].surname);
+        
             this.name = this.state.objList[0][this.state.currentId+1].name;
             this.surname = this.state.objList[0][this.state.currentId+1].surname;
             this.nationality = this.state.objList[0][this.state.currentId+1].nationality;
@@ -113,33 +125,15 @@ class Slider extends React.Component{
             photo: this.photo,
             currentId: this.state.currentId +1
             })
-
-        console.log('#$%^&*(',this.state.currentId);
-
-    }
-
-
-
+        }
     }
 
     render(){
+        
         if (this.state.objLength !==0){
-            console.log("!@! z render this.state.currentId",this.state.currentId);
-
-          
-            //console.log("niepusty!");
-            //console.log('z rendera! this.state....',this.state.name, this.state.surname, this.state.nationality, this.state.imdb);
             let incrementedId = this.state.currentId+1;
-            //console.log('incrementedId',incrementedId);
-            let copyOfObj = this.state.objList.slice();
-            //console.log('copyOfObj Z RENDERA1',copyOfObj[0][this.state.currentId].photo);
-            //console.log('copyOfObj Z RENDERA2',copyOfObj[0][this.state.currentId+1].photo); 
-
-            //console.log('copyasdfbgdfsfsd',this.state.name);
-
-            //console.log('copyOfObj Z RENDERA2',copyOfObj[0][incrementedId].surname); 
+            let copyOfObj = this.state.objList.slice(); 
         }
-
 
         //console.log(this.props.route.time);
 
@@ -163,23 +157,6 @@ class Slider extends React.Component{
                             IMDB: {this.state.imdb}
                         </div>
                     </div>
-                    <div className="main-slide">
-                        <img className="main-slide-image" src="https://www.alux.com/wp-content/uploads/2017/04/Christian-Bale-Net-Worth.jpg" />
-                        <div className="main-slide-text">
-                            Christian Bale,
-                            Welsh<br/>
-                            IMDB: http://www.imdb.com/name/nm0000288/
-                        </div>
-                    </div>
-                    <div className="main-slide">
-                        <img className="main-slide-image" src="https://www.hdwallpapers.in/walls/anne_hathaway_3-normal.jpg" />
-                        <div className="main-slide-text">
-                            Anne Hathaway,
-                            American<br/>
-                            IMDB: http://www.imdb.com/name/nm0004266/
-                        </div>
-                    </div>
-
                 </div>
             </div>
         </div>
