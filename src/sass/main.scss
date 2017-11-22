@@ -222,7 +222,7 @@ body{
         .main-slide{
             flex-wrap: wrap;
             align-items: center;
-            justify-content: flex-start;
+            justify-content: center;
             img{
                 max-width: 80%;
                 border: 1px solid purple;
@@ -251,6 +251,7 @@ body{
 
     img{
         max-height: 80%;
+        max-width: 100%;
         display: flex;
         justify-content: center;
         align-items: center;
