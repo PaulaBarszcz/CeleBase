@@ -48,28 +48,7 @@ class QuizAnswersGame extends React.Component{
                 females: females
             })
 
-            let randomNumber = Math.floor(Math.random()*response.length);
-            console.log('randomNumber',randomNumber);
-
-            if (randomNumber < males.length){
-                console.log("males");
-                let randomId = Math.floor(Math.random()*males.length);
-                this.setState({
-                    actualGender: 0,
-                    currentId: randomId,
-                    quizImageSrc: males[randomId].photo
-                })
-            }else {
-                console.log("females");
-                let randomId = Math.floor(Math.random()*females.length);
-                this.setState({
-                    actualGender: 1,
-                    currentId: randomId,
-                    quizImageSrc: females[randomId].photo
-                })
-            }
-
-
+            this.generateNewPhoto();
         });
     }
 
@@ -95,7 +74,6 @@ class QuizAnswersGame extends React.Component{
 
     handleStart = () => {
 
-
         if (this.state.gameOver=== false) {
             this.generateNewAns();
             this.startTimer();
@@ -105,7 +83,6 @@ class QuizAnswersGame extends React.Component{
 
         } else {
             let randomNumber = Math.floor(Math.random()*response.length);
-            console.log('randomNumber',randomNumber);
             this.setState({
                 gameOver: false,
                 timeForAnswer:9,
@@ -122,9 +99,49 @@ class QuizAnswersGame extends React.Component{
     }
 
     handleClickOption = (e, index) => {
-        console.log('e.target.innerText',e.target.innerText);
-        console.log('index',index);
-        
+
+        if (e.target.innerText.indexOf(this.state.corrAns) !== -1) {
+            this.setState({
+                timeForAnswer: 9,
+                points: this.state.points+1
+            })
+            clearInterval(this.answerTimeId);
+            this.startTimer();
+            this.generateNewPhoto();
+            this.generateNewAns();
+
+        } else {
+            this.setState({
+                gameOver: true
+            })
+        }        
+    }
+
+    generateNewPhoto = () => {
+
+        let randomNumber = Math.floor(Math.random()*(this.state.males.length + this.state.females.length));
+
+        if (randomNumber < this.state.males.length){
+            this.actualGender = 0;
+            let randomId = Math.floor(Math.random()*this.state.males.length);
+            this.randomId = randomId;
+            this.setState({
+                actualGender: 0,
+                currentId: randomId,
+                quizImageSrc: this.state.males[randomId].photo,
+                corrAns: this.state.males[randomId].surname
+            })
+        }else {
+            this.actualGender = 1;
+            let randomId = Math.floor(Math.random()*this.state.females.length);
+            this.randomId = randomId;
+            this.setState({
+                actualGender: 1,
+                currentId: randomId,
+                quizImageSrc: this.state.females[randomId].photo,
+                corrAns: this.state.females[randomId].surname
+            })
+        }  
     }
 
     generateNewAns = () => {
@@ -140,9 +157,9 @@ class QuizAnswersGame extends React.Component{
             };
 
         let optionsId = [];
-        optionsId.push(this.state.currentId);
+        optionsId.push(this.randomId);
 
-        if (this.state.actualGender==0){
+        if (this.actualGender==0){
             while (optionsId.length < 4) {
                 let num = Math.floor(Math.random()*this.state.males.length);
                 if(optionsId.indexOf(num) == -1){
@@ -156,12 +173,15 @@ class QuizAnswersGame extends React.Component{
             shuffleArray(optionsId);
             console.log('optionsId',optionsId);
 
+            console.log('this.state.males[currentId].surname',this.state.males[this.state.currentId].surname);
+
             this.options = optionsId.map((item, index) => {
                 return <p key={index} onClick={ e => this.handleClickOption(e, index)}>{this.state.males[item].name} {this.state.males[item].surname}</p>
             });
 
             this.setState({
-                options: this.options
+                options: this.options,
+                corrAns: this.state.males[this.randomId].surname
             })
 
         } else {
@@ -183,7 +203,8 @@ class QuizAnswersGame extends React.Component{
             });
 
             this.setState({
-                options: this.options
+                options: this.options,
+                corrAns: this.state.females[this.randomId].surname
             })
         }
     }
