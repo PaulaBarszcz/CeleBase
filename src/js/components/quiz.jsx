@@ -29,6 +29,10 @@ class QuizAnswersGame extends React.Component{
     }
 
     componentDidMount() {
+
+        //this.startTimer();
+
+
         this.objList = [];            
         fetch(`https://celebase-project.firebaseio.com/Actors.json`).then( r =>   r.json() ).then( response => {
 
@@ -102,6 +106,8 @@ class QuizAnswersGame extends React.Component{
     }
 
     startTimer = () => {
+        clearInterval(this.answerTimeId);
+
         this.answerTimeId = setInterval(()=>{
             this.setState({
                 timeForAnswer: this.state.timeForAnswer - 1
@@ -123,7 +129,11 @@ class QuizAnswersGame extends React.Component{
 
 
         if (this.state.numberControl=== false) {
+            this.generateNewAns();
             this.startTimer();
+            this.setState({
+                timeForAnswer:9,
+                })
 
         } else {
             let newId = Math.ceil(Math.random()*this.state.objLength);
@@ -188,8 +198,7 @@ class QuizAnswersGame extends React.Component{
         }
     }
 
-    render(){
-
+    generateNewAns = () => {
         console.log("1234 z render this.state.corrAns",this.state.corrAns);
 
         console.log('z render: this.state.possAns.length',this.state.possAns.length);
@@ -197,7 +206,7 @@ class QuizAnswersGame extends React.Component{
         let arrayOptions= this.state.possAns.slice();
         let arrayOptionsF= this.state.possAnsF.slice();
         let options =[];
-        let fourLis;
+       
 
         function shuffleArray(d) {
             for (var c = d.length - 1; c > 0; c--) {
@@ -216,83 +225,115 @@ class QuizAnswersGame extends React.Component{
             console.log('this.goodAns',this.goodAns);
 
 
-                console.log(shuffleArray([1,2,3,4,5,6]));
+            console.log(shuffleArray([1,2,3,4,5,6]));
 
 
-                // let index = 1;
-                // while (index < 4){
-                     
-                //     let randomNum = Math.ceil(Math.random()*this.state.possAns.length);
-                //     let randomNameSurname = this.state.possAns[randomNum];
-                //     if (randomNameSurname !== this.goodAns && options.indexOf(randomNameSurname) === -1){
-                //         options.push(randomNameSurname);
-                //         index++;
-                //     } else {
-                //         index = index;
-                //     } 
-                //     console.log(index);               
-                // }  
+            while (options.length < 3){
+                 
+                let randomNum = Math.floor(Math.random()*this.state.possAns.length);
+                let randomNameSurname = this.state.possAns[randomNum];
+                if (randomNameSurname !== this.goodAns && options.indexOf(randomNameSurname) === -1){
+                    options.push(randomNameSurname)
+                }  else {
+                    options = options;
+                }
+                console.log(options.length);              
+            }  
+
+            console.log(this.goodAns);
+            console.log(options);
+            options.push(this.goodAns);
+            console.log(options);
+            console.log(shuffleArray(options));
+
+
+             //gender: male
+
+         } else {
+            console.log("poza ifem");
+         }
+
+
+          //else {
+        //     let lengthpossAns = this.state.possAns.length+1;
+
+        //     this.quizImageSrc = this.state.possPhotoF[this.state.currentId-lengthpossAns-1];
+        //     this.goodAns = this.state.possAnsF[this.state.currentId-lengthpossAns];
+        //     console.log('this.goodAns',this.goodAns);
+
+
+        //     console.log(shuffleArray([1,2,3,4,5,6]));
+
+
+        //     while (options.length < 3){
+                 
+        //         let randomNum = Math.ceil(Math.random()*this.state.possAnsF.length);
+        //         let randomNameSurname = this.state.possAnsF[randomNum];
+        //         if (randomNameSurname !== this.goodAns && options.indexOf(randomNameSurname) === -1){
+        //             options.push(randomNameSurname)
+        //         }  else {
+        //             options = options;
+        //         }
+        //         console.log(options.length);              
+        //     }
+
+
+        // }
 
 
 
-                while (options.length < 3){
-                     
-                    let randomNum = Math.ceil(Math.random()*this.state.possAns.length);
-                    let randomNameSurname = this.state.possAns[randomNum];
-                    if (randomNameSurname !== this.goodAns && options.indexOf(randomNameSurname) === -1){
-                        options.push(randomNameSurname)
-                    }  
-                    console.log(options.length);              
-                }  
 
 
-                // if (options.length !== 3) {
 
-                //     for (let i=0; i<(4-options.length); i++) {
-                //         let randomNum2 = Math.ceil(Math.random()*this.state.possAns.length);
-                //         let randomNameSurname2 = this.state.possAns[randomNum2];
-                //         if (randomNameSurname2 !== this.goodAns){
-                //             options.push(randomNameSurname2)
-                //         }  
-                //     }
-                // } 
-
-                console.log(this.goodAns);
-                console.log(options);
-                options.push(this.goodAns);
-                console.log(options);
-                console.log(shuffleArray(options));
-
-                // options = arrayOptions.map((item,index) => {
-                //     return <p key={index+1} onClick={ e => this.handleClickOption(e, index) } >{index+1}. {item}</p>
-
-                fourLis = options.map((item,index) => {
-                    return <p key={index+1} onClick={ e => this.handleClickOption(e, index) } >{index+1}. {item}</p>
-
-                })
-        } else {
-            let lengthpossAns = this.state.possAns.length+1;
-            console.log('lengthpossAns',lengthpossAns);
-            this.quizImageSrc = this.state.possPhotoF[this.state.currentId-lengthpossAns];
-            console.log('this.state.corrAns',this.state.corrAns);
-            this.goodAns = this.state.possAnsF[this.state.currentId-lengthpossAns];
-            options = arrayOptionsF.map((item,index) => {
-                    return <p key={index+1} onClick={ e => this.handleClickOption(e, index) } >{index+1}. {item}</p>
-                    fourLis = options.map((item,index) => {
-                    return <p key={index+1} onClick={ e => this.handleClickOption(e, index) } >{index+1}. {item}</p>
-                    })
-
-            })
-        }
+         //else {     //gender: female
+    //         let lengthpossAns = this.state.possAns.length+1;
+    //         console.log('lengthpossAns',lengthpossAns);
+    //         this.quizImageSrc = this.state.possPhotoF[this.state.currentId-lengthpossAns];
+    //         console.log('this.state.corrAns',this.state.corrAns);
+    //         this.goodAns = this.state.possAnsF[this.state.currentId-lengthpossAns];
 
 
+    // //new
+    //         while (options.length < 3){
+                 
+    //             let randomNum = Math.ceil(Math.random()*this.state.possAnsF.length);
+    //             let randomNameSurname = this.state.possAnsF[randomNum];
+    //             if (randomNameSurname !== this.goodAns && options.indexOf(randomNameSurname) === -1){
+    //                 options.push(randomNameSurname)
+    //             }  else {
+    //                 options = options;
+    //             }
+    //             console.log(options.length);              
+    //         }  //koniec while
+
+    //         console.log(this.goodAns);
+    //         console.log(options);
+    //         options.push(this.goodAns);
+            
+    //         console.log(shuffleArray(options));
+    //         console.log(options);
+
+    // // koniec new
+   
+    //     } //koniec else (gender female)
+
+        this.fourLis = options.map((item,index) => {
+            return <p key={index+1} onClick={ e => this.handleClickOption(e, index) } >{index+1}. {item}</p>
+        })
 
         console.log('Z RENDERA this.quizImageSrc',this.quizImageSrc);
         console.log('z RENDERA options', options);
 
         console.log('arrayOptionsF z rendera',arrayOptionsF);
 
+    }
 
+    render(){
+        console.log("render");
+        if(this.state.timeForAnswer === 9){
+            this.generateNewAns();
+        }
+  console.log("idddddddddddddddddd",this.answerTimeId)
 
         if (this.state.numberControl ===true) {
             this.style= {
@@ -331,7 +372,7 @@ class QuizAnswersGame extends React.Component{
                             <div className="quizTime">Time left: 00:0{this.state.timeForAnswer}</div>
                            
                             <div className="quiz-text">
-                                {fourLis}
+                                {this.fourLis}
 
                             </div>
                         </div>
