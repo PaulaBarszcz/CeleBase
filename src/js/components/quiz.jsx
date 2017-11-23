@@ -4,12 +4,14 @@ class QuizAnswersGame extends React.Component{
     constructor(props){
         super(props);
         this.state={
-            whichImg: 0,
             possAns: [],
             possAnsF: [],
             possPhoto: [],
+            possPhotoF: [],
             possNatio: [],
+            possNatioF: [],
             possImdb: [],
+            possImdbF: [],
             possGender: [],
             possGenderF: [],
             corrAns: "",
@@ -27,7 +29,7 @@ class QuizAnswersGame extends React.Component{
             nationality: '',
             imdb: '',
             photo: '',
-            currentId: 0
+            currentId: 14
         };
     }
 
@@ -41,13 +43,17 @@ class QuizAnswersGame extends React.Component{
 
             this.objList.push(response);
             this.objLength = response.length;
+            console.log('response.length',response.length);
 
             console.log(response[0].surname);
             let namesSurnames = [];
             let namesSurnamesF=[];
             let photoRange = [];
+            let photoRangeF = [];
             let natioRange = [];
+            let natioRangeF = [];
             let imdbRange = [];
+            let imdbRangeF = [];
             let genderRange = []; 
             let genderRangeF = [];      
 
@@ -59,61 +65,70 @@ class QuizAnswersGame extends React.Component{
                     let both = `${name} ${surname}`;
                     namesSurnames.push(both);
                     genderRange.push(response[i].gender);
+                    photoRange.push(response[i].photo);
+                    imdbRange.push(response[i].imdb);
+                    natioRange.push(response[i].nationality);
+
                 } else {
                     let nameF = response[i].name;
                     let surnameF = response[i].surname;
                     let bothF = `${nameF} ${surnameF}`;
                     namesSurnamesF.push(bothF);
                     genderRangeF.push(response[i].gender);
-                }
-
-                    let photo = response[i].photo;
-                    photoRange.push(photo);
-
-                    let natio = response[i].nationality;
-                    natioRange.push(natio);
-
-                    let imdb = response[i].imdb;
-                    imdbRange.push(imdb);
-                    
+                    photoRangeF.push(response[i].photo);
+                    imdbRangeF.push(response[i].imdb);
+                    natioRangeF.push(response[i].nationality);
+                }                    
             }
-
-
 
             let currentId = Math.ceil(Math.random()*response.length);
            
-            this.name = response[currentId].name;
-            this.surname = response[currentId].surname;
-            this.nationality = response[currentId].nationality;
-            this.imdb = response[currentId].imdb;
-            this.photo = response[currentId].photo;
+            // this.name = response[currentId].name;
+            // this.surname = response[currentId].surname;
+            // this.nationality = response[currentId].nationality;
+            // this.imdb = response[currentId].imdb;
+            // this.photo = response[currentId].photo;
 
             this.setState({
                 objList: this.objList,
                 objLength: this.objLength,
-                name: this.name,
-                surname: this.surname,
-                nationality: this.nationality,
-                imdb: this.imdb,
-                photo: this.photo,
+
                 currentId: currentId,
                 possAns: namesSurnames,
                 possAnsF: namesSurnamesF,
                 possPhoto: photoRange,
+                possPhotoF: photoRangeF,
                 possNatio: natioRange,
+                possNatioF: natioRangeF,
                 possImdb: imdbRange,
+                possImdbF: imdbRangeF,
                 possGender: genderRange,
                 possGenderF: genderRangeF
             })
 
         });
+
+
+        // if (this.state.currentId < this.state.possAns.length) {
+        //     this.setState({
+        //         corrAns: this.state.possAns[this.state.currentId]
+        //     })
+        // } else {
+        //     let lengthpossAns = this.state.possAns.length+1;
+        //     this.setState({
+
+        //         corrAns: this.state.possAnsF[this.state.currentId-lengthpossAns]
+        //     })
+        // }
     }
 
     componentWillMount(){
-        
-        this.setState({
-            corrAns: this.state.possAns[this.state.whichImg],
-        })
+        console.log('z componentWillMount: this.state.currentId',this.state.currentId);
+        console.log('z componentWillMount: this.state.possAns.length',this.state.possAns.length);
+        // if (this.state.currentId <= this.state.possAns.length) {
+
+ 
+
 
         this.handleResize();
     }
@@ -161,20 +176,34 @@ class QuizAnswersGame extends React.Component{
     handleClickOption = (e, index) => {
 
         this.chosenOpt= e.target.innerText;
+        console.log('--------------this.goodAns',this.goodAns);
 
         if (e.target.innerText.indexOf(this.state.corrAns)!==-1){
             let points=this.state.points+1;
             //let randomId = Math.floor(Math.random() * (3 ));
             let newId = Math.ceil(Math.random()*this.state.objLength);
-            let whichImg = newId;
-            let possibleCopy = this.state.possAns.slice();
-            let newCorr = possibleCopy[whichImg];
+            let currentId = newId;
+            let possibleCopy;
+            let newCorr;
+
+
+            if (this.state.currentId <= this.state.possAns.length) {
+
+                possibleCopy = this.state.possAns.slice();
+                newCorr = possibleCopy[currentId];
+            } else {
+                let lengthpossAns = this.state.possAns.length+1;
+                possibleCopy = this.state.possAnsF.slice();
+                newCorr = possibleCopy[this.state.currentId-lengthpossAns];
+                
+                  
+            }
 
             console.log('newId',newId);
 
             this.setState({
                 points: points,
-                whichImg: whichImg,
+                currentId: newId,
                 corrAns: newCorr,
                 timeForAnswer: 9,
                 numberControl: false
@@ -197,27 +226,66 @@ class QuizAnswersGame extends React.Component{
 
     render(){
 
+        console.log("1234 z render this.state.corrAns",this.state.corrAns);
 
-        console.log('this.state.currentId',this.state.currentId);
-        console.log('this.state.possGender',this.state.possGender);
-        console.log('this.state.possGender[this.state.currentId]',this.state.possGender[this.state.currentId]);
+      
+
+        console.log('z render: this.state.possAns.length',this.state.possAns.length);
+
+
         let arrayOptions= this.state.possAns.slice();
         let arrayOptionsF= this.state.possAnsF.slice();
         let options;
 
-        console.log('arrayOptions',arrayOptions);
 
-        if (this.state.possGender[this.state.currentId]=="male") {
-            console.log("current id jest male");
-            options = arrayOptions.map((item,index) => {
-                return <p key={index+1} onClick={ e => this.handleClickOption(e, index) } >{index+1}. {item}</p>
-            })
+        console.log('z rendera this.state.currentId',this.state.currentId);
+        //console.log('this.state.possAns[this.state.currentId]',this.state.possAns[this.state.currentId]);
+        console.log('this.state.currentId',this.state.currentId);
+
+        if (this.state.currentId <= this.state.possAns.length) {
+            this.quizImageSrc = this.state.possPhoto[this.state.currentId];
+        console.log('this.state.possAns[this.state.currentId]',this.state.possAns[this.state.currentId]);
+        this.goodAns = this.state.possAns[this.state.currentId];
+        console.log('this.goodAns',this.goodAns);
+                options = arrayOptions.map((item,index) => {
+                    return <p key={index+1} onClick={ e => this.handleClickOption(e, index) } >{index+1}. {item}</p>
+                })
         } else {
-            console.log("current id NIE jest male");
+            let lengthpossAns = this.state.possAns.length+1;
+            console.log('lengthpossAns',lengthpossAns);
+            this.quizImageSrc = this.state.possPhotoF[this.state.currentId-lengthpossAns];
+            console.log('this.state.possAnsF[this.state.currentId-lengthpossAns]',this.state.possAnsF[this.state.currentId-lengthpossAns]);
+            console.log('this.state.corrAns',this.state.corrAns);
             options = arrayOptionsF.map((item,index) => {
-                return <p key={index+1} onClick={ e => this.handleClickOption(e, index) } >{index+1}. {item}</p>
+                    return <p key={index+1} onClick={ e => this.handleClickOption(e, index) } >{index+1}. {item}</p>
             })
+
         }
+
+        console.log('Z RENDERA this.quizImageSrc',this.quizImageSrc);
+        console.log('z RENDERA options', options);
+
+
+        // if (this.state.currentId <= this.state.possAns.length) {
+        //     console.log('this.state.currentId NIE JEST > this.state.possAns.length');
+        //     if (this.state.possGender[this.state.currentId]=="male") {
+        //         console.log("current id jest male");
+        //         options = arrayOptions.map((item,index) => {
+        //             return <p key={index+1} onClick={ e => this.handleClickOption(e, index) } >{index+1}. {item}</p>
+        //         })
+        //     } 
+
+        // } else {
+        //     console.log('this.state.currentId  > this.state.possAns.length');
+        //     if (this.state.possGenderF[this.state.currentId]=="female") {
+        //         console.log("current id NIE jest male");
+        //         options = arrayOptionsF.map((item,index) => {
+        //             return <p key={index+1} onClick={ e => this.handleClickOption(e, index) } >{index+1}. {item}</p>
+        //         })
+        //     }
+        // }
+
+        console.log('arrayOptionsF z rendera',arrayOptionsF);
 
 
         //console.log('options',options);
@@ -236,7 +304,7 @@ class QuizAnswersGame extends React.Component{
             }
         }
 
-        this.quizImageSrc = this.state.possPhoto[this.state.whichImg];
+        
 
         return (
             <div>
