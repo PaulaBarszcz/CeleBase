@@ -75,14 +75,17 @@ class QuizAnswersGame extends React.Component{
     handleStart = () => {
 
         if (this.state.gameOver=== false) {
+            this.generateNewPhoto();
             this.generateNewAns();
             this.startTimer();
             this.setState({
+                points: 0,
                 timeForAnswer:9,
                 })
 
         } else {
-            let randomNumber = Math.floor(Math.random()*response.length);
+            
+            let randomNumber = Math.floor(Math.random()*(this.state.males.length + this.state.females.length));
             this.setState({
                 gameOver: false,
                 timeForAnswer:9,
@@ -100,7 +103,8 @@ class QuizAnswersGame extends React.Component{
 
     handleClickOption = (e, index) => {
 
-        if (e.target.innerText.indexOf(this.state.corrAns) !== -1) {
+        if (this.state.gameOver==false){
+            if (e.target.innerText.indexOf(this.state.corrAns) !== -1) {
             this.setState({
                 timeForAnswer: 9,
                 points: this.state.points+1
@@ -110,11 +114,17 @@ class QuizAnswersGame extends React.Component{
             this.generateNewPhoto();
             this.generateNewAns();
 
+            } else {
+                this.setState({
+                    gameOver: true
+                })
+            }
+
         } else {
-            this.setState({
-                gameOver: true
-            })
-        }        
+            console.log("Kliknij start, żeby ponownie rozpocząć grę");
+        }
+
+          
     }
 
     generateNewPhoto = () => {
@@ -169,11 +179,8 @@ class QuizAnswersGame extends React.Component{
                 }
             } // end of while (filling optionId array with numbers)
 
-            console.log('options',optionsId);
             shuffleArray(optionsId);
-            console.log('optionsId',optionsId);
-
-            console.log('this.state.males[currentId].surname',this.state.males[this.state.currentId].surname);
+  
 
             this.options = optionsId.map((item, index) => {
                 return <p key={index} onClick={ e => this.handleClickOption(e, index)}>{this.state.males[item].name} {this.state.males[item].surname}</p>
@@ -194,10 +201,8 @@ class QuizAnswersGame extends React.Component{
                 }
             } // end of while (filling optionId array with numbers)
 
-            console.log('options',optionsId);
             shuffleArray(optionsId);
-            console.log('optionsId',optionsId);
-
+ 
             this.options = optionsId.map((item, index) => {
                 return <p key={index} onClick={ e => this.handleClickOption(e, index)}>{this.state.females[item].name} {this.state.females[item].surname}</p>
             });
@@ -238,10 +243,10 @@ class QuizAnswersGame extends React.Component{
                             </div>
                             <img className="main-slide-image" 
                                 src={this.state.quizImageSrc} />
-                            <div className="quizInfo">Who is in the picture? You have 9 seconds to decide.<br/></div>
-                             <button className="startButton" onClick={this.handleStart}>START</button>
+                            <div className="quizInfo">Who is in the picture? You have 9 seconds to decide.</div><br/><br/>
                             <div className="quizPoints">Points: {this.state.points}</div>
                             <div className="quizTime">Time left: 00:0{this.state.timeForAnswer}</div>
+                            <button className="startButton" onClick={this.handleStart}>START</button>
                             <div className="quiz-text">
                                 {this.state.options}
                             </div>

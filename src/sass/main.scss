@@ -269,12 +269,13 @@ body{
     }
 }
 
-.main-slide {
-    position: absolute;
+.main-slide.active {
+    position: relative;
     left:0;
     top:0;
     width: 100%;
-    height: 100%;  
+    height: 100%; 
+    opacity: 1; 
 }
 
 .main-slide-text {
@@ -286,14 +287,8 @@ body{
     left: 0;
     margin-top: 30px;
     a{
-        //text-decoration: none;
         color: rgb(211, 201, 201);
     }
-}
-.main-slide-buttons-bar {
-    text-align: center;
-    position: relative;
-    z-index: 10;
 }
 
 .main-slider-prev,
@@ -324,7 +319,6 @@ body{
 }
 
 
-// animacje slajdow
 .main-slide {
     opacity: 0;
     transition:0.5s all;
@@ -333,32 +327,21 @@ body{
     position: relative;
     //left:-50px;
     margin: 0 auto;
-    opacity: 0;
+    opacity: 1;
     // transition:0.5s 0.5s left, 0.5s 0.5s opacity;
     transition:0.5s 0.5s opacity;
 }
 .main-slide-text {
     position: relative;
     //left:50px;
-    opacity: 0;
+    opacity: 1;
     // transition:0.5s 0.5s left, 0.5s 0.5s opacity;
     transition:0.5s 0.5s opacity;
     animation-timing-function: ease-in;
 }
 
-.main-slide.active {
-    opacity: 1;
-    position: relative;
-    border: 1px solid orange;
-}
-.main-slide.active .main-slide-image {
-    //left:50px;
-    opacity: 1;
-}
-.main-slide.active .main-slide-text {
-    //left:50px;
-    opacity: 1;
-}
+
+
 
 // quiz
 
@@ -400,7 +383,7 @@ body{
 .quiz .quiz-text {
     position: relative;
     p{
-        color: #000;
+        color: rgb(211, 201, 201);
         transition: 0.5s all;
         margin-top: 5px;
         margin-bottom: 15px;
@@ -414,10 +397,8 @@ body{
     }
 }
 
-.cover { 
-    //display: block;
+.cover {
     margin: 0 auto;
-    //opacity:1;
     transition:0.5s all;
 
     .coverRed {
@@ -428,7 +409,6 @@ body{
         top:0;
         width:100%;
         height: 55%;
-        //height:50vh;
         background-color: rgba(206, 14, 14, 0.6);
         transition:0.5s all;
         
@@ -453,8 +433,6 @@ body{
         font-size: 30px;
     }
 }
-
-
 
 .quizPoints, .quizTime, .quizInfo{
     padding: 30px;
