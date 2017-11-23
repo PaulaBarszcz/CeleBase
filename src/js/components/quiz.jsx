@@ -22,7 +22,8 @@ class QuizAnswersGame extends React.Component{
             redHeight: "100%",
             objList: [],
             objLength: 0,
-            currentId: 0
+            currentId: 0,
+            options: []
         };
     }
 
@@ -68,7 +69,7 @@ class QuizAnswersGame extends React.Component{
                 })
             }
 
-            
+
         });
     }
 
@@ -103,13 +104,13 @@ class QuizAnswersGame extends React.Component{
                 })
 
         } else {
-            let newId = Math.ceil(Math.random()*this.state.objLength);
-            console.log('newId',newId);
+            let randomNumber = Math.floor(Math.random()*response.length);
+            console.log('randomNumber',randomNumber);
             this.setState({
-                numberControl: false,
+                gameOver: false,
                 timeForAnswer:9,
                 points: 0,
-                currentId: newId
+                currentId: randomNumber
                 })
             }
             clearInterval(this.answerTimeId);
@@ -121,19 +122,73 @@ class QuizAnswersGame extends React.Component{
     }
 
     handleClickOption = (e, index) => {
-
+        console.log('e.target.innerText',e.target.innerText);
+        console.log('index',index);
         
     }
 
     generateNewAns = () => {
-        
+
+        function shuffleArray(d) {
+                for (var c = d.length - 1; c > 0; c--) {
+                    var b = Math.floor(Math.random() * (c + 1));
+                    var a = d[c];
+                    d[c] = d[b];
+                    d[b] = a;
+                }
+                return d
+            };
+
+        let optionsId = [];
+        optionsId.push(this.state.currentId);
+
+        if (this.state.actualGender==0){
+            while (optionsId.length < 4) {
+                let num = Math.floor(Math.random()*this.state.males.length);
+                if(optionsId.indexOf(num) == -1){
+                    optionsId.push(num);
+                } else {
+                    optionsId = optionsId;
+                }
+            } // end of while (filling optionId array with numbers)
+
+            console.log('options',optionsId);
+            shuffleArray(optionsId);
+            console.log('optionsId',optionsId);
+
+            this.options = optionsId.map((item, index) => {
+                return <p key={index} onClick={ e => this.handleClickOption(e, index)}>{this.state.males[item].name} {this.state.males[item].surname}</p>
+            });
+
+            this.setState({
+                options: this.options
+            })
+
+        } else {
+            while (optionsId.length < 4) {
+                let num = Math.floor(Math.random()*this.state.females.length);
+                if(optionsId.indexOf(num) == -1){
+                    optionsId.push(num);
+                } else {
+                    optionsId = optionsId;
+                }
+            } // end of while (filling optionId array with numbers)
+
+            console.log('options',optionsId);
+            shuffleArray(optionsId);
+            console.log('optionsId',optionsId);
+
+            this.options = optionsId.map((item, index) => {
+                return <p key={index} onClick={ e => this.handleClickOption(e, index)}>{this.state.females[item].name} {this.state.females[item].surname}</p>
+            });
+
+            this.setState({
+                options: this.options
+            })
+        }
     }
 
     render(){
-
-        console.log('this.state.actualGender',this.state.actualGender);
-        console.log('this.state.currentId',this.state.currentId);
-        
         
         if (this.state.gameOver ===true) {
             this.style= {
@@ -148,7 +203,6 @@ class QuizAnswersGame extends React.Component{
             display: "none",
             }
         }
-
         
         return (
             <div>
@@ -168,7 +222,7 @@ class QuizAnswersGame extends React.Component{
                             <div className="quizPoints">Points: {this.state.points}</div>
                             <div className="quizTime">Time left: 00:0{this.state.timeForAnswer}</div>
                             <div className="quiz-text">
-                                fourLis
+                                {this.state.options}
                             </div>
                         </div>
                     </div>
