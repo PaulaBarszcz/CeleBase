@@ -237,6 +237,17 @@ body{
     }
 }  // end of @media only screen and (max-width:970px)
 
+@media only screen and (max-width:970px) {
+        .main-slide{
+            img{
+                max-width: 80%;
+                max-height: 500px;
+                border: 1px solid purple;
+            }   
+        }
+    }
+
+
 .main-slider-slides-cnt {
     margin: 0 60px;
     max-width:900px;
@@ -400,14 +411,15 @@ body{
 }
 
 .cover { 
-    display: block;
+    //display: block;
     margin: 0 auto;
-    opacity:1;
+    //opacity:1;
     transition:0.5s all;
 
     .coverRed {
         z-index: 10;
         position: absolute;
+        display: none;
         left:0;
         top:0;
         width:100%;
@@ -450,7 +462,7 @@ body{
     font-size: 24px;
 }
 
-.startButton{
+#quiz .startButton{
     padding: 20px;
     background-color: #000;
     color: #ffcc14;
@@ -462,6 +474,7 @@ body{
     margin-bottom: 20px;
     cursor: pointer;
     transition:0.3s all;
+    z-index: 300;
         &:hover{
         background-color: rgb(255, 204, 20);
         color: #000;
