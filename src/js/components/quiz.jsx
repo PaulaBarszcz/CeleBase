@@ -6,9 +6,12 @@ class QuizAnswersGame extends React.Component{
         this.state={
             whichImg: 0,
             possAns: [],
+            possAnsF: [],
             possPhoto: [],
             possNatio: [],
             possImdb: [],
+            possGender: [],
+            possGenderF: [],
             corrAns: "",
             points: 0,
             timeForAnswer:9,
@@ -41,24 +44,38 @@ class QuizAnswersGame extends React.Component{
 
             console.log(response[0].surname);
             let namesSurnames = [];
+            let namesSurnamesF=[];
             let photoRange = [];
             let natioRange = [];
-            let imdbRange = [];         
+            let imdbRange = [];
+            let genderRange = []; 
+            let genderRangeF = [];      
 
             for (let i=0; i<response.length; i++){
-                let name = response[i].name;
-                let surname = response[i].surname;
-                let both = `${name} ${surname}`;
-                namesSurnames.push(both);
+                console.log(response[i].gender);
+                if (response[i].gender=="male"){
+                    let name = response[i].name;
+                    let surname = response[i].surname;
+                    let both = `${name} ${surname}`;
+                    namesSurnames.push(both);
+                    genderRange.push(response[i].gender);
+                } else {
+                    let nameF = response[i].name;
+                    let surnameF = response[i].surname;
+                    let bothF = `${nameF} ${surnameF}`;
+                    namesSurnamesF.push(bothF);
+                    genderRangeF.push(response[i].gender);
+                }
 
-                let photo = response[i].photo;
-                photoRange.push(photo);
+                    let photo = response[i].photo;
+                    photoRange.push(photo);
 
-                let natio = response[i].nationality;
-                natioRange.push(natio);
+                    let natio = response[i].nationality;
+                    natioRange.push(natio);
 
-                let imdb = response[i].imdb;
-                imdbRange.push(imdb);
+                    let imdb = response[i].imdb;
+                    imdbRange.push(imdb);
+                    
             }
 
 
@@ -81,9 +98,12 @@ class QuizAnswersGame extends React.Component{
                 photo: this.photo,
                 currentId: currentId,
                 possAns: namesSurnames,
+                possAnsF: namesSurnamesF,
                 possPhoto: photoRange,
                 possNatio: natioRange,
-                possImdb: imdbRange
+                possImdb: imdbRange,
+                possGender: genderRange,
+                possGenderF: genderRangeF
             })
 
         });
@@ -177,19 +197,30 @@ class QuizAnswersGame extends React.Component{
 
     render(){
 
-        console.log(this.state.objLength);
+
         console.log('this.state.currentId',this.state.currentId);
-        console.log('this.state.possAns',this.state.possAns);
-        
-        console.log('this.state.possAns',this.state.possAns);
+        console.log('this.state.possGender',this.state.possGender);
+        console.log('this.state.possGender[this.state.currentId]',this.state.possGender[this.state.currentId]);
         let arrayOptions= this.state.possAns.slice();
+        let arrayOptionsF= this.state.possAnsF.slice();
+        let options;
 
-        console.log('arrayOptions',arrayOptions);                              
-        let options = arrayOptions.map((item,index) => {
-            return <p key={index+1} onClick={ e => this.handleClickOption(e, index) } >{index+1}. {item}</p>
-        })
+        console.log('arrayOptions',arrayOptions);
 
-        console.log('options',options);
+        if (this.state.possGender[this.state.currentId]=="male") {
+            console.log("current id jest male");
+            options = arrayOptions.map((item,index) => {
+                return <p key={index+1} onClick={ e => this.handleClickOption(e, index) } >{index+1}. {item}</p>
+            })
+        } else {
+            console.log("current id NIE jest male");
+            options = arrayOptionsF.map((item,index) => {
+                return <p key={index+1} onClick={ e => this.handleClickOption(e, index) } >{index+1}. {item}</p>
+            })
+        }
+
+
+        //console.log('options',options);
 
         if (this.state.numberControl ===true) {
             this.style= {
