@@ -24,17 +24,8 @@ class QuizAnswersGame extends React.Component{
             redHeight: "100%",
             objList: [],
             objLength: 0,
-            name: '',
-            surname: '',
-            nationality: '',
-            imdb: '',
-            photo: '',
             currentId: 14
         };
-    }
-
-    handleResize = () => {
-
     }
 
     componentDidMount() {
@@ -45,7 +36,6 @@ class QuizAnswersGame extends React.Component{
             this.objLength = response.length;
             console.log('response.length',response.length);
 
-            console.log(response[0].surname);
             let namesSurnames = [];
             let namesSurnamesF=[];
             let photoRange = [];
@@ -83,16 +73,18 @@ class QuizAnswersGame extends React.Component{
 
             let currentId = Math.ceil(Math.random()*response.length);
            
-            // this.name = response[currentId].name;
-            // this.surname = response[currentId].surname;
-            // this.nationality = response[currentId].nationality;
-            // this.imdb = response[currentId].imdb;
-            // this.photo = response[currentId].photo;
+            console.log('namesSurnames.length',namesSurnames.length);
+            console.log('currentId',currentId);
+
+            if (currentId < namesSurnames.length) {
+                console.log('currentId < namesSurnames.length');
+            } else {
+                console.log('currentId NIE < namesSurnames.length');
+            }
 
             this.setState({
                 objList: this.objList,
                 objLength: this.objLength,
-
                 currentId: currentId,
                 possAns: namesSurnames,
                 possAnsF: namesSurnamesF,
@@ -105,32 +97,7 @@ class QuizAnswersGame extends React.Component{
                 possGender: genderRange,
                 possGenderF: genderRangeF
             })
-
         });
-
-
-        // if (this.state.currentId < this.state.possAns.length) {
-        //     this.setState({
-        //         corrAns: this.state.possAns[this.state.currentId]
-        //     })
-        // } else {
-        //     let lengthpossAns = this.state.possAns.length+1;
-        //     this.setState({
-
-        //         corrAns: this.state.possAnsF[this.state.currentId-lengthpossAns]
-        //     })
-        // }
-    }
-
-    componentWillMount(){
-        console.log('z componentWillMount: this.state.currentId',this.state.currentId);
-        console.log('z componentWillMount: this.state.possAns.length',this.state.possAns.length);
-        // if (this.state.currentId <= this.state.possAns.length) {
-
- 
-
-
-        this.handleResize();
     }
 
     startTimer = () => {
@@ -178,25 +145,18 @@ class QuizAnswersGame extends React.Component{
         this.chosenOpt= e.target.innerText;
         console.log('--------------this.goodAns',this.goodAns);
 
-        if (e.target.innerText.indexOf(this.state.corrAns)!==-1){
+        if (e.target.innerText.indexOf(this.goodAns)!==-1){
+            console.log("dobra odp");
             let points=this.state.points+1;
-            //let randomId = Math.floor(Math.random() * (3 ));
             let newId = Math.ceil(Math.random()*this.state.objLength);
-            let currentId = newId;
             let possibleCopy;
             let newCorr;
 
-
             if (this.state.currentId <= this.state.possAns.length) {
-
-                possibleCopy = this.state.possAns.slice();
-                newCorr = possibleCopy[currentId];
+               newCorr = this.state.possAns[newId];
             } else {
                 let lengthpossAns = this.state.possAns.length+1;
-                possibleCopy = this.state.possAnsF.slice();
-                newCorr = possibleCopy[this.state.currentId-lengthpossAns];
-                
-                  
+                newCorr = this.state.possAns[newId-lengthpossAns];     
             }
 
             console.log('newId',newId);
@@ -212,6 +172,7 @@ class QuizAnswersGame extends React.Component{
             this.startTimer();
 
         } else {
+            console.log("zla odp");
             this.setState({
                 numberControl: true,
                 style: {
@@ -228,19 +189,12 @@ class QuizAnswersGame extends React.Component{
 
         console.log("1234 z render this.state.corrAns",this.state.corrAns);
 
-      
-
         console.log('z render: this.state.possAns.length',this.state.possAns.length);
-
 
         let arrayOptions= this.state.possAns.slice();
         let arrayOptionsF= this.state.possAnsF.slice();
         let options;
 
-
-        console.log('z rendera this.state.currentId',this.state.currentId);
-        //console.log('this.state.possAns[this.state.currentId]',this.state.possAns[this.state.currentId]);
-        console.log('this.state.currentId',this.state.currentId);
 
         if (this.state.currentId <= this.state.possAns.length) {
             this.quizImageSrc = this.state.possPhoto[this.state.currentId];
@@ -254,8 +208,9 @@ class QuizAnswersGame extends React.Component{
             let lengthpossAns = this.state.possAns.length+1;
             console.log('lengthpossAns',lengthpossAns);
             this.quizImageSrc = this.state.possPhotoF[this.state.currentId-lengthpossAns];
-            console.log('this.state.possAnsF[this.state.currentId-lengthpossAns]',this.state.possAnsF[this.state.currentId-lengthpossAns]);
+            //console.log('this.state.possAnsF[this.state.currentId-lengthpossAns]',this.state.possAnsF[this.state.currentId-lengthpossAns]);
             console.log('this.state.corrAns',this.state.corrAns);
+            this.goodAns = this.state.possAnsF[this.state.currentId-lengthpossAns];
             options = arrayOptionsF.map((item,index) => {
                     return <p key={index+1} onClick={ e => this.handleClickOption(e, index) } >{index+1}. {item}</p>
             })
@@ -265,30 +220,9 @@ class QuizAnswersGame extends React.Component{
         console.log('Z RENDERA this.quizImageSrc',this.quizImageSrc);
         console.log('z RENDERA options', options);
 
-
-        // if (this.state.currentId <= this.state.possAns.length) {
-        //     console.log('this.state.currentId NIE JEST > this.state.possAns.length');
-        //     if (this.state.possGender[this.state.currentId]=="male") {
-        //         console.log("current id jest male");
-        //         options = arrayOptions.map((item,index) => {
-        //             return <p key={index+1} onClick={ e => this.handleClickOption(e, index) } >{index+1}. {item}</p>
-        //         })
-        //     } 
-
-        // } else {
-        //     console.log('this.state.currentId  > this.state.possAns.length');
-        //     if (this.state.possGenderF[this.state.currentId]=="female") {
-        //         console.log("current id NIE jest male");
-        //         options = arrayOptionsF.map((item,index) => {
-        //             return <p key={index+1} onClick={ e => this.handleClickOption(e, index) } >{index+1}. {item}</p>
-        //         })
-        //     }
-        // }
-
         console.log('arrayOptionsF z rendera',arrayOptionsF);
 
 
-        //console.log('options',options);
 
         if (this.state.numberControl ===true) {
             this.style= {
@@ -305,7 +239,6 @@ class QuizAnswersGame extends React.Component{
         }
 
         
-
         return (
             <div>
                 <div className="quiz" id="quiz">
