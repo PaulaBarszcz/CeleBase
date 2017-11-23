@@ -5,7 +5,10 @@ class QuizAnswersGame extends React.Component{
         super(props);
         this.state={
             whichImg: 0,
-            possAns: ["Antonio Banderas","Christian Bale","Morgan Freeman"],
+            possAns: [],
+            possPhoto: [],
+            possNatio: [],
+            possImdb: [],
             corrAns: "",
             points: 0,
             timeForAnswer:9,
@@ -14,35 +17,76 @@ class QuizAnswersGame extends React.Component{
             style: {},
             redWidth: "100%",
             redHeight: "100%",
-
-            imgSrc: ["http://www.dailygossip.org/wp-content/uploads/2017/03/antonio-banderas.jpg", "https://www.alux.com/wp-content/uploads/2017/04/Christian-Bale-Net-Worth.jpg","http://www.trbimg.com/img-59301dcd/turbine/la-et-entertainment-news-updates-june-a-star-is-born-morgan-freeman-turns-80-1496268967"]
+            objList: [],
+            objLength: 0,
+            name: '',
+            surname: '',
+            nationality: '',
+            imdb: '',
+            photo: '',
+            currentId: 0
         };
     }
 
     handleResize = () => {
-        // window.addEventListener("resize", () => {
-        //     console.log("zmieniona wielkosc");
-        //     this.image = document.querySelector(".main-slide-image");
 
-        //     this.setState({
-        //         redWidth: this.image.clientWidth,
-        //         redHeight: this.image.clientHeight
-        //     })
-        // })
     }
 
     componentDidMount() {
-        //     if (document.readyState === "complete" 
-        // || document.readyState === "loaded" 
-        // || document.readyState === "interactive"){
-                  
-           //  let image = this.imgElement//document.querySelector(".main-slide-image");
-           //  console.dir(image);
-           //  let redWidth = image.width;
-           //  let redHeight =  image.clientHeight; 
-           //  console.log("elem, image", redWidth, redHeight)
-           // this.setState({ redHeight });
-        // }
+        this.objList = [];            
+        fetch(`https://celebase-project.firebaseio.com/Actors.json`).then( r =>   r.json() ).then( response => {
+
+            this.objList.push(response);
+            this.objLength = response.length;
+
+            console.log(response[0].surname);
+            let namesSurnames = [];
+            let photoRange = [];
+            let natioRange = [];
+            let imdbRange = [];         
+
+            for (let i=0; i<response.length; i++){
+                let name = response[i].name;
+                let surname = response[i].surname;
+                let both = `${name} ${surname}`;
+                namesSurnames.push(both);
+
+                let photo = response[i].photo;
+                photoRange.push(photo);
+
+                let natio = response[i].nationality;
+                natioRange.push(natio);
+
+                let imdb = response[i].imdb;
+                imdbRange.push(imdb);
+            }
+
+
+
+            let currentId = Math.ceil(Math.random()*response.length);
+           
+            this.name = response[currentId].name;
+            this.surname = response[currentId].surname;
+            this.nationality = response[currentId].nationality;
+            this.imdb = response[currentId].imdb;
+            this.photo = response[currentId].photo;
+
+            this.setState({
+                objList: this.objList,
+                objLength: this.objLength,
+                name: this.name,
+                surname: this.surname,
+                nationality: this.nationality,
+                imdb: this.imdb,
+                photo: this.photo,
+                currentId: currentId,
+                possAns: namesSurnames,
+                possPhoto: photoRange,
+                possNatio: natioRange,
+                possImdb: imdbRange
+            })
+
+        });
     }
 
     componentWillMount(){
@@ -78,11 +122,12 @@ class QuizAnswersGame extends React.Component{
             this.startTimer();
 
         } else {
-            console.log("z handle start this.state.numberControl", this.state.numberControl );
+            let newId = Math.ceil(Math.random()*this.state.objLength.length);
             this.setState({
                 numberControl: false,
                 timeForAnswer:9,
-                points: 0
+                points: 0,
+                currentId: newId
                 })
             }
             clearInterval(this.answerTimeId);
@@ -99,10 +144,13 @@ class QuizAnswersGame extends React.Component{
 
         if (e.target.innerText.indexOf(this.state.corrAns)!==-1){
             let points=this.state.points+1;
-            let randomId = Math.floor(Math.random() * (3 ));
-            let whichImg = randomId;
+            //let randomId = Math.floor(Math.random() * (3 ));
+            let newId = Math.ceil(Math.random()*this.state.objLength);
+            let whichImg = newId;
             let possibleCopy = this.state.possAns.slice();
             let newCorr = possibleCopy[whichImg];
+
+            console.log('newId',newId);
 
             this.setState({
                 points: points,
@@ -128,12 +176,20 @@ class QuizAnswersGame extends React.Component{
     }
 
     render(){
-    
-        console.log(this.state.redHeight)
-        let arrayOptions= ["Antonio Banderas","Morgan Freeman","Christian Bale","Eddie Redmayne"];                              
+
+        console.log(this.state.objLength);
+        console.log('this.state.currentId',this.state.currentId);
+        console.log('this.state.possAns',this.state.possAns);
+        
+        console.log('this.state.possAns',this.state.possAns);
+        let arrayOptions= this.state.possAns.slice();
+
+        console.log('arrayOptions',arrayOptions);                              
         let options = arrayOptions.map((item,index) => {
             return <p key={index+1} onClick={ e => this.handleClickOption(e, index) } >{index+1}. {item}</p>
         })
+
+        console.log('options',options);
 
         if (this.state.numberControl ===true) {
             this.style= {
@@ -149,7 +205,7 @@ class QuizAnswersGame extends React.Component{
             }
         }
 
-        this.quizImageSrc = this.state.imgSrc[this.state.whichImg];
+        this.quizImageSrc = this.state.possPhoto[this.state.whichImg];
 
         return (
             <div>
