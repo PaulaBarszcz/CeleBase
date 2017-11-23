@@ -12,8 +12,8 @@ class QuizAnswersGame extends React.Component{
             number: 0,
             numberControl: false,
             style: {},
-            redWidth: "50vw",
-            redHeight: 0,
+            redWidth: "100%",
+            redHeight: "100%",
 
             imgSrc: ["http://www.dailygossip.org/wp-content/uploads/2017/03/antonio-banderas.jpg", "https://www.alux.com/wp-content/uploads/2017/04/Christian-Bale-Net-Worth.jpg","http://www.trbimg.com/img-59301dcd/turbine/la-et-entertainment-news-updates-june-a-star-is-born-morgan-freeman-turns-80-1496268967"]
         };
@@ -36,12 +36,12 @@ class QuizAnswersGame extends React.Component{
         // || document.readyState === "loaded" 
         // || document.readyState === "interactive"){
                   
-            let image = this.imgElement//document.querySelector(".main-slide-image");
-            console.dir(image);
-            let redWidth = image.width;
-            let redHeight =  image.clientHeight; 
-            console.log("elem, image", redWidth, redHeight)
-           this.setState({ redHeight });
+           //  let image = this.imgElement//document.querySelector(".main-slide-image");
+           //  console.dir(image);
+           //  let redWidth = image.width;
+           //  let redHeight =  image.clientHeight; 
+           //  console.log("elem, image", redWidth, redHeight)
+           // this.setState({ redHeight });
         // }
     }
 
