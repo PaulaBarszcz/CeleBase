@@ -13,7 +13,8 @@ class QuizAnswersGame extends React.Component{
             numberControl: false,
             style: {},
             redWidth: "50vw",
-            redHeight: "50vh",
+            redHeight: 0,
+
             imgSrc: ["http://www.dailygossip.org/wp-content/uploads/2017/03/antonio-banderas.jpg", "https://www.alux.com/wp-content/uploads/2017/04/Christian-Bale-Net-Worth.jpg","http://www.trbimg.com/img-59301dcd/turbine/la-et-entertainment-news-updates-june-a-star-is-born-morgan-freeman-turns-80-1496268967"]
         };
     }
@@ -28,6 +29,20 @@ class QuizAnswersGame extends React.Component{
         //         redHeight: this.image.clientHeight
         //     })
         // })
+    }
+
+    componentDidMount() {
+        //     if (document.readyState === "complete" 
+        // || document.readyState === "loaded" 
+        // || document.readyState === "interactive"){
+                  
+            let image = this.imgElement//document.querySelector(".main-slide-image");
+            console.dir(image);
+            let redWidth = image.width;
+            let redHeight =  image.clientHeight; 
+            console.log("elem, image", redWidth, redHeight)
+           this.setState({ redHeight });
+        // }
     }
 
     componentWillMount(){
@@ -113,15 +128,8 @@ class QuizAnswersGame extends React.Component{
     }
 
     render(){
-        if (document.readyState === "complete" 
-        || document.readyState === "loaded" 
-        || document.readyState === "interactive"){
-                  
-            this.image = document.querySelector(".main-slide-image");
-            this.redWidth= this.image.clientWidth;
-            this.redHeight= this.image.clientHeight;  
-        }
-
+    
+        console.log(this.state.redHeight)
         let arrayOptions= ["Antonio Banderas","Morgan Freeman","Christian Bale","Eddie Redmayne"];                              
         let options = arrayOptions.map((item,index) => {
             return <p key={index+1} onClick={ e => this.handleClickOption(e, index) } >{index+1}. {item}</p>
@@ -142,7 +150,7 @@ class QuizAnswersGame extends React.Component{
         }
 
         this.quizImageSrc = this.state.imgSrc[this.state.whichImg];
-        
+
         return (
             <div>
                 <div className="quiz" id="quiz">
@@ -155,7 +163,9 @@ class QuizAnswersGame extends React.Component{
                                     <span>Points gained: {this.state.points}</span></p>
                                 </div>
                             </div>
-                            <img className="main-slide-image" src={this.quizImageSrc} />
+                            <img className="main-slide-image" 
+                                src={this.quizImageSrc} 
+                                ref={ (imgElement) => this.imgElement = imgElement} />
                             
                             <div className="quizInfo">Who is in the picture? You have 9 seconds to decide.<br/></div>
                              <button className="startButton" onClick={this.handleStart}>START</button>
