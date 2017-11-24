@@ -88,16 +88,30 @@ class QuizAnswersGame extends React.Component{
         } else {
             
             let randomNumber = Math.floor(Math.random()*(this.state.males.length + this.state.females.length));
+            this.generateNewPhoto();
+            this.generateNewAns();
             this.setState({
                 gameOver: false,
                 timeForAnswer:9,
                 points: 0,
                 currentId: randomNumber,
                 infoForNewGame: ""
-                })
-            }
+            })
+        }
+
+            this.image = document.querySelector(".main-slide-image");
+            console.log('this.image.clientHeight',this.image.clientHeight);
+            console.log('this.image.clientWidth',this.image.clientWidth);
+            this.setState({
+                redWidth: this.image.clientWidth,
+                redHeight: this.image.clientHeight
+            })
+
+
             clearInterval(this.answerTimeId);
             this.startTimer();
+
+
     }
 
     componentWillUnmount(){
@@ -121,7 +135,9 @@ class QuizAnswersGame extends React.Component{
 
             } else {
                 this.setState({
-                    gameOver: true
+                    gameOver: true,
+                    redWidth: this.image.clientWidth,
+                    redHeight: this.image.clientHeight
                 })
             }
 
@@ -129,11 +145,7 @@ class QuizAnswersGame extends React.Component{
             this.setState({
                     infoForNewGame: "Kliknij start, żeby ponownie rozpocząć grę"
             })
-            
-            console.log("Kliknij start, żeby ponownie rozpocząć grę");
-        }
-
-          
+        }   
     }
 
     generateNewPhoto = () => {
@@ -160,7 +172,8 @@ class QuizAnswersGame extends React.Component{
                 quizImageSrc: this.state.females[randomId].photo,
                 corrAns: this.state.females[randomId].surname
             })
-        }  
+        }        
+
     }
 
     generateNewAns = () => {
@@ -224,12 +237,14 @@ class QuizAnswersGame extends React.Component{
     }
 
     render(){
+
+        // console.log('this.image',this.image.clientHeight);
         
         if (this.state.gameOver ===true) {
             this.style= {
                 display: "block",
-                width: this.redWidth,
-                height: this.redHeight,
+                width: this.state.redWidth+'px',
+                height: this.state.redHeight+'px',
             }
             clearInterval(this.answerTimeId);
 
@@ -249,9 +264,10 @@ class QuizAnswersGame extends React.Component{
                                     <p>GAME OVER<br/><br/>
                                     <span>Points gained: {this.state.points}</span></p>
                                 </div>
-                            </div>
-                            <img className="main-slide-image" 
+                                <img className="main-slide-image" 
                                 src={this.state.quizImageSrc} />
+                            </div>
+                            
                             <div className="quizInfo">Who is in the picture? You have 9 seconds to decide.</div><br/><br/>
                             <div className="quizPoints">Points: {this.state.points}</div>
                             <div className="quizTime">Time left: 00:0{this.state.timeForAnswer}</div>
