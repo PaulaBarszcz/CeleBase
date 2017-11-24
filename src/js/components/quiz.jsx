@@ -62,10 +62,11 @@ class QuizAnswersGame extends React.Component{
 
             if (this.state.timeForAnswer===0){
                 clearInterval(this.answerTimeId);
+                this.image = document.querySelector(".main-slide-image");
                 this.setState({
                     gameOver: true,
                     style: {
-                        display: "block" 
+                        display: "block"
                     }
                 })
             }
@@ -82,11 +83,9 @@ class QuizAnswersGame extends React.Component{
                 points: 0,
                 timeForAnswer:9,
                 infoForNewGame: ""
-
-                })
-
+            })
         } else {
-            
+  
             let randomNumber = Math.floor(Math.random()*(this.state.males.length + this.state.females.length));
             this.generateNewPhoto();
             this.generateNewAns();
@@ -98,20 +97,14 @@ class QuizAnswersGame extends React.Component{
                 infoForNewGame: ""
             })
         }
+        this.image = document.querySelector(".main-slide-image");
+        this.setState({
+            redWidth: this.image.clientWidth,
+            redHeight: this.image.clientHeight
+        })
 
-            this.image = document.querySelector(".main-slide-image");
-            console.log('this.image.clientHeight',this.image.clientHeight);
-            console.log('this.image.clientWidth',this.image.clientWidth);
-            this.setState({
-                redWidth: this.image.clientWidth,
-                redHeight: this.image.clientHeight
-            })
-
-
-            clearInterval(this.answerTimeId);
-            this.startTimer();
-
-
+        clearInterval(this.answerTimeId);
+        this.startTimer();
     }
 
     componentWillUnmount(){
@@ -135,9 +128,7 @@ class QuizAnswersGame extends React.Component{
 
             } else {
                 this.setState({
-                    gameOver: true,
-                    redWidth: this.image.clientWidth,
-                    redHeight: this.image.clientHeight
+                    gameOver: true
                 })
             }
 
@@ -162,6 +153,7 @@ class QuizAnswersGame extends React.Component{
                 quizImageSrc: this.state.males[randomId].photo,
                 corrAns: this.state.males[randomId].surname
             })
+
         }else {
             this.actualGender = 1;
             let randomId = Math.floor(Math.random()*this.state.females.length);
@@ -172,8 +164,12 @@ class QuizAnswersGame extends React.Component{
                 quizImageSrc: this.state.females[randomId].photo,
                 corrAns: this.state.females[randomId].surname
             })
-        }        
-
+        } 
+        this.image = document.querySelector(".main-slide-image");
+        this.setState({
+            redWidth: this.image.clientWidth,
+            redHeight: this.image.clientHeight
+        })
     }
 
     generateNewAns = () => {
@@ -238,13 +234,13 @@ class QuizAnswersGame extends React.Component{
 
     render(){
 
-        // console.log('this.image',this.image.clientHeight);
-        
         if (this.state.gameOver ===true) {
+        this.image = document.querySelector(".main-slide-image");
+
             this.style= {
                 display: "block",
-                width: this.state.redWidth+'px',
-                height: this.state.redHeight+'px',
+                width: this.image.clientWidth +'px',
+                height: this.image.clientHeight +'px',
             }
             clearInterval(this.answerTimeId);
 
