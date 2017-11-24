@@ -1,7 +1,75 @@
 import React from 'react';
+import ReactDOM from 'react-dom';
+import Reactable from 'reactable';
 
 class InfoTable extends React.Component{
+    constructor(props){
+        super(props);
+        this.state={
+            style: {},
+            objList: [],
+            objListNoPhoto: [],
+            objLength: 0,
+            currentsort: 'Name',
+        };
+    }
+
+    componentDidMount() {
+        this.objList = [];            
+        fetch(`https://celebase-project.firebaseio.com/Actors.json`).then( r =>   r.json() ).then( response => {
+
+            this.objList.push(response);
+            this.objLength = response.length;
+
+            let objListNoPhoto = response.slice();
+            //delete.objListNoPhoto.photo;
+
+            console.log(objListNoPhoto[0].photo); //remy
+            console.log(response[0]);
+
+            for (let i=0; i<response.length; i++){
+                delete objListNoPhoto[i].photo;
+
+            }
+
+            console.log(objListNoPhoto);
+
+            var person = {
+                firstname:"John",
+                lastname:"Doe",
+                age:50,
+                eyecolor:"blue",
+
+            };
+            delete person.age;
+            console.log(person);
+
+
+            // delete.objListNoPhoto[i].photo;
+
+            // const objListNoPhoto = response.filter(item => {
+            //     console.log(item.photo);
+            //     return item ;
+            // });
+
+            console.log(response[0].photo);
+
+            this.setState({
+                objList: this.objList,
+                objLength: this.objLength,
+                objListNoPhoto: objListNoPhoto
+            })
+
+        });
+    }
+
+
+
     render(){
+        //console.log(this.state.objList[0][4].imdb);
+       //zle console.log(this.state.objList[0][0]);
+
+        let Table = Reactable.Table;
         return <div className = "infotable" id="infotable">
             <div className="container">
                 <div className="tableBcg">
@@ -47,6 +115,16 @@ class InfoTable extends React.Component{
                     </div>
                 </div>
             </div>
+            <Table className="table" id="table" data={this.state.objListNoPhoto}
+            sortable={[
+                'Name',
+                'Surname',
+                'Gender',
+                'Nationality',
+                'IMDB'
+            ]}
+            defaultSort={{column: 'Name', direction: 'asc'}}/>
+
         </div>;
     }
 }
