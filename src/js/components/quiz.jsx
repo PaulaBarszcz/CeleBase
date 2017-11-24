@@ -81,6 +81,8 @@ class QuizAnswersGame extends React.Component{
             this.setState({
                 points: 0,
                 timeForAnswer:9,
+                infoForNewGame: ""
+
                 })
 
         } else {
@@ -90,7 +92,8 @@ class QuizAnswersGame extends React.Component{
                 gameOver: false,
                 timeForAnswer:9,
                 points: 0,
-                currentId: randomNumber
+                currentId: randomNumber,
+                infoForNewGame: ""
                 })
             }
             clearInterval(this.answerTimeId);
@@ -104,10 +107,12 @@ class QuizAnswersGame extends React.Component{
     handleClickOption = (e, index) => {
 
         if (this.state.gameOver==false){
+            
             if (e.target.innerText.indexOf(this.state.corrAns) !== -1) {
             this.setState({
                 timeForAnswer: 9,
-                points: this.state.points+1
+                points: this.state.points+1,
+                infoForNewGame: ""
             })
             clearInterval(this.answerTimeId);
             this.startTimer();
@@ -121,6 +126,10 @@ class QuizAnswersGame extends React.Component{
             }
 
         } else {
+            this.setState({
+                    infoForNewGame: "Kliknij start, żeby ponownie rozpocząć grę"
+            })
+            
             console.log("Kliknij start, żeby ponownie rozpocząć grę");
         }
 
@@ -250,6 +259,7 @@ class QuizAnswersGame extends React.Component{
                             <div className="quiz-text">
                                 {this.state.options}
                             </div>
+                            <h1>{this.state.infoForNewGame}</h1>
                         </div>
                     </div>
                 </div>
