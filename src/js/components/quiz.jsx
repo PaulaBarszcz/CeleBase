@@ -20,6 +20,7 @@ class QuizAnswersGame extends React.Component{
             style: {},
             redWidth: "100%",
             redHeight: "100%",
+            imageStatus: 'loading',
             objList: [],
             objLength: 0,
             currentId: 0,
@@ -53,24 +54,26 @@ class QuizAnswersGame extends React.Component{
     }
 
     startTimer = () => {
-        clearInterval(this.answerTimeId);
+        if (this.state.imageStatus=="loaded") {
+            clearInterval(this.answerTimeId);
 
-        this.answerTimeId = setInterval(()=>{
-            this.setState({
-                timeForAnswer: this.state.timeForAnswer - 1
-            });
-
-            if (this.state.timeForAnswer===0){
-                clearInterval(this.answerTimeId);
-                this.image = document.querySelector(".main-slide-image");
+            this.answerTimeId = setInterval(()=>{
                 this.setState({
-                    gameOver: true,
-                    style: {
-                        display: "block"
-                    }
-                })
-            }
-        },1000);
+                    timeForAnswer: this.state.timeForAnswer - 1
+                });
+
+                if (this.state.timeForAnswer===0){
+                    clearInterval(this.answerTimeId);
+                    this.image = document.querySelector(".main-slide-image");
+                    this.setState({
+                        gameOver: true,
+                        style: {
+                            display: "block"
+                        }
+                    })
+                }
+            },1000);
+        }
     }
 
     handleStart = () => {
@@ -232,6 +235,12 @@ class QuizAnswersGame extends React.Component{
         }
     }
 
+    handleImageLoaded = () => {
+        this.setState({
+            imageStatus: 'loaded'
+        });
+    }
+
     render(){
 
         if (this.state.gameOver ===true) {
@@ -261,7 +270,8 @@ class QuizAnswersGame extends React.Component{
                                     <span>Points gained: {this.state.points}</span></p>
                                 </div>
                                 <img className="main-slide-image" 
-                                src={this.state.quizImageSrc} />
+                                src={this.state.quizImageSrc}
+                                onLoad={this.handleImageLoaded} />
                             </div>
                             
                             <div className="quizInfo">Who is in the picture? You have 9 seconds to decide.</div><br/><br/>
