@@ -5,8 +5,8 @@ import {
 
 class NotFound extends React.Component {
     render() {
-        return  <div>
-            Page not found. Go back to<Link to="/home">HOME page</Link>
+        return  <div className="notFound">
+            Page not found. Go back to <Link to="/">HOME page</Link>
         </div>
     }
 }

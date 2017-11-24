@@ -15,48 +15,13 @@ import { Router,
     hashHistory
 } from 'react-router';
 
-class FetchInfo extends React.Component{
-    constructor(props) {
-        super(props);
-        this.state = {  
-            objList: '',  
-        }
-    }
-
-    componentDidMount() {
-        this.objList = [];            
-        fetch(`https://celebase-project.firebaseio.com/Actors.json`).then( r =>   r.json() ).then( response => {
-
-            this.objList.push(response);
-            //console.log(this.objList);
-
-            this.setState({
-                objList: this.objList
-            })
-            //console.log(this.state.objList[0][0].surname);
-        });
-    }
-
-    render(){
-        let infoToPass = this.state.objList;
-        return <p></p>
-    }
-}
-
 class Routing extends React.Component {
-    constructor(props){
-        super(props);
-        this.state = {  
-            time: 10,  
-        }
-    }
 
     render() {
-
         return  <Router history={hashHistory}>
             <Route path='/' component={Navigation}>
                 <IndexRoute component={Home} />
-                <Route path='/slider' component={Slider} time="klkl"/>
+                <Route path='/slider' component={Slider}/>
                 <Route path='/quiz' component={Quiz}/>
                 <Route path='/infotable' component={InfoTable}/>
                 <Route path='*' component={NotFound} />
@@ -65,5 +30,4 @@ class Routing extends React.Component {
     }
 }
 
-
-export {Routing, FetchInfo}
+export {Routing}
