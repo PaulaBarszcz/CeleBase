@@ -11,6 +11,7 @@ class InfoTable extends React.Component{
             objListNoPhoto: [],
             objLength: 0,
             currentsort: 'Name',
+            objListNoPhotoArranged: []
         };
     }
 
@@ -29,30 +30,13 @@ class InfoTable extends React.Component{
 
             for (let i=0; i<response.length; i++){
                 delete objListNoPhoto[i].photo;
+                delete objListNoPhoto[i].id;
 
             }
 
             console.log(objListNoPhoto);
 
-            var person = {
-                firstname:"John",
-                lastname:"Doe",
-                age:50,
-                eyecolor:"blue",
-
-            };
-            delete person.age;
-            console.log(person);
-
-
-            // delete.objListNoPhoto[i].photo;
-
-            // const objListNoPhoto = response.filter(item => {
-            //     console.log(item.photo);
-            //     return item ;
-            // });
-
-            console.log(response[0].photo);
+            //console.log(response[0].photo);
 
             this.setState({
                 objList: this.objList,
@@ -60,16 +44,45 @@ class InfoTable extends React.Component{
                 objListNoPhoto: objListNoPhoto
             })
 
+            console.log(this.state.objListNoPhoto[2].name);
+            console.log(response[2].name);
+
+            for (let i=0; i<this.state.objListNoPhoto.length; i++) {
+                console.log('<Tr><Td>', this.state.objListNoPhoto[i].name, this.state.objListNoPhoto[i].surname, this.state.objListNoPhoto[i].gender, this.state.objListNoPhoto[i].nationality, this.state.objListNoPhoto[i].imdb);
+            }
+
+            console.log(this.state.objListNoPhoto);
+            let objListNoPhotoArranged= [];
+
+            for (let i=0; i<response.length; i++){
+                let obj = {'Name': this.state.objListNoPhoto[i].name,
+                    'Surname': this.state.objListNoPhoto[i].surname,
+                    'Gender': this.state.objListNoPhoto[i].gender,
+                    'Nationality': this.state.objListNoPhoto[i].nationality,
+                    'IMDB': this.state.objListNoPhoto[i].imdb,
+                };
+                objListNoPhotoArranged.push(obj);
+            }
+
+            console.log(objListNoPhotoArranged);
+
+            this.setState({
+                objListNoPhotoArranged: objListNoPhotoArranged
+            })
+
+
+
         });
     }
 
-
-
     render(){
-        //console.log(this.state.objList[0][4].imdb);
-       //zle console.log(this.state.objList[0][0]);
 
         let Table = Reactable.Table;
+        let Thead = Reactable.Thead;
+        let Th = Reactable.Th;
+        let Tr = Reactable.Tr;
+        let Td = Reactable.Td;
+
         return <div className = "infotable" id="infotable">
             <div className="container">
                 <div className="tableBcg">
@@ -79,43 +92,30 @@ class InfoTable extends React.Component{
                     <button>GENDER</button>
                     <button>NATIONALITY</button><br/><br/>
                     <div className="containsTable">
-                        <table className="dataTable">
-                            <tbody>
-                                <tr>
-                                    <th>NAME</th>
-                                    <th>SURNAME</th>
-                                    <th>GENDER</th>
-                                    <th>NATIONALITY</th>
-                                    <th>IMDB</th>
-                                </tr>
-                                <tr>
-                                    <td>Antonio</td>
-                                    <td>Banderas</td>
-                                    <td>male</td>
-                                    <td>Spanish</td>
-                                    <td><a href="http://www.imdb.com/name/nm0000104/" target="_blank">http://www.imdb.com/name/nm0000104/</a></td>
-                                </tr>
-                                <tr>
-                                    <td>Christian</td>
-                                    <td>Bale</td>
-                                    <td>male</td>
-                                    <td>Welsh</td>
-                                    <td><a href="http://www.imdb.com/name/nm0000288/" target="_blank">http://www.imdb.com/name/nm0000288/</a></td>
-                                </tr>                       
-                                <tr>
-                                    <td>Anne</td>
-                                    <td>Hathaway</td>
-                                    <td>female</td>
-                                    <td>American</td>
-                                    <td><a href="http://www.imdb.com/name/nm0004266/" target="_blank">http://www.imdb.com/name/nm0004266/</a></td>
-                                </tr>
-
-                            </tbody>
-                        </table>
+                        <Table className="table dataTable" id="table">
+                            <Thead>
+                              <Th column="name">
+                                <strong className="name-header">Name</strong>
+                              </Th>
+                              <Th column="surname">
+                                <strong className="surname-header">Surname</strong>
+                              </Th>
+                              <Th column="gender">
+                                <strong className="gender-header">Gender</strong>
+                              </Th>
+                              <Th column="nationality">
+                                <strong className="nationality-header">Nationality</strong>
+                              </Th>
+                              <Th column="imdb">
+                                <strong className="imdb-header">IMDB</strong>
+                              </Th>
+                            </Thead>
+                            
+                        </Table>
                     </div>
                 </div>
             </div>
-            <Table className="table" id="table" data={this.state.objListNoPhoto}
+            <Table className="table" id="table" data={this.state.objListNoPhotoArranged}
             sortable={[
                 'Name',
                 'Surname',
