@@ -32,14 +32,12 @@ html, body {
 
 /* body */
 body{
-    
     background-image: url("/src/sass/stage-curtains.jpg");
     background-repeat: no-repeat;
     background-attachment: fixed;
     background-position: center top;
     background-size: cover;
 }
-
 
 //home
 
@@ -54,6 +52,12 @@ body{
 }
 
 // navigation
+
+.active-tab{
+    background-color:#000;
+    color: #ffcc14;
+}
+
 .divNav {
     text-align: center
 }
@@ -90,8 +94,8 @@ body{
     border-left:1px solid rgba(#fff, 0.2);
 }
 .main-nav a:hover {
-    background: #fff;
-    color: #000000;
+    background: #000000;
+    color: #ffcc14;
 }
 
 .main-nav-toogle {
@@ -224,7 +228,7 @@ body{
         align-items: center;
         justify-content: center;
         height: auto;
-        margin-top: 30px;
+        margin-top: 0px;
 
         .main-slider-slides-cnt{
             max-width:700px;
@@ -258,7 +262,7 @@ body{
 
 @media only screen and (max-width:800px) {
     .main-slider {
-        margin-top: 80px;
+        margin-top: 70px;
     }
 }
 

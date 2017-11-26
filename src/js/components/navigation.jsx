@@ -1,5 +1,6 @@
 import React from 'react';
 import { 
+    IndexLink,
     Link
 } from 'react-router';
 
@@ -40,10 +41,10 @@ class Navigation extends React.Component {
             </button>
             <nav className="main-nav">
                 <ul>
-                    <li><Link to="/">HOME</Link></li>
-                    <li><Link to="/slider">SLIDER</Link></li>
-                    <li><Link to="/quiz">QUIZ</Link></li>
-                    <li><Link to="/infotable">INFOTABLE</Link></li>
+                    <li><IndexLink to="/" activeClassName="active-tab">HOME</IndexLink></li>
+                    <li><IndexLink to="/slider" activeClassName="active-tab">SLIDER</IndexLink></li>
+                    <li><IndexLink to="/quiz" activeClassName="active-tab">QUIZ</IndexLink></li>
+                    <li><IndexLink to="/infotable" activeClassName="active-tab">INFOTABLE</IndexLink></li>
                 </ul>
             </nav>
             {this.props.children}
