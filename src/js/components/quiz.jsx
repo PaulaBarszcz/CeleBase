@@ -148,8 +148,6 @@ class QuizAnswersGame extends React.Component{
             imageStatus: 'loading'
         })
 
-        console.log(this.state.imageStatus);
-
         let randomNumber = Math.floor(Math.random()*(this.state.males.length + this.state.females.length));
 
         if (randomNumber < this.state.males.length){
@@ -179,9 +177,6 @@ class QuizAnswersGame extends React.Component{
             redWidth: this.image.clientWidth,
             redHeight: this.image.clientHeight
         })
-
-
-        console.log(this.state.imageStatus);
     }
 
     generateNewAns = () => {
@@ -251,8 +246,6 @@ class QuizAnswersGame extends React.Component{
     }
 
     render(){
-
-        console.log('this.state.imageStatus',this.state.imageStatus);
 
         if (this.state.gameOver ===true) {
         this.image = document.querySelector(".main-slide-image");
