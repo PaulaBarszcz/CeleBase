@@ -11,9 +11,25 @@ class Navigation extends React.Component {
     handleNavClick = (e) => {
         let body = document.querySelector("body")
         body.classList.toggle("nav-show");
+        e.stopPropagation();
+    }
+
+    closeMenu = () => {
+        let body = document.querySelector("body");
+        if (body.classList.contains("nav-show")) {
+            window.addEventListener("click", function(){
+                body.classList.remove("nav-show");
+            })
+            let menu = document.querySelector(".main-nav ul");
+            menu.addEventListener("click", function(event){
+                event.stopPropagation();
+            });
+        }
     }
 
     render() {
+
+        this.closeMenu();
 
         return <div className="divNav">
             <button className="main-nav-toogle" onClick={e => this.handleNavClick(e)}>
@@ -31,9 +47,7 @@ class Navigation extends React.Component {
                 </ul>
             </nav>
             {this.props.children}
-            
         </div>
-
     }
 }
 

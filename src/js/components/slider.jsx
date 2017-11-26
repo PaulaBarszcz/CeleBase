@@ -153,7 +153,7 @@ class Slider extends React.Component{
                         <img className="main-slide-image" src={this.state.photo} />
                         <div className="main-slide-text">
                             {this.state.name} {this.state.surname},
-                             {this.state.nationality}<br/>
+                             {' '+this.state.nationality}<br/>
                             <a href={this.state.imdb} target="_blank">IMDB</a>
                         </div>
                     </div>

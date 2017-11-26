@@ -577,6 +577,14 @@ body{
             color: white;
             letter-spacing: 7px;
             margin-left: 7px;
+            &:hover{
+                color: #ffcc14;
+            }
+            &.reactable-current-page{
+                color: #ffcc14;
+                font-size: 25px;
+                font-weight: 700;
+            }
         }
     }
 }
