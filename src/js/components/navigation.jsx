@@ -9,6 +9,10 @@ class Navigation extends React.Component {
         super(props)
     }
 
+    addBodyBcg = () => {
+        document.body.style.backgroundImage = "url('images/stagecurtains.jpg')";
+    }
+
     handleNavClick = (e) => {
         let body = document.querySelector("body")
         body.classList.toggle("nav-show");
@@ -30,6 +34,7 @@ class Navigation extends React.Component {
 
     render() {
 
+        this.addBodyBcg();
         this.closeMenu();
 
         return <div className="divNav">
