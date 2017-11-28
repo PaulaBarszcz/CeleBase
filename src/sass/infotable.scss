@@ -1,0 +1,85 @@
+// infotable
+
+.infotable{
+    margin: 0 auto;
+    margin-bottom: 40px;
+    margin-top: 70px;
+    text-align: center;
+}
+
+@media only screen and (min-width:801px) {
+    .infotable{
+        margin-top: 10px;
+    }
+}
+
+.tableBcg{
+    padding: 20px;
+    margin: 10px;
+    .sortInfo{
+        padding: 10px;
+        margin: 0;
+        margin-bottom: 20px;
+        font-size: 25px;
+        color: #fff;
+        font-weight: 400;
+        font-family: Spectral;
+    }
+}
+
+.dataTable{
+    font-size: 21px;
+    margin: 0 auto;
+    border-collapse: collapse;
+    text-align: center;
+    border: 5px solid #fff;
+    color: #ffcc14;
+    font-family: Spectral;
+    th{
+        color: #fff;
+    }
+    th, td{
+        border: 2px solid #fff;
+        padding: 10px;  
+    } 
+    td{
+        a{
+            text-decoration: none;
+            color: #ffcc14;
+        }
+    }
+}
+
+.containsTable {
+    overflow: auto;
+    thead{
+        th{
+            cursor: pointer;
+        }
+    }
+    tr{
+        td:nth-of-type(5){
+            font-size: 14px;
+        }
+    }
+}
+
+.reactable-pagination {
+    td {
+        padding-top: 20px;
+        padding-bottom: 20px;
+        a.reactable-page-button{
+            color: white;
+            letter-spacing: 7px;
+            margin-left: 7px;
+            &:hover{
+                color: #ffcc14;
+            }
+            &.reactable-current-page{
+                color: #ffcc14;
+                font-size: 25px;
+                font-weight: 700;
+            }
+        }
+    }
+}

@@ -1,0 +1,40 @@
+/* tiny reset */
+html, body {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  font-size: 100%;
+  font-family: Spectral;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+.container {
+    max-width:1140px;
+    margin:0 auto;
+    padding-left:30px;
+    padding-right: 30px;
+}
+
+/* body */
+body{
+    //background-image: url("/stagecurtains.jpg");
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-position: center top;
+    background-size: cover;
+}
+
+//home
+
+.homeLogo {
+    color: #ffcc14;
+    font-size: 60px;
+    text-align: center;
+    h1{
+        line-height: 350px;
+        text-overflow: ellipsis;
+    }
+}
