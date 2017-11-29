@@ -25724,9 +25724,8 @@ var QuizAnswersGame = function (_React$Component) {
 
                     if (_this.state.timeForAnswer === 0) {
                         clearInterval(_this.answerTimeId);
-                        _this.image = document.querySelector(".quizImg");
+                        _this.handleGameOver();
                         _this.setState({
-                            gameOver: true,
                             style: {
                                 display: "block"
                             }
@@ -25760,14 +25759,26 @@ var QuizAnswersGame = function (_React$Component) {
                     infoForNewGame: ""
                 });
             }
-            _this.image = document.querySelector(".quizImg");
-            _this.setState({
-                redWidth: _this.image.clientWidth,
-                redHeight: _this.image.clientHeight
-            });
 
             clearInterval(_this.answerTimeId);
             _this.startTimer();
+        };
+
+        _this.handleGameOver = function () {
+            _this.image = document.querySelector(".quizImg");
+
+            window.addEventListener('resize', function (event) {
+                _this.setState({
+                    redWidth: _this.image.clientWidth,
+                    redHeight: _this.image.clientHeight
+                });
+            });
+
+            _this.setState({
+                gameOver: true,
+                redWidth: _this.image.clientWidth,
+                redHeight: _this.image.clientHeight
+            });
         };
 
         _this.handleClickOption = function (e, index) {
@@ -25785,9 +25796,7 @@ var QuizAnswersGame = function (_React$Component) {
                     _this.generateNewPhoto();
                     _this.generateNewAns();
                 } else {
-                    _this.setState({
-                        gameOver: true
-                    });
+                    _this.handleGameOver();
                 }
             } else {
                 _this.setState({
@@ -25825,11 +25834,6 @@ var QuizAnswersGame = function (_React$Component) {
                     corrAns: _this.state.females[_randomId].surname
                 });
             }
-            _this.image = document.querySelector(".quizImg");
-            _this.setState({
-                redWidth: _this.image.clientWidth,
-                redHeight: _this.image.clientHeight
-            });
         };
 
         _this.generateNewAns = function () {
@@ -25977,12 +25981,10 @@ var QuizAnswersGame = function (_React$Component) {
         value: function render() {
 
             if (this.state.gameOver === true) {
-                this.image = document.querySelector(".quizImg");
-
                 this.style = {
                     display: "block",
-                    width: this.image.clientWidth + 'px',
-                    height: this.image.clientHeight + 'px'
+                    width: this.state.redWidth + 'px',
+                    height: this.state.redHeight + 'px'
                 };
                 clearInterval(this.answerTimeId);
             } else {
