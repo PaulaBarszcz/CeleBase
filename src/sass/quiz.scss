@@ -34,7 +34,6 @@
         align-item: flex-end;
         padding: 0;
         margin: 0;
-        //margin: auto auto;
     }
     .cover .coverRed p {
         margin: 5px 5px;
@@ -55,9 +54,6 @@
     position: relative;
     align-self: flex-end;
     margin: auto auto;
-    //display: flex;
-    //align-content: flex-end;
-    //justify-content: flex-end;
     p{
 
         &:nth-of-type(1) {
@@ -110,7 +106,6 @@
         font-size: 40px;
         font-weight: 700;
         color: #ffcc14;
-        //padding: auto auto;
         margin: 30px; 
     }
 }
@@ -119,7 +114,6 @@
 @media only screen and (max-width:590px) {
     #quiz .quizInfo{
         margin-top: 40px;
-
     }
 }
 
@@ -147,8 +141,6 @@
     display: inline-block;
     font-weight: 900;
     font-size: 30px;
-    // margin: 0 auto;
-    // margin-top: 20px;
     margin-bottom: 20px;
     cursor: pointer;
     transition:0.3s all;

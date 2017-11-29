@@ -64,9 +64,8 @@ class QuizAnswersGame extends React.Component{
 
                 if (this.state.timeForAnswer===0){
                     clearInterval(this.answerTimeId);
-                    this.image = document.querySelector(".quizImg");
+                    this.handleGameOver();
                     this.setState({
-                        gameOver: true,
                         style: {
                             display: "block"
                         }
@@ -100,11 +99,6 @@ class QuizAnswersGame extends React.Component{
                 infoForNewGame: ""
             })
         }
-        this.image = document.querySelector(".quizImg");
-        this.setState({
-            redWidth: this.image.clientWidth,
-            redHeight: this.image.clientHeight
-        })
 
         clearInterval(this.answerTimeId);
         this.startTimer();
@@ -112,6 +106,23 @@ class QuizAnswersGame extends React.Component{
 
     componentWillUnmount(){
         clearInterval(this.answerTimeId);
+    }
+
+    handleGameOver = () => {
+        this.image = document.querySelector(".quizImg");
+
+        window.addEventListener('resize', event => {
+            this.setState({
+                redWidth: this.image.clientWidth,
+                redHeight: this.image.clientHeight
+            })
+        });
+
+        this.setState({
+            gameOver: true,
+            redWidth: this.image.clientWidth,
+            redHeight: this.image.clientHeight
+        })
     }
 
     handleClickOption = (e, index) => {
@@ -130,9 +141,7 @@ class QuizAnswersGame extends React.Component{
             this.generateNewAns();
 
             } else {
-                this.setState({
-                    gameOver: true
-                })
+                this.handleGameOver();
             }
 
         } else {
@@ -171,12 +180,7 @@ class QuizAnswersGame extends React.Component{
                 quizImageSrc: this.state.females[randomId].photo,
                 corrAns: this.state.females[randomId].surname
             })
-        } 
-        this.image = document.querySelector(".quizImg");
-        this.setState({
-            redWidth: this.image.clientWidth,
-            redHeight: this.image.clientHeight
-        })
+        }
     }
 
     generateNewAns = () => {
@@ -206,7 +210,6 @@ class QuizAnswersGame extends React.Component{
 
             shuffleArray(optionsId);
   
-
             this.options = optionsId.map((item, index) => {
                 return <p key={index} onClick={ e => this.handleClickOption(e, index)}>{this.state.males[item].name} {this.state.males[item].surname}</p>
             });
@@ -248,12 +251,10 @@ class QuizAnswersGame extends React.Component{
     render(){
 
         if (this.state.gameOver ===true) {
-        this.image = document.querySelector(".quizImg");
-
             this.style= {
                 display: "block",
-                width: this.image.clientWidth +'px',
-                height: this.image.clientHeight +'px',
+                width: this.state.redWidth +'px',
+                height: this.state.redHeight +'px',
             }
             clearInterval(this.answerTimeId);
 
