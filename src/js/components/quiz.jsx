@@ -64,7 +64,7 @@ class QuizAnswersGame extends React.Component{
 
                 if (this.state.timeForAnswer===0){
                     clearInterval(this.answerTimeId);
-                    this.image = document.querySelector(".main-slide-image");
+                    this.image = document.querySelector(".quizImg");
                     this.setState({
                         gameOver: true,
                         style: {
@@ -100,7 +100,7 @@ class QuizAnswersGame extends React.Component{
                 infoForNewGame: ""
             })
         }
-        this.image = document.querySelector(".main-slide-image");
+        this.image = document.querySelector(".quizImg");
         this.setState({
             redWidth: this.image.clientWidth,
             redHeight: this.image.clientHeight
@@ -172,7 +172,7 @@ class QuizAnswersGame extends React.Component{
                 corrAns: this.state.females[randomId].surname
             })
         } 
-        this.image = document.querySelector(".main-slide-image");
+        this.image = document.querySelector(".quizImg");
         this.setState({
             redWidth: this.image.clientWidth,
             redHeight: this.image.clientHeight
@@ -248,7 +248,7 @@ class QuizAnswersGame extends React.Component{
     render(){
 
         if (this.state.gameOver ===true) {
-        this.image = document.querySelector(".main-slide-image");
+        this.image = document.querySelector(".quizImg");
 
             this.style= {
                 display: "block",
@@ -266,27 +266,26 @@ class QuizAnswersGame extends React.Component{
         return (
             <div>
                 <div className="quiz" id="quiz">
-                    <div className="main-slider-slides-cnt">
-                        <div className="main-slide active">
+                    <div className="">
+                        <div className="quizInfo">Who is in the picture? You have 9 seconds to decide.</div><br/><br/>
+                            <div className="quizPoints">Points: {this.state.points}</div>
+                            <div className="quizTime">Time left: 00:0{this.state.timeForAnswer}</div>
+                            <button className="startButton" onClick={this.handleStart}>START</button>
+                        <div className="flexi">
                             <div className="cover">
                                 <div className="coverRed"style={this.style} >
                                     <p>GAME OVER<br/><br/>
                                     <span>Points gained: {this.state.points}</span></p>
                                 </div>
-                                <img className="main-slide-image" 
+                                <img className="quizImg" 
                                 src={this.state.quizImageSrc}
                                 onLoad={this.handleImageLoaded} />
                             </div>
-                            
-                            <div className="quizInfo">Who is in the picture? You have 9 seconds to decide.</div><br/><br/>
-                            <div className="quizPoints">Points: {this.state.points}</div>
-                            <div className="quizTime">Time left: 00:0{this.state.timeForAnswer}</div>
-                            <button className="startButton" onClick={this.handleStart}>START</button>
                             <div className="quiz-text">
                                 {this.state.options}
                             </div>
-                            <h1>{this.state.infoForNewGame}</h1>
                         </div>
+                        <h1>{this.state.infoForNewGame}</h1>
                     </div>
                 </div>
             </div>
