@@ -1,5 +1,6 @@
 import React from 'react';
-import ProgressiveImage from 'react-progressive-image';
+import {Spinner} from 'spin.js';
+
 
 class QuizAnswersGame extends React.Component{
     constructor(props){
@@ -284,6 +285,31 @@ class QuizAnswersGame extends React.Component{
 
         console.log(this.state.loaded);
 
+        var opts = {
+            lines: 13, // The number of lines to draw
+            length: 38, // The length of each line
+            width: 17, // The line thickness
+            radius: 45, // The radius of the inner circle
+            scale: 1, // Scales overall size of the spinner
+            corners: 1, // Corner roundness (0..1)
+            color: '#ffffff', // CSS color or array of colors
+            fadeColor: 'transparent', // CSS color or array of colors
+            opacity: 0.25, // Opacity of the lines
+            rotate: 0, // The rotation offset
+            direction: 1, // 1: clockwise, -1: counterclockwise
+            speed: 1, // Rounds per second
+            trail: 60, // Afterglow percentage
+            fps: 20, // Frames per second when using setTimeout() as a fallback in IE 9
+            zIndex: 2e9, // The z-index (defaults to 2000000000)
+            className: 'spinner', // The CSS class to assign to the spinner
+            top: '50%', // Top position relative to parent
+            left: '50%', // Left position relative to parent
+            position: 'absolute' // Element positioning
+        };
+
+        var target = document.querySelector('.flexi');
+        var spinner = new Spinner(opts).spin(target);
+
         if (this.state.gameOver ===true) {
             this.style= {
                 display: "block",
@@ -312,12 +338,13 @@ class QuizAnswersGame extends React.Component{
                                     <p>GAME OVER<br/><br/>
                                     <span>Points gained: {this.state.points}</span></p>
                                 </div>
-                                <ProgressiveImage src={this.state.quizImageSrc} placeholder='images/tiny-image.jpg'>
-                                  {(src, loading) => (
-                                    <img onLoad={this.handleImageLoaded} className="quizImg" style={{ opacity: loading ? 0.5 : 1 }} src={src} alt='an image'/>
-                                  )}
-                                </ProgressiveImage>
-                                
+                                <div>
+                                    <img
+                                    src={this.state.quizImageSrc}
+                                    onLoad={this.handleImageLoaded}
+                                    />
+                                    {this.state.loaded}
+                                </div>
                             </div>
                             <div className="quiz-text">
                                 {this.state.options}
