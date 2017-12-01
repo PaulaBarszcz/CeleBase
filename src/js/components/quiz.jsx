@@ -96,6 +96,14 @@ class QuizAnswersGame extends React.Component{
         })
 
         if (this.state.gameOver=== false) {
+            console.log(this.state.loaded);
+            let image = document.querySelector(".quizImg");
+
+            //console.dir(image.src);
+            if (image.src.indexOf("tiny-image.jpg") !== -1){
+            console.log("kicia z generateNewPhoto");
+            }
+
             this.generateNewPhoto();
             this.generateNewAns();
             this.startTimer();
@@ -104,6 +112,13 @@ class QuizAnswersGame extends React.Component{
                 timeForAnswer:9,
                 infoForNewGame: ""
             })
+            console.log(this.state.loaded);
+            //let image = document.querySelector(".quizImg");
+
+            //console.dir(image.src);
+            if (image.src.indexOf("tiny-image.jpg") !== -1){
+            console.log("kicia z generateNewPhoto");
+            }
 
         } else {
   
@@ -150,6 +165,7 @@ class QuizAnswersGame extends React.Component{
     }
 
     handleClickOption = (e, index) => {
+        
 
 
         if (this.state.gameOver==false){
@@ -166,10 +182,11 @@ class QuizAnswersGame extends React.Component{
                     infoForNewGame: ""
                 })
                 clearInterval(this.answerTimeId);
-                this.startTimer();
+                
 
                 this.generateNewPhoto();
                 this.generateNewAns();
+                this.startTimer();
 
 
             } else {
@@ -194,7 +211,13 @@ class QuizAnswersGame extends React.Component{
         //     imageStatus: 'loading'
         // })
 
-
+        console.log(this.state.loaded);
+        let image = document.querySelector(".quizImg");
+       
+        console.dir(image.src);
+        if (image.src.indexOf("tiny-image.jpg") !== -1){
+            console.log("kicia z generateNewPhoto");
+        }
  
         let randomNumber = Math.floor(Math.random()*(this.state.males.length + this.state.females.length));
 
@@ -295,6 +318,15 @@ class QuizAnswersGame extends React.Component{
 
     render(){
 
+        // let test =  (src, loading) => {
+        //     <img onLoad={this.handleImageLoaded} className="quizImg" style={{ opacity: loading ? 0.5 : 1 }} src={src} alt='an image'/>
+        //     console.log('loading',loading);
+        //     return loading
+        // }
+
+        // test();
+        
+
         // console.log(this.state.loaded);
         // let image = document.querySelector(".quizImg");
        
@@ -319,6 +351,8 @@ class QuizAnswersGame extends React.Component{
             display: "none",
             }
         }
+
+
         
         return (
             <div>
