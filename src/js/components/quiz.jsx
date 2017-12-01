@@ -1,4 +1,5 @@
 import React from 'react';
+var Loader = require('react-loader');
 
 class QuizAnswersGame extends React.Component{
     constructor(props){
@@ -20,7 +21,7 @@ class QuizAnswersGame extends React.Component{
             style: {},
             redWidth: "100%",
             redHeight: "100%",
-            imageStatus: 'loading',
+            loaded: false,
             objList: [],
             objLength: 0,
             currentId: 0,
@@ -50,11 +51,12 @@ class QuizAnswersGame extends React.Component{
             })
 
             this.generateNewPhoto();
+
         });
     }
 
     startTimer = () => {
-        if (this.state.imageStatus=="loaded") {
+        //if (this.state.imageStatus=="loaded") {
             clearInterval(this.answerTimeId);
 
             this.answerTimeId = setInterval(()=>{
@@ -72,7 +74,7 @@ class QuizAnswersGame extends React.Component{
                     })
                 }
             },1000);
-        }
+        //}
     }
 
     handleStart = () => {
@@ -86,6 +88,7 @@ class QuizAnswersGame extends React.Component{
                 timeForAnswer:9,
                 infoForNewGame: ""
             })
+
         } else {
   
             let randomNumber = Math.floor(Math.random()*(this.state.males.length + this.state.females.length));
@@ -109,6 +112,11 @@ class QuizAnswersGame extends React.Component{
     }
 
     handleGameOver = () => {
+
+        this.setState({
+            loaded: true
+        })
+
         this.image = document.querySelector(".quizImg");
 
         window.addEventListener('resize', event => {
@@ -127,18 +135,26 @@ class QuizAnswersGame extends React.Component{
 
     handleClickOption = (e, index) => {
 
+
         if (this.state.gameOver==false){
+            console.log("iii");
+            this.setState({
+                loaded: false
+            })
             
             if (e.target.innerText.indexOf(this.state.corrAns) !== -1) {
-            this.setState({
-                timeForAnswer: 9,
-                points: this.state.points+1,
-                infoForNewGame: ""
-            })
-            clearInterval(this.answerTimeId);
-            this.startTimer();
-            this.generateNewPhoto();
-            this.generateNewAns();
+
+                this.setState({
+                    timeForAnswer: 9,
+                    points: this.state.points+1,
+                    infoForNewGame: ""
+                })
+                clearInterval(this.answerTimeId);
+                this.startTimer();
+
+                this.generateNewPhoto();
+                this.generateNewAns();
+
 
             } else {
                 this.handleGameOver();
@@ -148,15 +164,21 @@ class QuizAnswersGame extends React.Component{
             this.setState({
                     infoForNewGame: "Kliknij start, żeby ponownie rozpocząć grę"
             })
+            console.log("p!");
+            this.setState({
+                loaded: true
+            })
+    
         }   
     }
 
     generateNewPhoto = () => {
 
-        this.setState({
-            imageStatus: 'loading'
-        })
+        // this.setState({
+        //     imageStatus: 'loading'
+        // })
 
+ 
         let randomNumber = Math.floor(Math.random()*(this.state.males.length + this.state.females.length));
 
         if (randomNumber < this.state.males.length){
@@ -181,6 +203,11 @@ class QuizAnswersGame extends React.Component{
                 corrAns: this.state.females[randomId].surname
             })
         }
+
+
+        this.setState({
+            loaded: true
+        })
     }
 
     generateNewAns = () => {
@@ -243,12 +270,14 @@ class QuizAnswersGame extends React.Component{
     }
 
     handleImageLoaded = () => {
-        this.setState({
-            imageStatus: 'loaded'
-        });
+        // this.setState({
+        //     imageStatus: 'loaded'
+        // });
     }
 
     render(){
+
+        console.log(this.state.loaded);
 
         if (this.state.gameOver ===true) {
             this.style= {
@@ -278,9 +307,11 @@ class QuizAnswersGame extends React.Component{
                                     <p>GAME OVER<br/><br/>
                                     <span>Points gained: {this.state.points}</span></p>
                                 </div>
-                                <img className="quizImg" 
-                                src={this.state.quizImageSrc}
-                                onLoad={this.handleImageLoaded} />
+                                <Loader loaded={this.state.loaded}>
+                                    <img className="quizImg" 
+                                    src={this.state.quizImageSrc}
+                                    onLoad={this.handleImageLoaded} />
+                                </Loader>
                             </div>
                             <div className="quiz-text">
                                 {this.state.options}
