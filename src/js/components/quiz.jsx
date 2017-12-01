@@ -303,6 +303,7 @@ class QuizAnswersGame extends React.Component{
             <div>
                 <div className="quiz" id="quiz">
                     <div className="">
+                    <h1>{this.state.infoForNewGame}</h1>
                         <div className="quizInfo">Who is in the picture? You have 9 seconds to decide.</div><br/><br/>
                             <div className="quizPoints">Points: {this.state.points}</div>
                             <div className="quizTime">Time left: 00:0{this.state.timeForAnswer}</div>
@@ -325,7 +326,6 @@ class QuizAnswersGame extends React.Component{
                                 {this.state.options}
                             </div>
                         </div>
-                        <h1>{this.state.infoForNewGame}</h1>
                     </div>
                 </div>
             </div>

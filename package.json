@@ -45,8 +45,6 @@
     "react": "^15.4.0",
     "react-dom": "^15.4.0",
     "react-load-image": "^0.1.5",
-    "react-loader": "^2.4.2",
-    "react-progressive-image": "^0.2.0",
     "react-router": "^3.0.3",
     "reactable": "^0.14.1",
     "spin.js": "^3.1.0"
