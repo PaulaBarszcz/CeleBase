@@ -23,6 +23,7 @@ class QuizAnswersGame extends React.Component{
             redHeight: "100%",
             loaded: false,
             loading: false,
+            readyAndLoaded: false,
             objList: [],
             objLength: 0,
             currentId: 0,
@@ -57,31 +58,67 @@ class QuizAnswersGame extends React.Component{
     }
 
     startTimer = () => {
-        //if (this.state.loaded==true) {
 
-            console.log(this.state.loaded);
-            let image = document.querySelector(".quizImg");
-            //console.log(image);
-            if (image !== null) {
-                if (image.src.indexOf("spinner.gif") !== -1){
-                    console.log("spinnnner");
-                } else {
-                console.dir(image.src);
-                }
+         let image = document.querySelector(".quizImg");
+        // let imageloader = document.querySelector(".imageloader");
+        // if (imageloader !== null) {
+        //     //let imageloading = document.querySelector(".imageloader-loading");
+        //     console.log(imageloader.classList);
+        //     console.log(imageloader.classList.contains("imageloader-loaded"));
+        // }
+        
+
+
+            // console.log(this.state.loaded);
+            // console.log('this.isLoading',this.isLoading);
+            // console.log('this.isLoaded',this.isLoaded);
+            // console.log('this.isPending',this.isPending);
+
+
+
+                        
+            console.log('Z TIMER this.isLoaded',this.isLoaded);
             
-            }
-            
             if (image !== null) {
+
                 
-                if (image.src.indexOf("tiny-image.jpg") !== -1){
-                    console.log("kicia");
-                } else {
+
+                 //console.log(imageloader.classList);
+
+                //console.log(this.isLoaded);
+
+                //if (this.isLoaded && this.state.timeForAnswer===9) {
+                   
                     clearInterval(this.answerTimeId);
 
                     this.answerTimeId = setInterval(()=>{
-                        this.setState({
-                            timeForAnswer: this.state.timeForAnswer - 1
-                        });
+                        let imageloader = document.querySelector(".imageloader");
+                this.isPending = imageloader.classList.contains("imageloader-pending");
+
+                this.isLoading = imageloader.classList.contains("imageloader-loading");
+                this.isLoaded = imageloader.classList.contains("imageloader-loaded");
+                
+                        console.log('!!!!!!!!!!!');
+                        console.log('this.isPending',this.isPending);
+                        console.log('this.isLoading',this.isLoading);
+                        console.log('this.isLoaded',this.isLoaded);
+
+                        
+                        if (this.isLoading) {
+
+                            this.setState({
+                                timeForAnswer: this.state.timeForAnswer
+                            }); 
+                        }
+
+
+                        if (this.isLoaded) {
+
+                            this.setState({
+                                timeForAnswer: this.state.timeForAnswer - 1
+                            }); 
+                        }
+                        
 
                         if (this.state.timeForAnswer===0){
                             clearInterval(this.answerTimeId);
@@ -93,19 +130,20 @@ class QuizAnswersGame extends React.Component{
                             })
                         }
                     },1000);
-                }
+                //}
             }
         //}
     }
 
     handleStart = () => {
+        //console.log('Z handleStart this.isLoaded',this.isLoaded);
 
         this.setState({
             loaded: false
         })
 
         if (this.state.gameOver=== false) {
-            console.log(this.state.loaded);
+            //console.log(this.state.loaded);
             let image = document.querySelector(".quizImg");
 
             this.generateNewPhoto();
@@ -116,7 +154,7 @@ class QuizAnswersGame extends React.Component{
                 timeForAnswer:9,
                 infoForNewGame: ""
             })
-            console.log(this.state.loaded);
+            //console.log(this.state.loaded);
          
 
         } else {
@@ -168,7 +206,7 @@ class QuizAnswersGame extends React.Component{
 
 
         if (this.state.gameOver==false){
-            console.log("iii");
+            //console.log("iii");
             this.setState({
                 loaded: false
             })
@@ -185,6 +223,7 @@ class QuizAnswersGame extends React.Component{
 
                 this.generateNewPhoto();
                 this.generateNewAns();
+
                 this.startTimer();
 
 
@@ -196,7 +235,7 @@ class QuizAnswersGame extends React.Component{
             this.setState({
                     infoForNewGame: "Kliknij start, żeby ponownie rozpocząć grę"
             })
-            console.log("p!");
+            //console.log("p!");
             this.setState({
                 loaded: true
             })
@@ -305,26 +344,40 @@ class QuizAnswersGame extends React.Component{
         });
     }
 
+
     render(){
         let image = document.querySelector(".quizImg");
-        //if (image !== null) {
-            let imageloading = document.querySelector(".imageloader-loading");
-            console.log(imageloading);
-            
-            //console.log(image.src);
-        //}
+        let imageloader = document.querySelector(".imageloader");
+        if (imageloader !== null) {
 
-        console.log(this.state.loaded);
-            //let image = document.querySelector(".quizImg");
-            //console.log(image);
-            if (image !== null) {
-                if (image.src.indexOf("spinner.gif") !== -1){
-                    console.log("spinnnner");
-                } else {
-                console.dir(image.src);
-                }
-            
-            }
+
+            //let imageloading = document.querySelector(".imageloader-loading");
+            //console.log(imageloader.classList);
+
+
+
+
+            // this.isPending = imageloader.classList.contains("imageloader-pending");
+
+            // this.isLoading = imageloader.classList.contains("imageloader-loading");
+            // this.isLoaded = imageloader.classList.contains("imageloader-loaded");
+
+
+
+
+            // console.log('this.isPending',this.isPending);
+            // console.log('this.isLoading',this.isLoading);
+            // console.log('this.isLoaded',this.isLoaded);
+            // console.log('this.state.timeForAnswer',this.state.timeForAnswer);
+
+
+           
+
+        }
+
+
+
+
 
 
         if (this.state.gameOver ===true) {
@@ -340,22 +393,11 @@ class QuizAnswersGame extends React.Component{
             display: "none",
             }
         }
-
-        //this.loading=false;
-        //console.log(this.state.loaded);
-        //let image = document.querySelector(".quizImg");
-        
+     
         
  
-        function Preloader(props) {
-            
-                //let loading = true;
-                
-                //console.log('!!!loading',loading);
-
-            
+        function Preloader(props) {        
             return <img src="images/spinner.gif" />;
-            
         }
         
          
