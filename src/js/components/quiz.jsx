@@ -1,5 +1,5 @@
 import React from 'react';
-import ProgressiveImage from 'react-progressive-image';
+import ImageLoader from 'react-load-image';
 
 class QuizAnswersGame extends React.Component{
     constructor(props){
@@ -22,6 +22,7 @@ class QuizAnswersGame extends React.Component{
             redWidth: "100%",
             redHeight: "100%",
             loaded: false,
+            loading: false,
             objList: [],
             objLength: 0,
             currentId: 0,
@@ -56,14 +57,22 @@ class QuizAnswersGame extends React.Component{
     }
 
     startTimer = () => {
-        if (this.state.loaded==true) {
+        //if (this.state.loaded==true) {
 
             console.log(this.state.loaded);
             let image = document.querySelector(".quizImg");
-           
+            //console.log(image);
+            if (image !== null) {
+                if (image.src.indexOf("spinner.gif") !== -1){
+                    console.log("spinnnner");
+                } else {
+                console.dir(image.src);
+                }
+            
+            }
             
             if (image !== null) {
-                console.dir(image.src);
+                
                 if (image.src.indexOf("tiny-image.jpg") !== -1){
                     console.log("kicia");
                 } else {
@@ -86,7 +95,7 @@ class QuizAnswersGame extends React.Component{
                     },1000);
                 }
             }
-        }
+        //}
     }
 
     handleStart = () => {
@@ -99,11 +108,6 @@ class QuizAnswersGame extends React.Component{
             console.log(this.state.loaded);
             let image = document.querySelector(".quizImg");
 
-            //console.dir(image.src);
-            if (image.src.indexOf("tiny-image.jpg") !== -1){
-            console.log("kicia z generateNewPhoto");
-            }
-
             this.generateNewPhoto();
             this.generateNewAns();
             this.startTimer();
@@ -113,12 +117,7 @@ class QuizAnswersGame extends React.Component{
                 infoForNewGame: ""
             })
             console.log(this.state.loaded);
-            //let image = document.querySelector(".quizImg");
-
-            //console.dir(image.src);
-            if (image.src.indexOf("tiny-image.jpg") !== -1){
-            console.log("kicia z generateNewPhoto");
-            }
+         
 
         } else {
   
@@ -207,17 +206,7 @@ class QuizAnswersGame extends React.Component{
 
     generateNewPhoto = () => {
 
-        // this.setState({
-        //     imageStatus: 'loading'
-        // })
-
-        console.log(this.state.loaded);
-        let image = document.querySelector(".quizImg");
-       
-        console.dir(image.src);
-        if (image.src.indexOf("tiny-image.jpg") !== -1){
-            console.log("kicia z generateNewPhoto");
-        }
+     
  
         let randomNumber = Math.floor(Math.random()*(this.state.males.length + this.state.females.length));
 
@@ -317,26 +306,26 @@ class QuizAnswersGame extends React.Component{
     }
 
     render(){
+        let image = document.querySelector(".quizImg");
+        //if (image !== null) {
+            let imageloading = document.querySelector(".imageloader-loading");
+            console.log(imageloading);
+            
+            //console.log(image.src);
+        //}
 
-        // let test =  (src, loading) => {
-        //     <img onLoad={this.handleImageLoaded} className="quizImg" style={{ opacity: loading ? 0.5 : 1 }} src={src} alt='an image'/>
-        //     console.log('loading',loading);
-        //     return loading
-        // }
+        console.log(this.state.loaded);
+            //let image = document.querySelector(".quizImg");
+            //console.log(image);
+            if (image !== null) {
+                if (image.src.indexOf("spinner.gif") !== -1){
+                    console.log("spinnnner");
+                } else {
+                console.dir(image.src);
+                }
+            
+            }
 
-        // test();
-        
-
-        // console.log(this.state.loaded);
-        // let image = document.querySelector(".quizImg");
-       
-        
-        // if (image !== null) {
-        //     console.dir(image.src);
-        //     if (image.src.indexOf("tiny-image.jpg") !== -1){
-        //         console.log("kicia");
-        //     }
-        // }
 
         if (this.state.gameOver ===true) {
             this.style= {
@@ -352,7 +341,25 @@ class QuizAnswersGame extends React.Component{
             }
         }
 
+        //this.loading=false;
+        //console.log(this.state.loaded);
+        //let image = document.querySelector(".quizImg");
+        
+        
+ 
+        function Preloader(props) {
+            
+                //let loading = true;
+                
+                //console.log('!!!loading',loading);
 
+            
+            return <img src="images/spinner.gif" />;
+            
+        }
+        
+         
+        
         
         return (
             <div>
@@ -368,11 +375,15 @@ class QuizAnswersGame extends React.Component{
                                     <p>GAME OVER<br/><br/>
                                     <span>Points gained: {this.state.points}</span></p>
                                 </div>
-                                <ProgressiveImage src={this.state.quizImageSrc} placeholder='images/tiny-image.jpg'>
-                                  {(src, loading) => (
-                                    <img onLoad={this.handleImageLoaded} className="quizImg" style={{ opacity: loading ? 0.5 : 1 }} src={src} alt='an image'/>
-                                  )}
-                                </ProgressiveImage>
+                                
+
+                                <ImageLoader className="ImageLoader"
+                                    src={this.state.quizImageSrc}
+                                    >
+                                    <img className="quizImg"/>
+                                    <div>Error!</div>
+                                    <Preloader />
+                                </ImageLoader>
                                 
                             </div>
                             <div className="quiz-text">
