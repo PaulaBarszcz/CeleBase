@@ -25,7 +25,8 @@ class QuizAnswersGame extends React.Component{
             objList: [],
             objLength: 0,
             currentId: 0,
-            options: []
+            options: [],
+            firstInfo: `Who is in the picture? You have 9 seconds to decide.`
         };
     }
 
@@ -105,7 +106,8 @@ class QuizAnswersGame extends React.Component{
             this.setState({
                 points: 0,
                 timeForAnswer:9,
-                infoForNewGame: ""
+                infoForNewGame: "",
+                firstInfo: null
             })         
 
         } else {
@@ -177,7 +179,7 @@ class QuizAnswersGame extends React.Component{
 
         } else {
             this.setState({
-                    infoForNewGame: "Kliknij start, żeby ponownie rozpocząć grę"
+                    infoForNewGame: "Click START button to begin new game"
             })    
         }   
     }
@@ -298,13 +300,14 @@ class QuizAnswersGame extends React.Component{
         function Preloader(props) {        
             return <img src="images/spinner.gif" />;
         }
+
         
         return (
             <div>
                 <div className="quiz" id="quiz">
                     <div className="">
                     <h1>{this.state.infoForNewGame}</h1>
-                        <div className="quizInfo">Who is in the picture? You have 9 seconds to decide.</div><br/><br/>
+                        <div className="quizInfo">{this.state.firstInfo}</div><br/><br/>
                             <div className="quizPoints">Points: {this.state.points}</div>
                             <div className="quizTime">Time left: 00:0{this.state.timeForAnswer}</div>
                             <button className="startButton" onClick={this.handleStart}>START</button>

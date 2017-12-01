@@ -1,4 +1,5 @@
 import React from 'react';
+import ImageLoader from 'react-load-image';
 
 class Slider extends React.Component{
     constructor(props) {
@@ -135,6 +136,10 @@ class Slider extends React.Component{
             let copyOfObj = this.state.objList.slice(); 
         }
 
+        function Preloader(props) {        
+            return <img src="images/spinner.gif" />;
+        }
+
         //console.log(this.props.route.time);
 
         return <div className="container">
@@ -150,7 +155,12 @@ class Slider extends React.Component{
 
                 <div className="main-slider-slides-cnt">
                     <div className="main-slide active">
-                        <img className="main-slide-image" src={this.state.photo} />
+                        <ImageLoader className="ImageLoader main-slide-image" src={this.state.photo}
+                            >
+                            <img />
+                            <div>Error!</div>
+                            <Preloader />
+                        </ImageLoader>
                         <div className="main-slide-text">
                             {this.state.name} {this.state.surname},
                              {' '+this.state.nationality}<br/>
