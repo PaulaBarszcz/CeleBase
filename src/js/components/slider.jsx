@@ -157,7 +157,7 @@ class Slider extends React.Component{
                     <div className="main-slide active">
                         <ImageLoader className="ImageLoader main-slide-image" src={this.state.photo}
                             >
-                            <img />
+                            <img className="main-slide-image"/>
                             <div>Error!</div>
                             <Preloader />
                         </ImageLoader>

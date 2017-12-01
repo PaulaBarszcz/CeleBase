@@ -15,7 +15,8 @@ class InfoTable extends React.Component{
     }
 
     componentDidMount() {
-        this.objList = [];            
+        this.objList = []; 
+                 
         fetch(`https://celebase-project.firebaseio.com/Actors.json`).then( r =>   r.json() ).then( response => {
 
             this.objList.push(response);
@@ -54,10 +55,11 @@ class InfoTable extends React.Component{
 
     render(){
 
+        this.tableContent=<img src="images/spinner.gif" />;  
         let Table = Reactable.Table;
 
-        return <div className = "infotable" id="infotable">
-            <div className="container">
+        if (this.state.objListNoPhotoArranged.length!==0) {
+            this.tableContent=<div className="container">
                 <div className="tableBcg">
                     <p className="sortInfo">Click on the name of the column to sort infotable by it.<br />Click it again for reverse order.</p>
                     <div className="containsTable">
@@ -72,7 +74,12 @@ class InfoTable extends React.Component{
                         defaultSort={{column: 'Name', direction: 'asc'}} itemsPerPage={8} pageButtonLimit={9} />
                     </div>
                 </div>
-            </div>
+            </div>;
+        }
+
+        
+        return <div className = "infotable" id="infotable">
+            {this.tableContent}
         </div>;
     }
 }

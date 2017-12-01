@@ -130,6 +130,12 @@ class QuizAnswersGame extends React.Component{
 
     componentWillUnmount(){
         clearInterval(this.answerTimeId);
+        window.removeEventListener('resize', event => {
+            this.setState({
+                redWidth: this.image.clientWidth,
+                redHeight: this.image.clientHeight
+            })
+        });
     }
 
     handleGameOver = () => {
@@ -140,12 +146,15 @@ class QuizAnswersGame extends React.Component{
 
         this.image = document.querySelector(".quizImg");
 
-        window.addEventListener('resize', event => {
-            this.setState({
-                redWidth: this.image.clientWidth,
-                redHeight: this.image.clientHeight
-            })
-        });
+        if (this.refs.myRef) {
+            window.addEventListener('resize', event => {
+                this.setState({
+                    redWidth: this.image.clientWidth,
+                    redHeight: this.image.clientHeight
+                })
+            });
+        }
+        
 
         this.setState({
             gameOver: true,
@@ -320,7 +329,7 @@ class QuizAnswersGame extends React.Component{
                                 <ImageLoader className="ImageLoader"
                                     src={this.state.quizImageSrc}
                                     >
-                                    <img className="quizImg"/>
+                                    <img className="quizImg" ref="MyRef"/>
                                     <div>Error!</div>
                                     <Preloader />
                                 </ImageLoader>
