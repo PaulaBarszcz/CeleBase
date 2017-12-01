@@ -1,5 +1,5 @@
 import React from 'react';
-var Loader = require('react-loader');
+import ProgressiveImage from 'react-progressive-image';
 
 class QuizAnswersGame extends React.Component{
     constructor(props){
@@ -56,7 +56,7 @@ class QuizAnswersGame extends React.Component{
     }
 
     startTimer = () => {
-        //if (this.state.imageStatus=="loaded") {
+        if (this.state.loaded==true) {
             clearInterval(this.answerTimeId);
 
             this.answerTimeId = setInterval(()=>{
@@ -74,10 +74,14 @@ class QuizAnswersGame extends React.Component{
                     })
                 }
             },1000);
-        //}
+        }
     }
 
     handleStart = () => {
+
+        this.setState({
+            loaded: false
+        })
 
         if (this.state.gameOver=== false) {
             this.generateNewPhoto();
@@ -205,9 +209,7 @@ class QuizAnswersGame extends React.Component{
         }
 
 
-        this.setState({
-            loaded: true
-        })
+ 
     }
 
     generateNewAns = () => {
@@ -267,12 +269,15 @@ class QuizAnswersGame extends React.Component{
                 corrAns: this.state.females[this.randomId].surname
             })
         }
+               this.setState({
+            loaded: true
+        })
     }
 
     handleImageLoaded = () => {
-        // this.setState({
-        //     imageStatus: 'loaded'
-        // });
+        this.setState({
+            loaded: true
+        });
     }
 
     render(){
@@ -307,11 +312,12 @@ class QuizAnswersGame extends React.Component{
                                     <p>GAME OVER<br/><br/>
                                     <span>Points gained: {this.state.points}</span></p>
                                 </div>
-                                <Loader loaded={this.state.loaded}>
-                                    <img className="quizImg" 
-                                    src={this.state.quizImageSrc}
-                                    onLoad={this.handleImageLoaded} />
-                                </Loader>
+                                <ProgressiveImage src={this.state.quizImageSrc} placeholder='images/tiny-image.jpg'>
+                                  {(src, loading) => (
+                                    <img onLoad={this.handleImageLoaded} className="quizImg" style={{ opacity: loading ? 0.5 : 1 }} src={src} alt='an image'/>
+                                  )}
+                                </ProgressiveImage>
+                                
                             </div>
                             <div className="quiz-text">
                                 {this.state.options}
