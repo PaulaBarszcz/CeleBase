@@ -21,8 +21,6 @@ class QuizAnswersGame extends React.Component{
             style: {},
             redWidth: "100%",
             redHeight: "100%",
-            loaded: false,
-            loading: false,
             readyAndLoaded: false,
             objList: [],
             objLength: 0,
@@ -59,92 +57,47 @@ class QuizAnswersGame extends React.Component{
 
     startTimer = () => {
 
-         let image = document.querySelector(".quizImg");
-        // let imageloader = document.querySelector(".imageloader");
-        // if (imageloader !== null) {
-        //     //let imageloading = document.querySelector(".imageloader-loading");
-        //     console.log(imageloader.classList);
-        //     console.log(imageloader.classList.contains("imageloader-loaded"));
-        // }
-        
-
-
-            // console.log(this.state.loaded);
-            // console.log('this.isLoading',this.isLoading);
-            // console.log('this.isLoaded',this.isLoaded);
-            // console.log('this.isPending',this.isPending);
-
-
-
-                        
-            console.log('Z TIMER this.isLoaded',this.isLoaded);
-            
+        let image = document.querySelector(".quizImg");
+       
             if (image !== null) {
-
-                
-
-                 //console.log(imageloader.classList);
-
-                //console.log(this.isLoaded);
-
-                //if (this.isLoaded && this.state.timeForAnswer===9) {
-                   
-                    clearInterval(this.answerTimeId);
-
-                    this.answerTimeId = setInterval(()=>{
-                        let imageloader = document.querySelector(".imageloader");
+   
+            clearInterval(this.answerTimeId);
+            this.answerTimeId = setInterval(()=>{
+                let imageloader = document.querySelector(".imageloader");
                 this.isPending = imageloader.classList.contains("imageloader-pending");
-
                 this.isLoading = imageloader.classList.contains("imageloader-loading");
                 this.isLoaded = imageloader.classList.contains("imageloader-loaded");
-                
-                        console.log('!!!!!!!!!!!');
-                        console.log('this.isPending',this.isPending);
-                        console.log('this.isLoading',this.isLoading);
-                        console.log('this.isLoaded',this.isLoaded);
-
                         
-                        if (this.isLoading) {
+                if (this.isLoading) {
 
-                            this.setState({
-                                timeForAnswer: this.state.timeForAnswer
-                            }); 
+                    this.setState({
+                        timeForAnswer: this.state.timeForAnswer
+                    }); 
+                }
+
+                if (this.isLoaded) {
+
+                    this.setState({
+                        timeForAnswer: this.state.timeForAnswer - 1
+                    }); 
+                }
+
+                if (this.state.timeForAnswer===0){
+                    clearInterval(this.answerTimeId);
+                    this.handleGameOver();
+                    this.setState({
+                        style: {
+                            display: "block"
                         }
-
-
-                        if (this.isLoaded) {
-
-                            this.setState({
-                                timeForAnswer: this.state.timeForAnswer - 1
-                            }); 
-                        }
-                        
-
-                        if (this.state.timeForAnswer===0){
-                            clearInterval(this.answerTimeId);
-                            this.handleGameOver();
-                            this.setState({
-                                style: {
-                                    display: "block"
-                                }
-                            })
-                        }
-                    },1000);
-                //}
-            }
-        //}
+                    })
+                }
+            },1000);
+        }
     }
 
     handleStart = () => {
-        //console.log('Z handleStart this.isLoaded',this.isLoaded);
-
-        this.setState({
-            loaded: false
-        })
 
         if (this.state.gameOver=== false) {
-            //console.log(this.state.loaded);
-            let image = document.querySelector(".quizImg");
 
             this.generateNewPhoto();
             this.generateNewAns();
@@ -153,9 +106,7 @@ class QuizAnswersGame extends React.Component{
                 points: 0,
                 timeForAnswer:9,
                 infoForNewGame: ""
-            })
-            //console.log(this.state.loaded);
-         
+            })         
 
         } else {
   
@@ -203,10 +154,7 @@ class QuizAnswersGame extends React.Component{
 
     handleClickOption = (e, index) => {
         
-
-
         if (this.state.gameOver==false){
-            //console.log("iii");
             this.setState({
                 loaded: false
             })
@@ -219,13 +167,9 @@ class QuizAnswersGame extends React.Component{
                     infoForNewGame: ""
                 })
                 clearInterval(this.answerTimeId);
-                
-
                 this.generateNewPhoto();
                 this.generateNewAns();
-
                 this.startTimer();
-
 
             } else {
                 this.handleGameOver();
@@ -234,19 +178,12 @@ class QuizAnswersGame extends React.Component{
         } else {
             this.setState({
                     infoForNewGame: "Kliknij start, żeby ponownie rozpocząć grę"
-            })
-            //console.log("p!");
-            this.setState({
-                loaded: true
-            })
-    
+            })    
         }   
     }
 
     generateNewPhoto = () => {
 
-     
- 
         let randomNumber = Math.floor(Math.random()*(this.state.males.length + this.state.females.length));
 
         if (randomNumber < this.state.males.length){
@@ -271,9 +208,6 @@ class QuizAnswersGame extends React.Component{
                 corrAns: this.state.females[randomId].surname
             })
         }
-
-
- 
     }
 
     generateNewAns = () => {
@@ -346,40 +280,7 @@ class QuizAnswersGame extends React.Component{
 
 
     render(){
-        let image = document.querySelector(".quizImg");
-        let imageloader = document.querySelector(".imageloader");
-        if (imageloader !== null) {
-
-
-            //let imageloading = document.querySelector(".imageloader-loading");
-            //console.log(imageloader.classList);
-
-
-
-
-            // this.isPending = imageloader.classList.contains("imageloader-pending");
-
-            // this.isLoading = imageloader.classList.contains("imageloader-loading");
-            // this.isLoaded = imageloader.classList.contains("imageloader-loaded");
-
-
-
-
-            // console.log('this.isPending',this.isPending);
-            // console.log('this.isLoading',this.isLoading);
-            // console.log('this.isLoaded',this.isLoaded);
-            // console.log('this.state.timeForAnswer',this.state.timeForAnswer);
-
-
-           
-
-        }
-
-
-
-
-
-
+    
         if (this.state.gameOver ===true) {
             this.style= {
                 display: "block",
@@ -394,14 +295,9 @@ class QuizAnswersGame extends React.Component{
             }
         }
      
-        
- 
         function Preloader(props) {        
             return <img src="images/spinner.gif" />;
         }
-        
-         
-        
         
         return (
             <div>
@@ -417,8 +313,6 @@ class QuizAnswersGame extends React.Component{
                                     <p>GAME OVER<br/><br/>
                                     <span>Points gained: {this.state.points}</span></p>
                                 </div>
-                                
-
                                 <ImageLoader className="ImageLoader"
                                     src={this.state.quizImageSrc}
                                     >
@@ -426,7 +320,6 @@ class QuizAnswersGame extends React.Component{
                                     <div>Error!</div>
                                     <Preloader />
                                 </ImageLoader>
-                                
                             </div>
                             <div className="quiz-text">
                                 {this.state.options}
