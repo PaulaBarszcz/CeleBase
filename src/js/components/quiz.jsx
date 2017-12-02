@@ -141,10 +141,6 @@ class QuizAnswersGame extends React.Component{
 
     handleGameOver = () => {
 
-        this.setState({
-            loaded: true
-        })
-
         this.image = document.querySelector(".quizImg");
 
         if (this.refs.myRef) {
@@ -159,6 +155,7 @@ class QuizAnswersGame extends React.Component{
 
         this.setState({
             gameOver: true,
+            alreadyAsked: [],
             redWidth: this.image.clientWidth,
             redHeight: this.image.clientHeight
         })
@@ -202,9 +199,9 @@ class QuizAnswersGame extends React.Component{
         let lengthAA = alreadyAsked.length;
         let lengthAAPlusOne = lengthAA + 1;
 
-        console.log(alreadyAsked);
-        console.log(lengthAA);
-        console.log(lengthAAPlusOne);
+        //console.log(alreadyAsked);
+        //console.log(lengthAA);
+        //console.log(lengthAAPlusOne);
 
         // alreadyAsked.push(randomNumber);
 
@@ -217,32 +214,43 @@ class QuizAnswersGame extends React.Component{
 
             if (alreadyAsked.indexOf(this.randomNumberOne) == -1) {
                 alreadyAsked.push(this.randomNumberOne);
-                lengthAA = lengthAAPlusOne;
-                console.log("nowa liczba");
+                lengthAA = lengthAA + 1;
+                //console.log("nowa liczba");
                 this.randomNumber = this.randomNumberOne;
+                console.log('Z IFa: this.randomNumberOne',this.randomNumberOne);
+                console.log('Z IFa: this.randomNumber',this.randomNumber);
             } else {
                 lengthAA = lengthAA;
-                console.log("stara liczba");
+                //console.log("stara liczba");
+                //console.log('Z ELSEA : alreadyAsked',alreadyAsked);
             }
         } // end of while
 
-        console.log('alreadyAsked',alreadyAsked);
-        console.log('alreadyAsked.length-1',alreadyAsked.length-1);
-        console.log('this.randomNumber',this.randomNumber);
-
-
+        //console.log('alreadyAsked',alreadyAsked);
 
         this.setState({
             alreadyAsked: alreadyAsked
         })
 
-        console.log(this.state.alreadyAsked);
+        //console.log(this.state.alreadyAsked);
+        //console.log('this.state.alreadyAsked.length',this.state.alreadyAsked.length);
+        let totalLength = this.state.males.length + this.state.females.length;
+        //console.log(totalLength);
+        //console.log('alreadyAsked.length-1',alreadyAsked.length-1);
+        //console.log('this.randomNumber',this.randomNumber);
+
+        if (this.state.alreadyAsked.length === totalLength) {
+            this.setState({
+                quizImageSrc: "images/tiny-image.jpg"
+            })
+            
+        }
 
 
 
         if (this.randomNumber < this.state.males.length){
             this.actualGender = 0;
-            let randomId = Math.floor(Math.random()*this.state.males.length);
+            let randomId = this.randomNumber;
             this.randomId = randomId;
             this.setState({
                 actualGender: 0,
@@ -253,7 +261,7 @@ class QuizAnswersGame extends React.Component{
 
         }else {
             this.actualGender = 1;
-            let randomId = Math.floor(Math.random()*this.state.females.length);
+            let randomId = (this.randomNumber - this.state.males.length);
             this.randomId = randomId;
             this.setState({
                 actualGender: 1,
