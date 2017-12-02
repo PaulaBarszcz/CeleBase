@@ -113,14 +113,14 @@ class QuizAnswersGame extends React.Component{
 
         } else {
   
-            let randomNumber = Math.floor(Math.random()*(this.state.males.length + this.state.females.length));
+            this.randomNumber = Math.floor(Math.random()*(this.state.males.length + this.state.females.length));
             this.generateNewPhoto();
             this.generateNewAns();
             this.setState({
                 gameOver: false,
                 timeForAnswer:9,
                 points: 0,
-                currentId: randomNumber,
+                currentId: this.randomNumber,
                 infoForNewGame: ""
             })
         }
@@ -196,7 +196,7 @@ class QuizAnswersGame extends React.Component{
 
     generateNewPhoto = () => {
 
-        let randomNumber = Math.floor(Math.random()*(this.state.males.length + this.state.females.length));
+        //let randomNumber = Math.floor(Math.random()*(this.state.males.length + this.state.females.length));
 
         let alreadyAsked = this.state.alreadyAsked.slice();
         let lengthAA = alreadyAsked.length;
@@ -206,7 +206,31 @@ class QuizAnswersGame extends React.Component{
         console.log(lengthAA);
         console.log(lengthAAPlusOne);
 
-        alreadyAsked.push(randomNumber);
+        // alreadyAsked.push(randomNumber);
+
+      
+
+
+        while (lengthAA < lengthAAPlusOne) {
+            this.randomNumberOne = Math.floor(Math.random()*(this.state.males.length + this.state.females.length));
+            console.log('this.randomNumberOne',this.randomNumberOne);
+
+            if (alreadyAsked.indexOf(this.randomNumberOne) == -1) {
+                alreadyAsked.push(this.randomNumberOne);
+                lengthAA = lengthAAPlusOne;
+                console.log("nowa liczba");
+                this.randomNumber = this.randomNumberOne;
+            } else {
+                lengthAA = lengthAA;
+                console.log("stara liczba");
+            }
+        } // end of while
+
+        console.log('alreadyAsked',alreadyAsked);
+        console.log('alreadyAsked.length-1',alreadyAsked.length-1);
+        console.log('this.randomNumber',this.randomNumber);
+
+
 
         this.setState({
             alreadyAsked: alreadyAsked
@@ -215,19 +239,8 @@ class QuizAnswersGame extends React.Component{
         console.log(this.state.alreadyAsked);
 
 
-         // while (optionsId.length < 4) {
-         //        let num = Math.floor(Math.random()*this.state.males.length);
-         //        if(optionsId.indexOf(num) == -1){
-         //            optionsId.push(num);
-         //        } else {
-         //            optionsId = optionsId;
-         //        }
-         //    } // end of while (filling optionId array with numbers)
 
-
-
-
-        if (randomNumber < this.state.males.length){
+        if (this.randomNumber < this.state.males.length){
             this.actualGender = 0;
             let randomId = Math.floor(Math.random()*this.state.males.length);
             this.randomId = randomId;
@@ -321,6 +334,8 @@ class QuizAnswersGame extends React.Component{
 
 
     render(){
+
+        //console.log('FROM RENDER this.state.alreadyAsked',this.state.alreadyAsked);
     
         if (this.state.gameOver ===true) {
             this.style= {
