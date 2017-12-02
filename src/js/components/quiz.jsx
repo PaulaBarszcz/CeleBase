@@ -5,6 +5,7 @@ class QuizAnswersGame extends React.Component{
     constructor(props){
         super(props);
         this.state={
+            alreadyAsked: [],
             possNameSurnames: [],
             possPhotos: [],
             possNationalities: [],
@@ -196,6 +197,35 @@ class QuizAnswersGame extends React.Component{
     generateNewPhoto = () => {
 
         let randomNumber = Math.floor(Math.random()*(this.state.males.length + this.state.females.length));
+
+        let alreadyAsked = this.state.alreadyAsked.slice();
+        let lengthAA = alreadyAsked.length;
+        let lengthAAPlusOne = lengthAA + 1;
+
+        console.log(alreadyAsked);
+        console.log(lengthAA);
+        console.log(lengthAAPlusOne);
+
+        alreadyAsked.push(randomNumber);
+
+        this.setState({
+            alreadyAsked: alreadyAsked
+        })
+
+        console.log(this.state.alreadyAsked);
+
+
+         // while (optionsId.length < 4) {
+         //        let num = Math.floor(Math.random()*this.state.males.length);
+         //        if(optionsId.indexOf(num) == -1){
+         //            optionsId.push(num);
+         //        } else {
+         //            optionsId = optionsId;
+         //        }
+         //    } // end of while (filling optionId array with numbers)
+
+
+
 
         if (randomNumber < this.state.males.length){
             this.actualGender = 0;
