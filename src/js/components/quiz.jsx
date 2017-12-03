@@ -190,9 +190,7 @@ class QuizAnswersGame extends React.Component{
                     this.setState({
                         gameOver: true,
                         gameWon: true,
-                       
                         points: this.state.points+1
-                       
                     })
                     this.handleGameOver();
                 }  
@@ -221,10 +219,8 @@ class QuizAnswersGame extends React.Component{
         let alreadyAsked = this.state.alreadyAsked.slice();
         let lengthAA = alreadyAsked.length;
         let lengthAAPlusOne = lengthAA + 1;
-
         let totalLength = this.state.males.length + this.state.females.length;
  
-
         while (lengthAA < lengthAAPlusOne) {
             this.randomNumberOne = Math.floor(Math.random()*(this.state.males.length + this.state.females.length));
 
@@ -234,20 +230,17 @@ class QuizAnswersGame extends React.Component{
                     gameOver: true,
                     gameWon: true,
                     alreadyAsked: [],
-                   
                 })
                 this.handleGameOver();
-                
                 lengthAA = lengthAA + 1;
+
             } else if (alreadyAsked.indexOf(this.randomNumberOne) == -1) {
                 alreadyAsked.push(this.randomNumberOne);
                 lengthAA = lengthAA + 1;
-              
                 this.randomNumber = this.randomNumberOne;
                
             } else {
                 lengthAA = lengthAA;
-  
             }
         } // end of while
 
@@ -256,7 +249,6 @@ class QuizAnswersGame extends React.Component{
         })
 
        
-
         if (this.randomNumber < this.state.males.length){
             this.actualGender = 0;
             let randomId = this.randomNumber;

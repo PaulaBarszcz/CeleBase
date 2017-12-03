@@ -71,7 +71,7 @@ class InfoTable extends React.Component{
                             'Nationality',
                             'IMDB'
                         ]}
-                        defaultSort={{column: 'Name', direction: 'asc'}} itemsPerPage={8} pageButtonLimit={9} />
+                        defaultSort={{column: 'Name', direction: 'asc'}} itemsPerPage={15} pageButtonLimit={20} />
                     </div>
                 </div>
             </div>;
