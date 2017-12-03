@@ -53,9 +53,9 @@ class QuizAnswersGame extends React.Component{
             })
 
             //this.generateNewPhoto();
-            this.setState({
-                alreadyAsked: []
-            })
+            // this.setState({
+            //     alreadyAsked: []
+            // })
             console.log('!!!!!this.state.alreadyAsked',this.state.alreadyAsked);
             
 
@@ -121,17 +121,18 @@ class QuizAnswersGame extends React.Component{
 
         } else {
   
-            this.randomNumber = Math.floor(Math.random()*(this.state.males.length + this.state.females.length));
-            this.generateNewPhoto();
-            this.generateNewAns();
+
             this.setState({
                 alreadyAsked: [],
                 gameOver: false,
                 timeForAnswer:9,
                 points: 0,
-                currentId: this.randomNumber,
                 infoForNewGame: ""
             })
+
+            this.generateNewPhoto();
+            this.generateNewAns();
+
         }
 
         clearInterval(this.answerTimeId);
@@ -152,25 +153,29 @@ class QuizAnswersGame extends React.Component{
 
         this.image = document.querySelector(".quizImg");
 
-        if (this.refs.myRef) {
+        this.setState({
+            gameOver: true,
+            alreadyAsked: [],
+            redWidth: this.image.clientWidth,
+            redHeight: this.image.clientHeight
+        });
+
+        if (this.refs.MyRef) {
+
             window.addEventListener('resize', event => {
                 this.setState({
                     redWidth: this.image.clientWidth,
                     redHeight: this.image.clientHeight
                 })
             });
-        }
-        
+        }  
 
-        this.setState({
-            gameOver: true,
-            alreadyAsked: [],
-            redWidth: this.image.clientWidth,
-            redHeight: this.image.clientHeight
-        })
+        console.log("HANDLE GAME OVER");  
     }
 
     handleClickOption = (e, index) => {
+
+        let totalLength = this.state.males.length + this.state.females.length;
         
         if (this.state.gameOver==false){
             this.setState({
@@ -178,24 +183,39 @@ class QuizAnswersGame extends React.Component{
             })
             
             if (e.target.innerText.indexOf(this.state.corrAns) !== -1) {
-
-                this.setState({
-                    timeForAnswer: 9,
-                    points: this.state.points+1,
-                    infoForNewGame: ""
-                })
-                clearInterval(this.answerTimeId);
-                this.generateNewPhoto();
-                this.generateNewAns();
-                this.startTimer();
+                if (this.state.alreadyAsked.length !== totalLength) {
+                    this.setState({
+                        timeForAnswer: 9,
+                        points: this.state.points+1,
+                        infoForNewGame: ""
+                    })
+                    clearInterval(this.answerTimeId);
+                    this.generateNewPhoto();
+                    this.generateNewAns();
+                    this.startTimer();  
+                } else {
+                    this.setState({
+                       
+                        points: this.state.points+1
+                       
+                    })
+                    this.handleGameOver();
+                }  
 
             } else {
+                clearInterval(this.answerTimeId);
                 this.handleGameOver();
+                this.setState({
+                    style: {
+                    display: "block"
+                    }
+                })
             }
 
         } else {
             this.setState({
-                infoForNewGame: "Click START button to begin new game"
+                infoForNewGame: "Click START button to begin new game",
+                alreadyAsked: [],
             })    
         }   
     }
@@ -221,14 +241,18 @@ class QuizAnswersGame extends React.Component{
             this.randomNumberOne = Math.floor(Math.random()*(this.state.males.length + this.state.females.length));
             console.log('this.randomNumberOne',this.randomNumberOne);
             console.log('this.state.alreadyAsked.length',this.state.alreadyAsked.length);
+            console.log(this.state.alreadyAsked.length);
+            console.log(totalLength);
 
             if (this.state.alreadyAsked.length === totalLength) {
+                
                 this.setState({
                     gameOver: true,
                     alreadyAsked: [],
-                    quizImageSrc: "images/tiny-image.jpg"
+                   
                 })
-                console.log(this.state.alreadyAsked);
+                this.handleGameOver();
+                console.log('234!@#$',this.state.alreadyAsked);
                 lengthAA = lengthAA + 1;
             } else if (alreadyAsked.indexOf(this.randomNumberOne) == -1) {
                 alreadyAsked.push(this.randomNumberOne);
@@ -261,7 +285,7 @@ class QuizAnswersGame extends React.Component{
                 corrAns: this.state.males[randomId].surname
             })
 
-        }else {
+        } else {
             this.actualGender = 1;
             let randomId = (this.randomNumber - this.state.males.length);
             this.randomId = randomId;
@@ -344,11 +368,13 @@ class QuizAnswersGame extends React.Component{
 
 
     render(){
+        console.log('this.state.gameOver',this.state.gameOver);
 
-
+        //console.log('!@#$',this.state.alreadyAsked);
         //console.log('FROM RENDER this.state.alreadyAsked',this.state.alreadyAsked);
 
         console.log(this.state.alreadyAsked);
+        console.log(this.state.corrAns);
     
         if (this.state.gameOver ===true) {
             this.style= {
