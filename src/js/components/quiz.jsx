@@ -52,11 +52,6 @@ class QuizAnswersGame extends React.Component{
                 females: females
             })
 
-            //this.generateNewPhoto();
-            // this.setState({
-            //     alreadyAsked: []
-            // })
-            console.log('!!!!!this.state.alreadyAsked',this.state.alreadyAsked);
             
 
         });
@@ -64,9 +59,9 @@ class QuizAnswersGame extends React.Component{
 
     startTimer = () => {
 
-        let image = document.querySelector(".quizImg");
-       
-            if (image !== null) {
+        let ImageLoader = document.querySelector(".ImageLoader");
+
+            if (ImageLoader !== null) {
    
             clearInterval(this.answerTimeId);
             this.answerTimeId = setInterval(()=>{
@@ -76,14 +71,14 @@ class QuizAnswersGame extends React.Component{
                 this.isLoaded = imageloader.classList.contains("imageloader-loaded");
                         
                 if (this.isLoading) {
-
+                      
                     this.setState({
                         timeForAnswer: this.state.timeForAnswer
                     }); 
                 }
 
                 if (this.isLoaded) {
-
+    
                     this.setState({
                         timeForAnswer: this.state.timeForAnswer - 1
                     }); 
@@ -117,7 +112,7 @@ class QuizAnswersGame extends React.Component{
                 infoForNewGame: "",
                 firstInfo: null
             }) 
-            console.log(this.state.alreadyAsked);        
+                   
 
         } else {
   
@@ -170,7 +165,7 @@ class QuizAnswersGame extends React.Component{
             });
         }  
 
-        console.log("HANDLE GAME OVER");  
+        
     }
 
     handleClickOption = (e, index) => {
@@ -184,12 +179,13 @@ class QuizAnswersGame extends React.Component{
             
             if (e.target.innerText.indexOf(this.state.corrAns) !== -1) {
                 if (this.state.alreadyAsked.length !== totalLength) {
+                    clearInterval(this.answerTimeId);
                     this.setState({
                         timeForAnswer: 9,
                         points: this.state.points+1,
                         infoForNewGame: ""
                     })
-                    clearInterval(this.answerTimeId);
+                    
                     this.generateNewPhoto();
                     this.generateNewAns();
                     this.startTimer();  
@@ -220,29 +216,18 @@ class QuizAnswersGame extends React.Component{
         }   
     }
 
-    generateNewPhoto = () => {
-
-        //let randomNumber = Math.floor(Math.random()*(this.state.males.length + this.state.females.length));
-
-        console.log(this.state.alreadyAsked);
+    generateNewPhoto = () => {       
 
 
         let alreadyAsked = this.state.alreadyAsked.slice();
         let lengthAA = alreadyAsked.length;
         let lengthAAPlusOne = lengthAA + 1;
-  
 
         let totalLength = this.state.males.length + this.state.females.length;
  
 
-       
-
         while (lengthAA < lengthAAPlusOne) {
             this.randomNumberOne = Math.floor(Math.random()*(this.state.males.length + this.state.females.length));
-            console.log('this.randomNumberOne',this.randomNumberOne);
-            console.log('this.state.alreadyAsked.length',this.state.alreadyAsked.length);
-            console.log(this.state.alreadyAsked.length);
-            console.log(totalLength);
 
             if (this.state.alreadyAsked.length === totalLength) {
                 
@@ -252,15 +237,14 @@ class QuizAnswersGame extends React.Component{
                    
                 })
                 this.handleGameOver();
-                console.log('234!@#$',this.state.alreadyAsked);
+                
                 lengthAA = lengthAA + 1;
             } else if (alreadyAsked.indexOf(this.randomNumberOne) == -1) {
                 alreadyAsked.push(this.randomNumberOne);
                 lengthAA = lengthAA + 1;
-                //console.log("nowa liczba");
+              
                 this.randomNumber = this.randomNumberOne;
-                console.log('Z IFa: this.randomNumberOne',this.randomNumberOne);
-                console.log('Z IFa: this.randomNumber',this.randomNumber);
+               
             } else {
                 lengthAA = lengthAA;
   
@@ -368,13 +352,7 @@ class QuizAnswersGame extends React.Component{
 
 
     render(){
-        console.log('this.state.gameOver',this.state.gameOver);
 
-        //console.log('!@#$',this.state.alreadyAsked);
-        //console.log('FROM RENDER this.state.alreadyAsked',this.state.alreadyAsked);
-
-        console.log(this.state.alreadyAsked);
-        console.log(this.state.corrAns);
     
         if (this.state.gameOver ===true) {
             this.style= {
