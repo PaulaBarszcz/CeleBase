@@ -120,7 +120,6 @@ class QuizAnswersGame extends React.Component{
 
         } else {
   
-
             this.setState({
                 alreadyAsked: [],
                 gameOver: false,
@@ -140,12 +139,16 @@ class QuizAnswersGame extends React.Component{
 
     componentWillUnmount(){
         clearInterval(this.answerTimeId);
-        window.removeEventListener('resize', event => {
-            this.setState({
-                redWidth: this.image.clientWidth,
-                redHeight: this.image.clientHeight
-            })
-        });
+
+        if (this.refs.myRef) {
+            window.removeEventListener('resize', event => {
+                this.image = document.querySelector(".quizImg");
+                this.setState({
+                    redWidth: this.image.clientWidth,
+                    redHeight: this.image.clientHeight
+                })
+            });
+        }
     }
 
     handleGameOver = () => {
@@ -159,17 +162,15 @@ class QuizAnswersGame extends React.Component{
             redHeight: this.image.clientHeight
         });
 
-        if (this.refs.MyRef) {
-
+         if (this.refs.myRef) {
             window.addEventListener('resize', event => {
                 this.setState({
                     redWidth: this.image.clientWidth,
                     redHeight: this.image.clientHeight
                 })
             });
-        }  
-
-        
+        }
+     
     }
 
     handleClickOption = (e, index) => {
@@ -177,9 +178,6 @@ class QuizAnswersGame extends React.Component{
         let totalLength = this.state.males.length + this.state.females.length;
         
         if (this.state.gameOver==false){
-            this.setState({
-                loaded: false
-            })
             
             if (e.target.innerText.indexOf(this.state.corrAns) !== -1) {
                 if (this.state.alreadyAsked.length !== totalLength) {
@@ -346,21 +344,9 @@ class QuizAnswersGame extends React.Component{
                 corrAns: this.state.females[this.randomId].surname
             })
         }
-        this.setState({
-            loaded: true
-        })
     }
-
-    handleImageLoaded = () => {
-        this.setState({
-            loaded: true
-        });
-    }
-
 
     render(){
-        
-        let loader = document.querySelector(".ImageLoader")
             
         if (this.state.gameOver ===true) {
             this.style= {
@@ -368,14 +354,20 @@ class QuizAnswersGame extends React.Component{
                 width: this.state.redWidth +'px',
                 height: this.state.redHeight +'px'
             }
-        if (this.state.gameWon ===true) {
-            this.style= {
-                backgroundColor: "rgba(20, 142, 1, 0.5)",
-                display: "block",
-                width: this.state.redWidth +'px',
-                height: this.state.redHeight +'px'
+
+            this.resultInfo = "GAME OVER";
+
+            if (this.state.gameWon ===true) {
+
+                this.style= {
+                    backgroundColor: "rgba(20, 142, 1, 0.5)",
+                    display: "block",
+                    width: this.state.redWidth +'px',
+                    height: this.state.redHeight +'px'
+                }
+
+                this.resultInfo = "CONGRATS!";
             }
-        }
         clearInterval(this.answerTimeId);
 
         } else {
@@ -384,14 +376,15 @@ class QuizAnswersGame extends React.Component{
             }
         }
      
-        function Preloader(props) {  
+        function Preloader(props) { 
+            let loader = document.querySelector(".ImageLoader"); 
             if (loader !== null) {
                 
                 let imageloader = document.querySelector(".imageloader");
                 let containsPending = imageloader.classList.contains("imageloader-pending");
 
                 if (containsPending){
-                    return <img style={{maxHeight: "400px", maxWidth: "900px", margin: "0 auto" }} src="images/ellen_selfie_oscars.jpg" />
+                    return <img style={{maxHeight: "70vh", maxWidth: "70%", margin: "0 auto" }} src="images/ellen_selfie_oscars.jpg" />
                 } else {
                     return <img src="images/spinner.gif" />;
                 }
@@ -412,7 +405,7 @@ class QuizAnswersGame extends React.Component{
                         <div className="flexi">
                             <div className="cover">
                                 <div className="coverRed" style={this.style} >
-                                    <p>GAME OVER<br/><br/>
+                                    <p>{this.resultInfo}<br/><br/>
                                     <span>Points gained: {this.state.points}</span></p>
                                 </div>
                                 <ImageLoader className="ImageLoader"
