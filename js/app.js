@@ -26067,9 +26067,7 @@ var QuizAnswersGame = function (_React$Component) {
                         _this.setState({
                             gameOver: true,
                             gameWon: true,
-
                             points: _this.state.points + 1
-
                         });
                         _this.handleGameOver();
                     }
@@ -26095,7 +26093,6 @@ var QuizAnswersGame = function (_React$Component) {
             var alreadyAsked = _this.state.alreadyAsked.slice();
             var lengthAA = alreadyAsked.length;
             var lengthAAPlusOne = lengthAA + 1;
-
             var totalLength = _this.state.males.length + _this.state.females.length;
 
             while (lengthAA < lengthAAPlusOne) {
@@ -26107,15 +26104,12 @@ var QuizAnswersGame = function (_React$Component) {
                         gameOver: true,
                         gameWon: true,
                         alreadyAsked: []
-
                     });
                     _this.handleGameOver();
-
                     lengthAA = lengthAA + 1;
                 } else if (alreadyAsked.indexOf(_this.randomNumberOne) == -1) {
                     alreadyAsked.push(_this.randomNumberOne);
                     lengthAA = lengthAA + 1;
-
                     _this.randomNumber = _this.randomNumberOne;
                 } else {
                     lengthAA = lengthAA;
@@ -26590,7 +26584,7 @@ var InfoTable = function (_React$Component) {
                             { className: 'containsTable' },
                             _react2.default.createElement(Table, { className: 'table dataTable', id: 'table', data: this.state.objListNoPhotoArranged,
                                 sortable: ['Name', 'Surname', 'Gender', 'Nationality', 'IMDB'],
-                                defaultSort: { column: 'Name', direction: 'asc' }, itemsPerPage: 8, pageButtonLimit: 9 })
+                                defaultSort: { column: 'Name', direction: 'asc' }, itemsPerPage: 15, pageButtonLimit: 20 })
                         )
                     )
                 );
