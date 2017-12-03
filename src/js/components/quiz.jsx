@@ -339,7 +339,7 @@ class QuizAnswersGame extends React.Component{
                 corrAns: this.state.females[this.randomId].surname
             })
         }
-               this.setState({
+        this.setState({
             loaded: true
         })
     }
@@ -352,8 +352,9 @@ class QuizAnswersGame extends React.Component{
 
 
     render(){
-
-    
+        
+        let loader = document.querySelector(".ImageLoader")
+            
         if (this.state.gameOver ===true) {
             this.style= {
                 display: "block",
@@ -368,11 +369,22 @@ class QuizAnswersGame extends React.Component{
             }
         }
      
-        function Preloader(props) {        
-            return <img src="images/spinner.gif" />;
+        function Preloader(props) {  
+            if (loader !== null) {
+                
+                let imageloader = document.querySelector(".imageloader");
+                let containsPending = imageloader.classList.contains("imageloader-pending");
+
+                if (containsPending){
+                    return <img style={{maxHeight: "400px", maxWidth: "900px", margin: "0 auto" }} src="images/ellen_selfie_oscars.jpg" />
+                } else {
+                    return <img src="images/spinner.gif" />;
+                }
+            } else {
+                return <img src="images/spinner.gif" />;
+            } 
         }
 
-        
         return (
             <div>
                 <div className="quiz" id="quiz">
