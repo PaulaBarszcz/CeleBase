@@ -19,6 +19,7 @@ class QuizAnswersGame extends React.Component{
             points: 0,
             timeForAnswer:9,
             gameOver: false,
+            gameWon: false,
             style: {},
             redWidth: "100%",
             redHeight: "100%",
@@ -100,6 +101,9 @@ class QuizAnswersGame extends React.Component{
     handleStart = () => {
 
         this.randomNumberOne= null;
+        this.setState({
+            gameWon: false
+        }) 
 
         if (this.state.gameOver=== false) {
 
@@ -191,6 +195,8 @@ class QuizAnswersGame extends React.Component{
                     this.startTimer();  
                 } else {
                     this.setState({
+                        gameOver: true,
+                        gameWon: true,
                        
                         points: this.state.points+1
                        
@@ -233,6 +239,7 @@ class QuizAnswersGame extends React.Component{
                 
                 this.setState({
                     gameOver: true,
+                    gameWon: true,
                     alreadyAsked: [],
                    
                 })
@@ -359,9 +366,17 @@ class QuizAnswersGame extends React.Component{
             this.style= {
                 display: "block",
                 width: this.state.redWidth +'px',
-                height: this.state.redHeight +'px',
+                height: this.state.redHeight +'px'
             }
-            clearInterval(this.answerTimeId);
+        if (this.state.gameWon ===true) {
+            this.style= {
+                backgroundColor: "rgba(20, 142, 1, 0.5)",
+                display: "block",
+                width: this.state.redWidth +'px',
+                height: this.state.redHeight +'px'
+            }
+        }
+        clearInterval(this.answerTimeId);
 
         } else {
             this.style={
@@ -396,7 +411,7 @@ class QuizAnswersGame extends React.Component{
                             <button className="startButton" onClick={this.handleStart}>START</button>
                         <div className="flexi">
                             <div className="cover">
-                                <div className="coverRed"style={this.style} >
+                                <div className="coverRed" style={this.style} >
                                     <p>GAME OVER<br/><br/>
                                     <span>Points gained: {this.state.points}</span></p>
                                 </div>
