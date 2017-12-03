@@ -4,6 +4,7 @@ import ImageLoader from 'react-load-image';
 class QuizAnswersGame extends React.Component{
     constructor(props){
         super(props);
+        this.onResize = this.onResize.bind(this);
         this.state={
             alreadyAsked: [],
             possNameSurnames: [],
@@ -52,10 +53,9 @@ class QuizAnswersGame extends React.Component{
                 males: males,
                 females: females
             })
-
-            
-
         });
+
+        window.addEventListener('resize', this.onResize);
     }
 
     startTimer = () => {
@@ -137,38 +137,33 @@ class QuizAnswersGame extends React.Component{
         this.startTimer();
     }
 
+    onResize(){
+
+        if (document.querySelector(".quizImg") !== null) {
+            this.setState({
+                redWidth: document.querySelector(".quizImg").clientWidth,
+                redHeight: document.querySelector(".quizImg").clientHeight
+            })
+        };
+    }
+
     componentWillUnmount(){
         clearInterval(this.answerTimeId);
+        this.image = document.querySelector(".quizImg");
 
-        if (this.refs.myRef) {
-            window.removeEventListener('resize', event => {
-                this.image = document.querySelector(".quizImg");
-                this.setState({
-                    redWidth: this.image.clientWidth,
-                    redHeight: this.image.clientHeight
-                })
-            });
-        }
+        window.removeEventListener('resize', this.onResize);
     }
 
     handleGameOver = () => {
 
         this.image = document.querySelector(".quizImg");
-
-        this.setState({
-            gameOver: true,
-            alreadyAsked: [],
-            redWidth: this.image.clientWidth,
-            redHeight: this.image.clientHeight
-        });
-
-         if (this.refs.myRef) {
-            window.addEventListener('resize', event => {
-                this.setState({
-                    redWidth: this.image.clientWidth,
-                    redHeight: this.image.clientHeight
-                })
-            });
+        if (this.image) {
+            this.setState({
+                gameOver: true,
+                alreadyAsked: [],
+                redWidth: this.image.clientWidth,
+                redHeight: this.image.clientHeight
+            }); 
         }
      
     }
@@ -261,7 +256,6 @@ class QuizAnswersGame extends React.Component{
         })
 
        
-
 
         if (this.randomNumber < this.state.males.length){
             this.actualGender = 0;

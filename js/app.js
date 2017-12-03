@@ -25958,9 +25958,9 @@ var QuizAnswersGame = function (_React$Component) {
 
         _this.startTimer = function () {
 
-            var image = document.querySelector(".quizImg");
+            var ImageLoader = document.querySelector(".ImageLoader");
 
-            if (image !== null) {
+            if (ImageLoader !== null) {
 
                 clearInterval(_this.answerTimeId);
                 _this.answerTimeId = setInterval(function () {
@@ -25998,6 +25998,11 @@ var QuizAnswersGame = function (_React$Component) {
 
         _this.handleStart = function () {
 
+            _this.randomNumberOne = null;
+            _this.setState({
+                gameWon: false
+            });
+
             if (_this.state.gameOver === false) {
 
                 _this.generateNewPhoto();
@@ -26011,16 +26016,16 @@ var QuizAnswersGame = function (_React$Component) {
                 });
             } else {
 
-                var randomNumber = Math.floor(Math.random() * (_this.state.males.length + _this.state.females.length));
-                _this.generateNewPhoto();
-                _this.generateNewAns();
                 _this.setState({
+                    alreadyAsked: [],
                     gameOver: false,
                     timeForAnswer: 9,
                     points: 0,
-                    currentId: randomNumber,
                     infoForNewGame: ""
                 });
+
+                _this.generateNewPhoto();
+                _this.generateNewAns();
             }
 
             clearInterval(_this.answerTimeId);
@@ -26029,63 +26034,101 @@ var QuizAnswersGame = function (_React$Component) {
 
         _this.handleGameOver = function () {
 
-            _this.setState({
-                loaded: true
-            });
-
             _this.image = document.querySelector(".quizImg");
-
-            if (_this.refs.myRef) {
-                window.addEventListener('resize', function (event) {
-                    _this.setState({
-                        redWidth: _this.image.clientWidth,
-                        redHeight: _this.image.clientHeight
-                    });
+            if (_this.image) {
+                _this.setState({
+                    gameOver: true,
+                    alreadyAsked: [],
+                    redWidth: _this.image.clientWidth,
+                    redHeight: _this.image.clientHeight
                 });
             }
-
-            _this.setState({
-                gameOver: true,
-                redWidth: _this.image.clientWidth,
-                redHeight: _this.image.clientHeight
-            });
         };
 
         _this.handleClickOption = function (e, index) {
 
+            var totalLength = _this.state.males.length + _this.state.females.length;
+
             if (_this.state.gameOver == false) {
-                _this.setState({
-                    loaded: false
-                });
 
                 if (e.target.innerText.indexOf(_this.state.corrAns) !== -1) {
+                    if (_this.state.alreadyAsked.length !== totalLength) {
+                        clearInterval(_this.answerTimeId);
+                        _this.setState({
+                            timeForAnswer: 9,
+                            points: _this.state.points + 1,
+                            infoForNewGame: ""
+                        });
 
-                    _this.setState({
-                        timeForAnswer: 9,
-                        points: _this.state.points + 1,
-                        infoForNewGame: ""
-                    });
-                    clearInterval(_this.answerTimeId);
-                    _this.generateNewPhoto();
-                    _this.generateNewAns();
-                    _this.startTimer();
+                        _this.generateNewPhoto();
+                        _this.generateNewAns();
+                        _this.startTimer();
+                    } else {
+                        _this.setState({
+                            gameOver: true,
+                            gameWon: true,
+
+                            points: _this.state.points + 1
+
+                        });
+                        _this.handleGameOver();
+                    }
                 } else {
+                    clearInterval(_this.answerTimeId);
                     _this.handleGameOver();
+                    _this.setState({
+                        style: {
+                            display: "block"
+                        }
+                    });
                 }
             } else {
                 _this.setState({
-                    infoForNewGame: "Click START button to begin new game"
+                    infoForNewGame: "Click START button to begin new game",
+                    alreadyAsked: []
                 });
             }
         };
 
         _this.generateNewPhoto = function () {
 
-            var randomNumber = Math.floor(Math.random() * (_this.state.males.length + _this.state.females.length));
+            var alreadyAsked = _this.state.alreadyAsked.slice();
+            var lengthAA = alreadyAsked.length;
+            var lengthAAPlusOne = lengthAA + 1;
 
-            if (randomNumber < _this.state.males.length) {
+            var totalLength = _this.state.males.length + _this.state.females.length;
+
+            while (lengthAA < lengthAAPlusOne) {
+                _this.randomNumberOne = Math.floor(Math.random() * (_this.state.males.length + _this.state.females.length));
+
+                if (_this.state.alreadyAsked.length === totalLength) {
+
+                    _this.setState({
+                        gameOver: true,
+                        gameWon: true,
+                        alreadyAsked: []
+
+                    });
+                    _this.handleGameOver();
+
+                    lengthAA = lengthAA + 1;
+                } else if (alreadyAsked.indexOf(_this.randomNumberOne) == -1) {
+                    alreadyAsked.push(_this.randomNumberOne);
+                    lengthAA = lengthAA + 1;
+
+                    _this.randomNumber = _this.randomNumberOne;
+                } else {
+                    lengthAA = lengthAA;
+                }
+            } // end of while
+
+            _this.setState({
+                alreadyAsked: alreadyAsked
+            });
+
+            if (_this.randomNumber < _this.state.males.length) {
                 _this.actualGender = 0;
-                var randomId = Math.floor(Math.random() * _this.state.males.length);
+                var randomId = _this.randomNumber;
                 _this.randomId = randomId;
                 _this.setState({
                     actualGender: 0,
@@ -26095,7 +26138,7 @@ var QuizAnswersGame = function (_React$Component) {
                 });
             } else {
                 _this.actualGender = 1;
-                var _randomId = Math.floor(Math.random() * _this.state.females.length);
+                var _randomId = _this.randomNumber - _this.state.males.length;
                 _this.randomId = _randomId;
                 _this.setState({
                     actualGender: 1,
@@ -26178,18 +26221,11 @@ var QuizAnswersGame = function (_React$Component) {
                     corrAns: _this.state.females[_this.randomId].surname
                 });
             }
-            _this.setState({
-                loaded: true
-            });
         };
 
-        _this.handleImageLoaded = function () {
-            _this.setState({
-                loaded: true
-            });
-        };
-
+        _this.onResize = _this.onResize.bind(_this);
         _this.state = {
+            alreadyAsked: [],
             possNameSurnames: [],
             possPhotos: [],
             possNationalities: [],
@@ -26203,6 +26239,7 @@ var QuizAnswersGame = function (_React$Component) {
             points: 0,
             timeForAnswer: 9,
             gameOver: false,
+            gameWon: false,
             style: {},
             redWidth: "100%",
             redHeight: "100%",
@@ -26241,22 +26278,28 @@ var QuizAnswersGame = function (_React$Component) {
                     males: males,
                     females: females
                 });
-
-                _this2.generateNewPhoto();
             });
+
+            window.addEventListener('resize', this.onResize);
+        }
+    }, {
+        key: 'onResize',
+        value: function onResize() {
+
+            if (document.querySelector(".quizImg") !== null) {
+                this.setState({
+                    redWidth: document.querySelector(".quizImg").clientWidth,
+                    redHeight: document.querySelector(".quizImg").clientHeight
+                });
+            };
         }
     }, {
         key: 'componentWillUnmount',
         value: function componentWillUnmount() {
-            var _this3 = this;
-
             clearInterval(this.answerTimeId);
-            window.removeEventListener('resize', function (event) {
-                _this3.setState({
-                    redWidth: _this3.image.clientWidth,
-                    redHeight: _this3.image.clientHeight
-                });
-            });
+            this.image = document.querySelector(".quizImg");
+
+            window.removeEventListener('resize', this.onResize);
         }
     }, {
         key: 'render',
@@ -26268,6 +26311,20 @@ var QuizAnswersGame = function (_React$Component) {
                     width: this.state.redWidth + 'px',
                     height: this.state.redHeight + 'px'
                 };
+
+                this.resultInfo = "GAME OVER";
+
+                if (this.state.gameWon === true) {
+
+                    this.style = {
+                        backgroundColor: "rgba(20, 142, 1, 0.5)",
+                        display: "block",
+                        width: this.state.redWidth + 'px',
+                        height: this.state.redHeight + 'px'
+                    };
+
+                    this.resultInfo = "CONGRATS!";
+                }
                 clearInterval(this.answerTimeId);
             } else {
                 this.style = {
@@ -26276,7 +26333,20 @@ var QuizAnswersGame = function (_React$Component) {
             }
 
             function Preloader(props) {
-                return _react2.default.createElement('img', { src: 'images/spinner.gif' });
+                var loader = document.querySelector(".ImageLoader");
+                if (loader !== null) {
+
+                    var imageloader = document.querySelector(".imageloader");
+                    var containsPending = imageloader.classList.contains("imageloader-pending");
+
+                    if (containsPending) {
+                        return _react2.default.createElement('img', { style: { maxHeight: "70vh", maxWidth: "70%", margin: "0 auto" }, src: 'images/ellen_selfie_oscars.jpg' });
+                    } else {
+                        return _react2.default.createElement('img', { src: 'images/spinner.gif' });
+                    }
+                } else {
+                    return _react2.default.createElement('img', { src: 'images/spinner.gif' });
+                }
             }
 
             return _react2.default.createElement(
@@ -26329,7 +26399,7 @@ var QuizAnswersGame = function (_React$Component) {
                                     _react2.default.createElement(
                                         'p',
                                         null,
-                                        'GAME OVER',
+                                        this.resultInfo,
                                         _react2.default.createElement('br', null),
                                         _react2.default.createElement('br', null),
                                         _react2.default.createElement(
@@ -30104,7 +30174,7 @@ exports = module.exports = __webpack_require__(269)(undefined);
 
 
 // module
-exports.push([module.i, "/* tiny reset */\nhtml, body {\n  margin: 0;\n  padding: 0;\n  border: 0;\n  font-size: 100%;\n  font-family: Spectral; }\n\n* {\n  box-sizing: border-box; }\n\n.container {\n  max-width: 1140px;\n  margin: 0 auto;\n  padding-left: 30px;\n  padding-right: 30px; }\n\n/* body */\nbody {\n  background-repeat: no-repeat;\n  background-attachment: fixed;\n  background-position: center top;\n  background-size: cover; }\n\n.homeLogo {\n  color: #ffcc14;\n  font-size: 60px;\n  text-align: center; }\n  .homeLogo h1 {\n    line-height: 350px;\n    text-overflow: ellipsis; }\n\n.active-tab {\n  background-color: #000;\n  color: #ffcc14; }\n\n.divNav {\n  text-align: center; }\n\n.main-nav {\n  display: flex;\n  justify-content: center;\n  background-color: rgba(0, 0, 0, 0.2); }\n\n.main-nav ul {\n  list-style: none;\n  height: 100%;\n  display: flex;\n  margin: 0; }\n\n.main-nav li {\n  height: 100%; }\n\n.main-nav a {\n  padding: 30px 20px;\n  height: 100%;\n  display: flex;\n  align-items: center;\n  font-weight: 700;\n  text-decoration: none;\n  font-size: 40px;\n  color: #ffcc14;\n  border-right: 1px solid rgba(255, 255, 255, 0.2);\n  transition: 0.3s all; }\n\n.main-nav li:first-of-type a {\n  border-left: 1px solid rgba(255, 255, 255, 0.2); }\n\n.main-nav a:hover {\n  background: #000000;\n  color: #ffcc14; }\n\n.main-nav-toogle {\n  position: absolute;\n  right: 10px;\n  top: 10px;\n  width: 70px;\n  height: 70px;\n  background: transparent;\n  border: 0;\n  display: none;\n  cursor: pointer;\n  transition: 0.5s height; }\n  .main-nav-toogle span {\n    transition: 0.5s all;\n    position: absolute;\n    left: 50%;\n    top: 50%;\n    transform: translate(-50%, -50%);\n    width: 70%;\n    height: 7px;\n    border-radius: 2px;\n    background: #ffcc14;\n    display: block; }\n    .main-nav-toogle span:nth-of-type(1) {\n      margin-top: -15px; }\n    .main-nav-toogle span:nth-of-type(3) {\n      margin-top: 15px; }\n  .main-nav-toogle:focus {\n    outline: none; }\n  .main-nav-toogle strong {\n    display: none; }\n\n.small .main-nav-toogle {\n  height: 50px; }\n\n.small .main-nav-toogle span {\n  background: #fff; }\n\n.nav-show .main-nav-toogle span:first-child {\n  display: none; }\n\n.nav-show .main-nav-toogle span:nth-of-type(2) {\n  position: absolute;\n  left: 50%;\n  top: 50%;\n  transform: translate(-50%, -50%) rotate(45deg);\n  margin-top: -3px; }\n\n.nav-show .main-nav-toogle span:nth-of-type(3) {\n  position: absolute;\n  left: 50%;\n  top: 50%;\n  transform: translate(-50%, -50%) rotate(-45deg);\n  margin-top: -3px; }\n\n@media only screen and (max-width: 800px) {\n  .main-nav-toogle {\n    display: block; }\n  .main-nav {\n    position: fixed;\n    top: 0;\n    left: -320px;\n    height: 100%;\n    width: 300px;\n    background-color: rgba(0, 0, 0, 0.4);\n    flex-direction: column;\n    box-shadow: 2px 3px 6px rgba(0, 0, 0, 0.3);\n    transition: 0.5s all ease-in;\n    z-index: 1000; }\n  .nav-show .main-nav {\n    left: 0; }\n  .main-nav ul {\n    flex-direction: column;\n    padding: 0; }\n  .main-nav li {\n    height: 60px;\n    width: 100%;\n    border-bottom: 1px solid rgba(255, 255, 255, 0.05);\n    padding: 10px 5px; }\n  .homeLogo h1 {\n    line-height: 560px; } }\n\n.main-header.small {\n  background: rgba(0, 0, 0, 0.9);\n  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.4);\n  height: 70px; }\n\n.main-slider {\n  flex-grow: 1;\n  position: relative;\n  display: flex;\n  justify-content: space-between;\n  align-items: center;\n  height: 503px; }\n\n@media only screen and (max-width: 970px) {\n  .main-slider {\n    flex-direction: row;\n    flex-wrap: wrap;\n    align-items: center;\n    justify-content: center;\n    height: auto; }\n    .main-slider .main-slider-slides-cnt {\n      max-width: 700px;\n      max-height: 400px; }\n    .main-slider .main-slide {\n      flex-wrap: wrap;\n      align-items: center;\n      justify-content: center; }\n      .main-slider .main-slide img {\n        max-width: 80%;\n        max-height: 500px; }\n    .main-slider .main-slider-prev, .main-slider .main-slider-next {\n      top: 120px; }\n    .main-slider .main-slider-next {\n      order: 2; } }\n\n@media only screen and (max-width: 970px) {\n  .main-slide img {\n    max-width: 80%;\n    max-height: 500px; } }\n\n@media only screen and (max-width: 970px) {\n  .main-slider {\n    margin-top: 70px; } }\n\n.main-slider-slides-cnt {\n  margin: 0 60px;\n  max-width: 900px;\n  position: relative;\n  width: 100%;\n  height: 500px;\n  order: 2;\n  display: flex;\n  justify-content: center;\n  align-items: center; }\n  .main-slider-slides-cnt img {\n    max-width: 80%;\n    max-height: 480px;\n    display: flex; }\n\n#mainSlider .main-slide.active {\n  display: flex;\n  justify-content: center;\n  align-items: center;\n  position: relative;\n  left: 0;\n  top: 0;\n  width: 100%;\n  height: 100%;\n  opacity: 1; }\n\n.main-slide-text {\n  font-size: 26px;\n  text-align: center;\n  color: #d3c9c9;\n  position: absolute;\n  left: 0;\n  right: 0;\n  bottom: -45px;\n  margin-left: auto;\n  margin-right: auto;\n  margin-bottom: 30px; }\n  .main-slide-text a {\n    color: #d3c9c9; }\n\n@media only screen and (max-width: 970px) {\n  .main-slide-text {\n    margin-bottom: -30px;\n    margin-top: 30px; } }\n\n.main-slider-prev,\n.main-slider-next {\n  cursor: pointer;\n  width: 55px;\n  height: 165px;\n  background: rgba(0, 0, 0, 0.1);\n  border: 0;\n  color: #ffcc14;\n  font-size: 80px;\n  position: absolute;\n  top: 200px;\n  left: 0;\n  transition: 0.6s all; }\n  .main-slider-prev:hover,\n  .main-slider-next:hover {\n    background: rgba(0, 0, 0, 0.8); }\n\n.main-slider-prev span,\n.main-slider-next span {\n  display: none; }\n\n.main-slider-next {\n  order: 3;\n  right: 0;\n  left: auto; }\n\n.main-slide-image {\n  position: relative;\n  margin: 0 auto;\n  opacity: 1;\n  transition: 0.5s 0.5s opacity; }\n\n.loader {\n  position: fixed;\n  top: 0;\n  right: 0;\n  bottom: 0;\n  left: 0;\n  background: white;\n  z-index: 9999; }\n\n#quiz {\n  display: flex;\n  justify-content: center;\n  align-content: center; }\n  #quiz img {\n    padding: 20px;\n    display: relative;\n    max-height: 400px;\n    max-width: 400px;\n    height: auto;\n    width: auto;\n    display: flex;\n    align-self: flex-end;\n    margin: auto 25px; }\n  #quiz .main-slider-slides-cnt {\n    width: 100%; }\n  #quiz .main-slide.active {\n    position: relative; }\n\n@media only screen and (max-width: 590px) {\n  #quiz img {\n    max-height: 200px;\n    max-width: 250px;\n    height: auto;\n    width: auto;\n    display: flex;\n    align-item: flex-end;\n    padding: 0;\n    margin: 0; }\n  .cover .coverRed p {\n    margin: 5px 5px;\n    padding: 0;\n    font-size: 20px; }\n  .quiz .quiz-text p {\n    font-size: 25px; } }\n\n.quiz .main-slider-slides-cnt {\n  height: auto;\n  max-height: 600px; }\n\n.quiz-text {\n  position: relative;\n  align-self: flex-end;\n  margin: auto auto; }\n  .quiz-text p {\n    transition: 0.5s all;\n    font-size: 33px;\n    font-weight: 700;\n    cursor: pointer; }\n    .quiz-text p:nth-of-type(1) {\n      color: #d3c9c9; }\n    .quiz-text p:nth-of-type(2) {\n      color: #b5a8a8; }\n    .quiz-text p:nth-of-type(3) {\n      color: #7f7070; }\n    .quiz-text p:nth-of-type(4) {\n      color: #544b4b; }\n    .quiz-text p:hover {\n      color: #ffcc14; }\n\n.flexi {\n  display: flex;\n  justify-content: space-between; }\n\n.cover {\n  margin: auto auto;\n  transition: 0.5s all;\n  position: relative; }\n\n.coverRed {\n  z-index: 10;\n  position: absolute;\n  display: none;\n  left: 0;\n  right: 0;\n  margin-left: auto;\n  margin-right: auto;\n  background-color: rgba(206, 14, 14, 0.6);\n  transition: 0.5s all; }\n  .coverRed p {\n    text-align: center;\n    font-size: 40px;\n    font-weight: 700;\n    color: #ffcc14;\n    margin: 30px; }\n\n@media only screen and (max-width: 590px) {\n  #quiz .quizInfo {\n    margin-top: 40px; } }\n\n.quizPoints, .quizTime, .quizInfo {\n  padding: 30px;\n  padding-bottom: 10px;\n  padding-top: 10px;\n  margin: 0;\n  font-size: 24px;\n  color: #ffcc14;\n  font-weight: 900;\n  text-align: center;\n  display: inline-block; }\n\n.quizInfo strong {\n  color: black;\n  font-size: 24px; }\n\n#quiz .startButton {\n  padding: 20px;\n  background-color: #000;\n  color: #ffcc14;\n  display: inline-block;\n  font-weight: 900;\n  font-size: 30px;\n  margin-bottom: 20px;\n  cursor: pointer;\n  transition: 0.3s all;\n  z-index: 300; }\n  #quiz .startButton:hover {\n    background-color: #ffcc14;\n    color: #000; }\n\n#quiz h1 {\n  background-color: rgba(255, 204, 20, 0.8);\n  font-size: 28px;\n  color: red; }\n  @media only screen and (max-width: 800px) {\n    #quiz h1 {\n      margin-top: 70px; } }\n\n.infotable {\n  margin: 0 auto;\n  margin-bottom: 40px;\n  margin-top: 70px;\n  text-align: center; }\n\n@media only screen and (min-width: 801px) {\n  .infotable {\n    margin-top: 10px; } }\n\n.tableBcg {\n  padding: 20px;\n  margin: 10px; }\n  .tableBcg .sortInfo {\n    padding: 10px;\n    margin: 0;\n    margin-bottom: 20px;\n    font-size: 25px;\n    color: #fff;\n    font-weight: 400;\n    font-family: Spectral; }\n\n.dataTable {\n  font-size: 21px;\n  margin: 0 auto;\n  border-collapse: collapse;\n  text-align: center;\n  border: 5px solid #fff;\n  color: #ffcc14;\n  font-family: Spectral; }\n  .dataTable th {\n    color: #fff; }\n  .dataTable th, .dataTable td {\n    border: 2px solid #fff;\n    padding: 10px; }\n  .dataTable td a {\n    text-decoration: none;\n    color: #ffcc14; }\n\n.containsTable {\n  overflow: auto; }\n  .containsTable thead th {\n    cursor: pointer; }\n  .containsTable tr td:nth-of-type(5) {\n    font-size: 14px; }\n\n.reactable-pagination td {\n  padding-top: 20px;\n  padding-bottom: 20px; }\n  .reactable-pagination td a.reactable-page-button {\n    color: white;\n    letter-spacing: 7px;\n    margin-left: 7px; }\n    .reactable-pagination td a.reactable-page-button:hover {\n      color: #ffcc14; }\n    .reactable-pagination td a.reactable-page-button.reactable-current-page {\n      color: #ffcc14;\n      font-size: 25px;\n      font-weight: 700; }\n\n.notFound {\n  color: #ffcc14;\n  font-size: 30px;\n  text-align: center; }\n  .notFound a {\n    line-height: 250px;\n    text-overflow: ellipsis;\n    text-decoration: none;\n    color: #efcf5b; }\n", ""]);
+exports.push([module.i, "/* tiny reset */\nhtml, body {\n  margin: 0;\n  padding: 0;\n  border: 0;\n  font-size: 100%;\n  font-family: Spectral; }\n\n* {\n  box-sizing: border-box; }\n\n.container {\n  max-width: 1140px;\n  margin: 0 auto;\n  padding-left: 30px;\n  padding-right: 30px; }\n\n/* body */\nbody {\n  background-repeat: no-repeat;\n  background-attachment: fixed;\n  background-position: center top;\n  background-size: cover; }\n\n.homeLogo {\n  color: #ffcc14;\n  font-size: 60px;\n  text-align: center; }\n  .homeLogo h1 {\n    line-height: 350px;\n    text-overflow: ellipsis; }\n\n.active-tab {\n  background-color: #000;\n  color: #ffcc14; }\n\n.divNav {\n  text-align: center; }\n\n.main-nav {\n  display: flex;\n  justify-content: center;\n  background-color: rgba(0, 0, 0, 0.2); }\n\n.main-nav ul {\n  list-style: none;\n  height: 100%;\n  display: flex;\n  margin: 0; }\n\n.main-nav li {\n  height: 100%; }\n\n.main-nav a {\n  padding: 30px 20px;\n  height: 100%;\n  display: flex;\n  align-items: center;\n  font-weight: 700;\n  text-decoration: none;\n  font-size: 40px;\n  color: #ffcc14;\n  border-right: 1px solid rgba(255, 255, 255, 0.2);\n  transition: 0.3s all; }\n\n.main-nav li:first-of-type a {\n  border-left: 1px solid rgba(255, 255, 255, 0.2); }\n\n.main-nav a:hover {\n  background: #000000;\n  color: #ffcc14; }\n\n.main-nav-toogle {\n  position: absolute;\n  right: 10px;\n  top: 10px;\n  width: 70px;\n  height: 70px;\n  background: transparent;\n  border: 0;\n  display: none;\n  cursor: pointer;\n  transition: 0.5s height; }\n  .main-nav-toogle span {\n    transition: 0.5s all;\n    position: absolute;\n    left: 50%;\n    top: 50%;\n    transform: translate(-50%, -50%);\n    width: 70%;\n    height: 7px;\n    border-radius: 2px;\n    background: #ffcc14;\n    display: block; }\n    .main-nav-toogle span:nth-of-type(1) {\n      margin-top: -15px; }\n    .main-nav-toogle span:nth-of-type(3) {\n      margin-top: 15px; }\n  .main-nav-toogle:focus {\n    outline: none; }\n  .main-nav-toogle strong {\n    display: none; }\n\n.small .main-nav-toogle {\n  height: 50px; }\n\n.small .main-nav-toogle span {\n  background: #fff; }\n\n.nav-show .main-nav-toogle span:first-child {\n  display: none; }\n\n.nav-show .main-nav-toogle span:nth-of-type(2) {\n  position: absolute;\n  left: 50%;\n  top: 50%;\n  transform: translate(-50%, -50%) rotate(45deg);\n  margin-top: -3px; }\n\n.nav-show .main-nav-toogle span:nth-of-type(3) {\n  position: absolute;\n  left: 50%;\n  top: 50%;\n  transform: translate(-50%, -50%) rotate(-45deg);\n  margin-top: -3px; }\n\n@media only screen and (max-width: 800px) {\n  .main-nav-toogle {\n    display: block; }\n  .main-nav {\n    position: fixed;\n    top: 0;\n    left: -320px;\n    height: 100%;\n    width: 300px;\n    background-color: rgba(0, 0, 0, 0.4);\n    flex-direction: column;\n    box-shadow: 2px 3px 6px rgba(0, 0, 0, 0.3);\n    transition: 0.5s all ease-in;\n    z-index: 1000; }\n  .nav-show .main-nav {\n    left: 0; }\n  .main-nav ul {\n    flex-direction: column;\n    padding: 0; }\n  .main-nav li {\n    height: 60px;\n    width: 100%;\n    border-bottom: 1px solid rgba(255, 255, 255, 0.05);\n    padding: 10px 5px; }\n  .homeLogo h1 {\n    line-height: 560px; } }\n\n.main-header.small {\n  background: rgba(0, 0, 0, 0.9);\n  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.4);\n  height: 70px; }\n\n.main-slider {\n  flex-grow: 1;\n  position: relative;\n  display: flex;\n  justify-content: space-between;\n  align-items: center;\n  height: 503px; }\n\n@media only screen and (max-width: 970px) {\n  .main-slider {\n    flex-direction: row;\n    flex-wrap: wrap;\n    align-items: center;\n    justify-content: center;\n    height: auto; }\n    .main-slider .main-slider-slides-cnt {\n      max-width: 700px;\n      max-height: 400px; }\n    .main-slider .main-slide {\n      flex-wrap: wrap;\n      align-items: center;\n      justify-content: center; }\n      .main-slider .main-slide img {\n        max-width: 80%;\n        max-height: 500px; }\n    .main-slider .main-slider-prev, .main-slider .main-slider-next {\n      top: 120px; }\n    .main-slider .main-slider-next {\n      order: 2; } }\n\n@media only screen and (max-width: 970px) {\n  .main-slide img {\n    max-width: 80%;\n    max-height: 500px; } }\n\n@media only screen and (max-width: 970px) {\n  .main-slider {\n    margin-top: 70px; } }\n\n.main-slider-slides-cnt {\n  margin: 0 60px;\n  max-width: 900px;\n  position: relative;\n  width: 100%;\n  height: 500px;\n  order: 2;\n  display: flex;\n  justify-content: center;\n  align-items: center; }\n  .main-slider-slides-cnt img {\n    max-width: 80%;\n    max-height: 480px;\n    display: flex; }\n\n#mainSlider .main-slide.active {\n  display: flex;\n  justify-content: center;\n  align-items: center;\n  position: relative;\n  left: 0;\n  top: 0;\n  width: 100%;\n  height: 100%;\n  opacity: 1; }\n\n.main-slide-text {\n  font-size: 26px;\n  text-align: center;\n  color: #d3c9c9;\n  position: absolute;\n  left: 0;\n  right: 0;\n  bottom: -45px;\n  margin-left: auto;\n  margin-right: auto;\n  margin-bottom: 30px; }\n  .main-slide-text a {\n    color: #d3c9c9; }\n\n@media only screen and (max-width: 970px) {\n  .main-slide-text {\n    margin-bottom: -30px;\n    margin-top: 30px; } }\n\n.main-slider-prev,\n.main-slider-next {\n  cursor: pointer;\n  width: 55px;\n  height: 165px;\n  background: rgba(0, 0, 0, 0.1);\n  border: 0;\n  color: #ffcc14;\n  font-size: 80px;\n  position: absolute;\n  top: 200px;\n  left: 0;\n  transition: 0.6s all; }\n  .main-slider-prev:hover,\n  .main-slider-next:hover {\n    background: rgba(0, 0, 0, 0.8); }\n\n.main-slider-prev span,\n.main-slider-next span {\n  display: none; }\n\n.main-slider-next {\n  order: 3;\n  right: 0;\n  left: auto; }\n\n.main-slide-image {\n  position: relative;\n  margin: 0 auto;\n  opacity: 1;\n  transition: 0.5s 0.5s opacity; }\n\n.loader {\n  position: fixed;\n  top: 0;\n  right: 0;\n  bottom: 0;\n  left: 0;\n  background: white;\n  z-index: 9999; }\n\n#quiz {\n  display: flex;\n  justify-content: center;\n  align-content: center; }\n  #quiz img {\n    padding: 20px;\n    display: relative;\n    max-height: 400px;\n    max-width: 400px;\n    height: auto;\n    width: auto;\n    display: flex;\n    align-self: flex-end;\n    margin: auto 25px; }\n  #quiz .main-slider-slides-cnt {\n    width: 100%; }\n  #quiz .main-slide.active {\n    position: relative; }\n\n@media only screen and (max-width: 590px) {\n  #quiz img {\n    max-height: 200px;\n    max-width: 250px;\n    height: auto;\n    width: auto;\n    display: flex;\n    padding: 0;\n    margin: 0; }\n  .cover .coverRed p {\n    margin: 5px 5px;\n    padding: 0;\n    font-size: 20px;\n    transition: 0.3s all; } }\n\n@media only screen and (max-width: 600px) {\n  .quiz .quiz-text p {\n    font-size: 25px; } }\n\n.quiz .main-slider-slides-cnt {\n  height: auto;\n  max-height: 600px; }\n\n.quiz-text {\n  position: relative;\n  align-self: flex-end;\n  margin: auto auto; }\n  .quiz-text p {\n    transition: 0.5s all;\n    font-size: 33px;\n    font-weight: 700;\n    cursor: pointer; }\n    .quiz-text p:nth-of-type(1) {\n      color: #d3c9c9; }\n    .quiz-text p:nth-of-type(2) {\n      color: #b5a8a8; }\n    .quiz-text p:nth-of-type(3) {\n      color: #7f7070; }\n    .quiz-text p:nth-of-type(4) {\n      color: #544b4b; }\n    .quiz-text p:hover {\n      color: #ffcc14; }\n\n.flexi {\n  display: flex;\n  justify-content: space-between; }\n\n.cover {\n  margin: auto auto;\n  transition: 0.5s all;\n  position: relative; }\n\n.coverRed {\n  z-index: 10;\n  position: absolute;\n  display: none;\n  left: 0;\n  right: 0;\n  margin-left: auto;\n  margin-right: auto;\n  background-color: rgba(206, 14, 14, 0.6);\n  transition: 0.5s all; }\n  .coverRed p {\n    text-align: center;\n    font-size: 40px;\n    font-weight: 700;\n    color: #ffcc14;\n    margin: 30px; }\n\n@media only screen and (max-width: 590px) {\n  #quiz .quizInfo {\n    margin-top: 40px; } }\n\n.quizPoints, .quizTime, .quizInfo {\n  padding: 30px;\n  padding-bottom: 10px;\n  padding-top: 10px;\n  margin: 0;\n  font-size: 24px;\n  color: #ffcc14;\n  font-weight: 900;\n  text-align: center;\n  display: inline-block; }\n\n.quizInfo strong {\n  color: black;\n  font-size: 24px; }\n\n#quiz .startButton {\n  padding: 20px;\n  background-color: #000;\n  color: #ffcc14;\n  display: inline-block;\n  font-weight: 900;\n  font-size: 30px;\n  margin-bottom: 20px;\n  cursor: pointer;\n  transition: 0.3s all;\n  z-index: 300; }\n  #quiz .startButton:hover {\n    background-color: #ffcc14;\n    color: #000; }\n\n#quiz h1 {\n  background-color: rgba(255, 204, 20, 0.8);\n  font-size: 28px;\n  color: red; }\n  @media only screen and (max-width: 800px) {\n    #quiz h1 {\n      margin-top: 70px; } }\n\n.infotable {\n  margin: 0 auto;\n  margin-bottom: 40px;\n  margin-top: 70px;\n  text-align: center; }\n\n@media only screen and (min-width: 801px) {\n  .infotable {\n    margin-top: 10px; } }\n\n.tableBcg {\n  padding: 20px;\n  margin: 10px; }\n  .tableBcg .sortInfo {\n    padding: 10px;\n    margin: 0;\n    margin-bottom: 20px;\n    font-size: 25px;\n    color: #fff;\n    font-weight: 400;\n    font-family: Spectral; }\n\n.dataTable {\n  font-size: 21px;\n  margin: 0 auto;\n  border-collapse: collapse;\n  text-align: center;\n  border: 5px solid #fff;\n  color: #ffcc14;\n  font-family: Spectral; }\n  .dataTable th {\n    color: #fff; }\n  .dataTable th, .dataTable td {\n    border: 2px solid #fff;\n    padding: 10px; }\n  .dataTable td a {\n    text-decoration: none;\n    color: #ffcc14; }\n\n.containsTable {\n  overflow: auto; }\n  .containsTable thead th {\n    cursor: pointer; }\n  .containsTable tr td:nth-of-type(5) {\n    font-size: 14px; }\n\n.reactable-pagination td {\n  padding-top: 20px;\n  padding-bottom: 20px; }\n  .reactable-pagination td a.reactable-page-button {\n    color: white;\n    letter-spacing: 7px;\n    margin-left: 7px; }\n    .reactable-pagination td a.reactable-page-button:hover {\n      color: #ffcc14; }\n    .reactable-pagination td a.reactable-page-button.reactable-current-page {\n      color: #ffcc14;\n      font-size: 25px;\n      font-weight: 700; }\n\n.notFound {\n  color: #ffcc14;\n  font-size: 30px;\n  text-align: center; }\n  .notFound a {\n    line-height: 250px;\n    text-overflow: ellipsis;\n    text-decoration: none;\n    color: #efcf5b; }\n", ""]);
 
 // exports
 
