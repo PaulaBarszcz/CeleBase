@@ -1,9 +1,17 @@
 # CeleBase
 ## Webpage containing quiz, slider and infotable - all with super-cool pictures of actors&amp;actresses. 
 
-###Demo: https://paulabarszcz.github.io/CeleBase/#/
+### Demo: https://paulabarszcz.github.io/CeleBase/#/
 
-To import data from Google Sheets to Firebase, this script was used:
+#### React, ES7, ES6, webpack, HTML5, CSS3 were used.
+
+For development I used webpack dev server.
+In webpack, Babel transpiler was used with ['es2015', 'stage-2', 'react'] presets.
+For production webpack was used to generate styles&scripts.
+
+I prepared the database with links to actors' pictures, their imdb profiles and nationalities in Google Sheets.
+
+To import data from Google Sheets to Firebase, I ran the following script (and afterwards Fetch was used):
 
 
 ```javascript
