@@ -5,6 +5,13 @@
 
 #### React, ES7, ES6, webpack, HTML5, CSS3 were used.
 
+git clone https://github.com/PaulaBarszcz/CeleBase.git
+
+npm start - initiates webpack dev server (for development)
+http://localhost:3001/
+npm run bundle - generates .js file (for production); styles are automatically added inside .html file inside <style> tag
+
+
 For development I used webpack dev server.
 In webpack, Babel transpiler was used with ['es2015', 'stage-2', 'react'] presets.
 For production webpack was used to generate styles&scripts.
