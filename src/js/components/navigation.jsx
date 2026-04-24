@@ -1,60 +1,41 @@
-import React from 'react';
-import { 
-    IndexLink,
-    Link
-} from 'react-router';
+import { useState, useEffect } from 'react'
+import { NavLink, Outlet } from 'react-router-dom'
 
-class Navigation extends React.Component {
-    constructor(props){
-        super(props)
-    }
+function Navigation() {
+  const [menuOpen, setMenuOpen] = useState(false)
 
-    addBodyBcg = () => {
-        document.body.style.backgroundImage = "url('images/stagecurtains.jpg')";
-    }
+  useEffect(() => {
+    document.body.style.backgroundImage = "url('images/stagecurtains.jpg')"
 
-    handleNavClick = (e) => {
-        let body = document.querySelector("body")
-        body.classList.toggle("nav-show");
-        e.stopPropagation();
-    }
+    const closeOnOutsideClick = () => setMenuOpen(false)
+    window.addEventListener('click', closeOnOutsideClick)
+    return () => window.removeEventListener('click', closeOnOutsideClick)
+  }, [])
 
-    closeMenu = () => {
-        let body = document.querySelector("body");
-        if (body.classList.contains("nav-show")) {
-            window.addEventListener("click", function(){
-                body.classList.remove("nav-show");
-            })
-            let menu = document.querySelector(".main-nav ul");
-            menu.addEventListener("click", function(event){
-                event.stopPropagation();
-            });
-        }
-    }
+  const toggleMenu = (e) => {
+    e.stopPropagation()
+    setMenuOpen(prev => !prev)
+  }
 
-    render() {
-
-        this.addBodyBcg();
-        this.closeMenu();
-
-        return <div className="divNav">
-            <button className="main-nav-toogle" onClick={e => this.handleNavClick(e)}>
-            <span></span>
-            <span></span>
-            <span></span>
-            <strong>Pokaż menu</strong>
-            </button>
-            <nav className="main-nav">
-                <ul>
-                    <li><IndexLink to="/" activeClassName="active-tab">HOME</IndexLink></li>
-                    <li><IndexLink to="/slider" activeClassName="active-tab">SLIDER</IndexLink></li>
-                    <li><IndexLink to="/quiz" activeClassName="active-tab">QUIZ</IndexLink></li>
-                    <li><IndexLink to="/infotable" activeClassName="active-tab">INFOTABLE</IndexLink></li>
-                </ul>
-            </nav>
-            {this.props.children}
-        </div>
-    }
+  return (
+    <div className={`divNav${menuOpen ? ' nav-show' : ''}`} onClick={e => e.stopPropagation()}>
+      <button className="main-nav-toogle" onClick={toggleMenu}>
+        <span></span>
+        <span></span>
+        <span></span>
+        <strong>Pokaż menu</strong>
+      </button>
+      <nav className="main-nav">
+        <ul>
+          <li><NavLink to="/" end className={({isActive}) => isActive ? 'active-tab' : ''} onClick={() => setMenuOpen(false)}>HOME</NavLink></li>
+          <li><NavLink to="/slider" className={({isActive}) => isActive ? 'active-tab' : ''} onClick={() => setMenuOpen(false)}>SLIDER</NavLink></li>
+          <li><NavLink to="/quiz" className={({isActive}) => isActive ? 'active-tab' : ''} onClick={() => setMenuOpen(false)}>QUIZ</NavLink></li>
+          <li><NavLink to="/infotable" className={({isActive}) => isActive ? 'active-tab' : ''} onClick={() => setMenuOpen(false)}>INFOTABLE</NavLink></li>
+        </ul>
+      </nav>
+      <Outlet />
+    </div>
+  )
 }
 
-export {Navigation}
+export { Navigation }

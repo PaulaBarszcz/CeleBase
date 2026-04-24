@@ -1,16 +1,13 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-import {Routing} from './components/routing.jsx';
+import { StrictMode } from 'react'
+import { createRoot } from 'react-dom/client'
+import { HashRouter } from 'react-router-dom'
+import { Routing } from './components/routing.jsx'
+import '../sass/main.scss'
 
-require('../sass/main.scss');
-
-document.addEventListener('DOMContentLoaded', function(){
-
-ReactDOM.render(
-    <div>
-        <Routing/>
-    </div>,
-    document.getElementById('app')
-);
-
-});
+createRoot(document.getElementById('app')).render(
+  <StrictMode>
+    <HashRouter>
+      <Routing />
+    </HashRouter>
+  </StrictMode>
+)

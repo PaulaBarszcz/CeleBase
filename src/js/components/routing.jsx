@@ -1,33 +1,23 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-import {Home} from './home.jsx';
-import {Slider} from './slider.jsx';
-import {Quiz} from './quiz.jsx';
-import {InfoTable} from './infotable.jsx';
-import {NotFound} from './notFound.jsx';
-import {Navigation} from './navigation.jsx';
-import { Router,
-    PropsRoute,
-    Route,
-    Link,
-    IndexLink,
-    IndexRoute,
-    hashHistory
-} from 'react-router';
+import { Routes, Route } from 'react-router-dom'
+import { Navigation } from './navigation.jsx'
+import { Home } from './home.jsx'
+import { Slider } from './slider.jsx'
+import { Quiz } from './quiz.jsx'
+import { InfoTable } from './infotable.jsx'
+import { NotFound } from './notFound.jsx'
 
-class Routing extends React.Component {
-
-    render() {
-        return  <Router history={hashHistory}>
-            <Route path='/' component={Navigation}>
-                <IndexRoute component={Home} />
-                <Route path='/slider' component={Slider}/>
-                <Route path='/quiz' component={Quiz}/>
-                <Route path='/infotable' component={InfoTable}/>
-                <Route path='*' component={NotFound} />
-            </Route>
-        </Router>
-    }
+function Routing() {
+  return (
+    <Routes>
+      <Route path="/" element={<Navigation />}>
+        <Route index element={<Home />} />
+        <Route path="slider" element={<Slider />} />
+        <Route path="quiz" element={<Quiz />} />
+        <Route path="infotable" element={<InfoTable />} />
+        <Route path="*" element={<NotFound />} />
+      </Route>
+    </Routes>
+  )
 }
 
-export {Routing}
+export { Routing }
