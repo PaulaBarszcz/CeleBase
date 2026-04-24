@@ -1,51 +1,61 @@
 # CeleBase
-## Webpage containing quiz, slider and infotable - all with super-cool pictures of actors&amp;actresses. 
 
-### Demo: https://paulabarszcz.github.io/CeleBase/#/
+Webpage containing a quiz, slider and infotable — all with pictures of famous actors & actresses.
 
-#### React, ES7, ES6, webpack, HTML5, CSS3 were used.
+**Live demo:** https://paulabarszcz.github.io/CeleBase/#/
 
+## Stack
+
+- React 19, React Router v6
+- Vite 6
+- SCSS (compiled by Vite)
+- Vanilla CSS — no UI libraries
+
+## Requirements
+
+- Node.js 18+
+- npm 9+
+
+## Getting started
+
+```bash
 git clone https://github.com/PaulaBarszcz/CeleBase.git
-
-npm start - initiates webpack dev server (for development)
-http://localhost:3001/
-npm run bundle - generates .js file (for production); styles are automatically added inside .html file inside <style> tag
-
-
-For development I used webpack dev server.
-In webpack, Babel transpiler was used with ['es2015', 'stage-2', 'react'] presets.
-For production webpack was used to generate styles&scripts.
-
-I prepared the database with links to actors' pictures, their imdb profiles and nationalities in Google Sheets.
-
-To import data from Google Sheets to Firebase, I ran the following script (and afterwards Fetch was used):
-
-
-```javascript
-var firebaseLink =  "...";
-var firebaseSecret  =  "...";
-function save_actors() {
-    var sheets  =  SpreadsheetApp.getActiveSpreadsheet().getSheets();
-    var data = [];
-    for (var i  = 0; i < sheets.length; i++){
-    var sheet = sheets[i];
-    var rows = sheet.getDataRange();
-    var numRows = rows.getNumRows();
-    var numCols = rows.getNumColumns();
-    var values = rows.getValues();
-    for (var j  = 2; j < numRows; j++) {
-        var actor = {};
-        actor.id = values[j][0];
-        actor.name = values[j][1];
-        actor.surname = values[j][2];
-        actor.gender = values[j][3];
-        actor.nationality = values[j][4];
-        actor.photo = values[j][5];
-        actor.imdb = values[j][6];
-        data.push(actor);
-    }
-}
-var firebase = FirebaseApp.getDatabaseByUrl(firebaseLink,firebaseSecret);
-  firebase.setData("", data);
-}
+cd CeleBase
+npm install
 ```
+
+## Commands
+
+| Command | Description |
+|---------|-------------|
+| `npm run dev` | Start dev server at http://localhost:5173 |
+| `npm run build` | Build production bundle to `dist/` |
+| `npm run preview` | Preview the production build locally |
+| `npm run deploy` | Build and deploy to GitHub Pages |
+
+## Project structure
+
+```
+src/
+├── js/
+│   ├── components/     # React components (Navigation, Slider, Quiz, InfoTable, …)
+│   ├── data/           # Static actor dataset (actors.js)
+│   └── main.jsx        # App entry point
+├── sass/               # SCSS styles per component
+public/
+└── images/             # Static assets (background, spinner)
+```
+
+## Features
+
+- **Slider** — browse 20 actors/actresses with photos and IMDB links
+- **Quiz** — guess the actor from their photo, 9-second timer per question
+- **InfoTable** — sortable, paginated table of all actors
+
+## Data
+
+Actor data (name, nationality, gender, IMDB link, photo) is stored as a static JS array in `src/js/data/actors.js`. Photos are sourced from Wikimedia Commons via the Wikipedia REST API.
+
+## Deploy
+
+Pushes to `main` automatically trigger a GitHub Actions workflow that builds the app and deploys it to the `gh-pages` branch, which is served by GitHub Pages.
