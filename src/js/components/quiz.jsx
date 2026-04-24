@@ -116,7 +116,7 @@ function QuizAnswersGame() {
                     <span>Points gained: {points}</span>
                   </p>
                 </div>
-                {!imgLoaded && <img src="images/spinner.gif" alt="loading" />}
+                {!imgLoaded && <img src={`${import.meta.env.BASE_URL}images/spinner.gif`} alt="loading" />}
                 <img
                   className="quizImg"
                   src={current.photo}

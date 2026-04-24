@@ -5,7 +5,7 @@ function Navigation() {
   const [menuOpen, setMenuOpen] = useState(false)
 
   useEffect(() => {
-    document.body.style.backgroundImage = "url('images/stagecurtains.jpg')"
+    document.body.style.backgroundImage = `url('${import.meta.env.BASE_URL}images/stagecurtains.jpg')`
 
     const closeOnOutsideClick = () => setMenuOpen(false)
     window.addEventListener('click', closeOnOutsideClick)

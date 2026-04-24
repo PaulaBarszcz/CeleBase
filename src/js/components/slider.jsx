@@ -30,7 +30,7 @@ function Slider() {
         </button>
         <div className="main-slider-slides-cnt">
           <div className="main-slide active">
-            {!imgLoaded && <img src="images/spinner.gif" alt="loading" />}
+            {!imgLoaded && <img src={`${import.meta.env.BASE_URL}images/spinner.gif`} alt="loading" />}
             <img
               className="main-slide-image"
               src={actor.photo}
